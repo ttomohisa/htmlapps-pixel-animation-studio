@@ -1,0 +1,26 @@
+{
+  "$schema": "./schemas/app-config.schema.json",
+  "name": "Pixel Animation Studio",
+  "nameJa": "Pixel Animation Studio",
+  "slug": "pixel-animation-studio",
+  "version": "1.0.0",
+  "description": "Create small pixel-art animations locally in your browser and export them as PNG, GIF, and sprite sheets.",
+  "descriptionJa": "小さなドット絵アニメーションをブラウザー内で作成し、PNG・GIF・スプライトシートとして保存するツールです。",
+  "defaultLanguage": "auto",
+  "repository": {
+    "owner": "ttomohisa",
+    "name": "htmlapps-pixel-animation-studio"
+  },
+  "build": {
+    "output": "dist/index.html",
+    "blockRuntimeNetwork": true,
+    "selfExtract": {
+      "enabled": true,
+      "output": "dist/index.self-extract.html"
+    },
+    "sizeBudget": {
+      "readableWarningMb": 25,
+      "selfExtractWarningMb": 12
+    }
+  }
+}

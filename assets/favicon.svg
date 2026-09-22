@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1095 1095">
+<rect x="100" y="102" width="896" height="894" rx="224" ry="223.5" fill="#066751"/>
+<g fill="#fcfcfc">
+ <rect x="190" y="265" width="491" height="487" rx="39"/>
+ <path d="M707 289h58q33 0 33 33v386q0 33-33 33h-60q3-16 3-39V327q0-22-1-38Z"/>
+ <path d="M825 330h45q36 0 36 36v295q0 36-36 36h-45Z"/>
+ <rect x="361" y="820" width="49" height="49" rx="5"/>
+ <rect x="462" y="820" width="49" height="49" rx="5"/>
+ <rect x="565" y="820" width="49" height="49" rx="5"/>
+ <path d="M665 787q4 0 16 8l57 37q13 8 13 13t-13 14l-57 36q-12 8-17 9-9 0-9-18v-81q0-18 10-18Z"/>
+</g>
+<g fill="#066751">
+ <rect x="220" y="299" width="47" height="48" rx="5"/><rect x="220" y="389" width="47" height="47" rx="5"/><rect x="220" y="478" width="47" height="48" rx="5"/><rect x="220" y="568" width="47" height="47" rx="5"/><rect x="220" y="657" width="47" height="47" rx="5"/>
+ <rect x="605" y="299" width="47" height="48" rx="5"/><rect x="605" y="389" width="47" height="47" rx="5"/><rect x="605" y="478" width="47" height="48" rx="5"/><rect x="605" y="568" width="47" height="47" rx="5"/><rect x="605" y="657" width="47" height="47" rx="5"/>
+ <rect x="731" y="325" width="41" height="44" rx="4"/><rect x="731" y="409" width="41" height="44" rx="4"/><rect x="731" y="492" width="41" height="44" rx="4"/><rect x="731" y="576" width="41" height="44" rx="4"/><rect x="731" y="660" width="41" height="44" rx="4"/>
+ <rect x="845" y="366" width="38" height="42" rx="4"/><rect x="845" y="446" width="38" height="43" rx="4"/><rect x="845" y="528" width="38" height="43" rx="4"/><rect x="845" y="610" width="38" height="43" rx="4"/>
+ <path d="M524 339H430L429 363H381L380 387L356 388L355 412H332V482L356 484V528L327 529L326 554H301L300 603L353 605L354 626L300 629V701H337L338 676H376L377 653H400L401 629H453L454 653L477 654L478 678L500 681V704H537L538 680L557 679V654H518L517 630H495L494 607L471 606L472 556L495 557V605H550V582L573 581L572 531H534L532 555L495 554V532L516 531L517 508L537 506V434L549 430V364L527 363Z"/>
+</g>
+<g fill="#fcfcfc">
+ <path d="M515 415H455v23l-24 1-2 47h-25l-1-24h-21v39h24l1 22h85v-20l21-2Z"/>
+ <path d="M401 533H357l-1 22h-23v21l23 2v27h18v-47l27-2Z"/>
+ <rect x="473" y="558" width="19" height="47"/>
+</g>
+<rect x="477" y="438" width="23" height="42" rx="2" fill="#066751"/>
+</svg>

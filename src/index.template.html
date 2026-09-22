@@ -1,0 +1,1666 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="color-scheme" content="light">
+  <meta name="theme-color" content="#f5f5f2">
+  <meta name="description" content="ブラウザーだけで小さなドット絵を描ける、完全ローカル処理のPixel Animation Studio。">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self' data: blob:; script-src 'self' 'unsafe-inline' blob:; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self' data: blob:; media-src 'self' data: blob:; worker-src 'self' blob:; connect-src 'none'; object-src 'none'; frame-src 'none'; base-uri 'none'; form-action 'none'">
+  <title>Pixel Animation Studio</title>
+  <link rel="icon" href="__APP_ICON_DATA_URI__">
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #f5f5f2;
+      --surface: #ffffff;
+      --surface-muted: #f0f0ed;
+      --surface-hover: #e9e9e5;
+      --text: #20211f;
+      --muted: #666963;
+      --line: #dadbd6;
+      --line-strong: #bfc1ba;
+      --accent: #16624f;
+      --accent-hover: #0e503f;
+      --accent-soft: #e1f0ea;
+      --draw-color: #16624f;
+      --danger: #b3261e;
+      --focus: #4d8bc7;
+      --shadow-sm: 0 1px 2px rgba(25,28,24,.08), 0 1px 6px rgba(25,28,24,.04);
+      --shadow-md: 0 12px 34px rgba(25,28,24,.12);
+      --radius: 14px;
+      --header-height: 66px;
+      --checker-a: #ffffff;
+      --checker-b: #e7e8e4;
+    }
+    * { box-sizing: border-box; }
+    html { min-height: 100%; background: var(--bg); }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: var(--bg);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans JP", "Yu Gothic UI", "Hiragino Kaku Gothic ProN", Meiryo, sans-serif;
+      font-size: 15px;
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+    button, input { font: inherit; }
+    button { color: inherit; }
+    button:focus-visible, input:focus-visible, summary:focus-visible, canvas:focus-visible {
+      outline: 3px solid color-mix(in srgb, var(--focus) 58%, transparent);
+      outline-offset: 2px;
+    }
+    [hidden] { display: none !important; }
+    .sr-only {
+      position: absolute !important; width: 1px !important; height: 1px !important; padding: 0 !important;
+      margin: -1px !important; overflow: hidden !important; clip: rect(0,0,0,0) !important; white-space: nowrap !important; border: 0 !important;
+    }
+    .app-header {
+      position: sticky;
+      z-index: 30;
+      top: 0;
+      min-height: var(--header-height);
+      border-bottom: 1px solid color-mix(in srgb, var(--line) 82%, transparent);
+      background: color-mix(in srgb, var(--bg) 92%, transparent);
+      backdrop-filter: blur(16px) saturate(1.2);
+    }
+    .header-inner {
+      width: min(1180px, 100%);
+      min-height: var(--header-height);
+      margin: 0 auto;
+      padding: 10px clamp(14px, 2.8vw, 30px);
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+    .brand { display: flex; align-items: center; gap: 10px; min-width: 0; }
+    .brand-mark {
+      display: block;
+      width: 38px;
+      height: 38px;
+      flex: 0 0 auto;
+      border-radius: 11px;
+      overflow: hidden;
+      box-shadow: var(--shadow-sm);
+    }
+    .brand-mark img { width: 100%; height: 100%; display: block; }
+    .brand-copy { min-width: 0; }
+    .brand-name {
+      margin: 0;
+      font-size: 17px;
+      line-height: 1.2;
+      letter-spacing: .01em;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .version-badge {
+      display: inline-flex;
+      align-items: center;
+      margin-left: 7px;
+      padding: 1px 6px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      color: var(--muted);
+      background: var(--surface-muted);
+      font-size: 10px;
+      font-weight: 650;
+      vertical-align: 2px;
+    }
+    .brand-meta {
+      margin: 2px 0 0;
+      color: var(--muted);
+      font-size: 12px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .header-actions { margin-left: auto; display: flex; align-items: center; gap: 12px; }
+    .language-button {
+      min-width: 0;
+      padding: 5px 1px;
+      border: 0;
+      background: transparent;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 750;
+      letter-spacing: .02em;
+      cursor: pointer;
+      transition: color .16s ease, opacity .16s ease;
+    }
+    .language-button:hover { color: var(--text); }
+    .language-button:active { opacity: .65; }
+    .icon-button {
+      display: inline-grid;
+      place-items: center;
+      width: 38px;
+      height: 38px;
+      padding: 0;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: var(--surface);
+      cursor: pointer;
+      transition: border-color .16s ease, background .16s ease, transform .16s ease;
+    }
+    .icon-button:hover { border-color: var(--line-strong); background: var(--surface-hover); }
+    .icon-button:active { transform: translateY(1px); }
+    .icon-button svg { width: 18px; height: 18px; display: block; }
+    .header-icon-button {
+      width: auto;
+      height: auto;
+      padding: 5px 1px;
+      border: 0;
+      border-radius: 0;
+      background: transparent;
+      color: var(--muted);
+      transition: color .16s ease, opacity .16s ease;
+    }
+    .header-icon-button:hover { border-color: transparent; background: transparent; color: var(--text); }
+    .header-icon-button:active { transform: none; opacity: .65; }
+    .header-icon-button svg { width: 20px; height: 20px; }
+    .main { width: min(1180px, 100%); margin: 0 auto; padding: 22px clamp(14px, 2.8vw, 30px) 50px; }
+    .page-intro { display: flex; justify-content: space-between; gap: 20px; align-items: flex-start; margin-bottom: 18px; }
+    .page-intro h2 { margin: 0; font-size: clamp(22px, 3.4vw, 29px); letter-spacing: -.03em; line-height: 1.25; }
+    .page-intro p { margin: 6px 0 0; max-width: 720px; color: var(--muted); font-size: 13px; }
+    .local-badge {
+      display: inline-flex; align-items: center; gap: 7px; flex: 0 0 auto; margin-top: 3px;
+      padding: 7px 10px; border: 1px solid color-mix(in srgb, var(--accent) 25%, var(--line));
+      border-radius: 999px; color: var(--accent); background: var(--accent-soft); font-size: 12px; font-weight: 760; white-space: nowrap;
+    }
+    .local-badge svg { width: 15px; height: 15px; }
+    .panel {
+      border: 1px solid var(--line); border-radius: 16px; background: var(--surface); box-shadow: var(--shadow-sm);
+    }
+    .setup-panel { padding: clamp(18px, 4vw, 30px); }
+    .setup-copy { max-width: 720px; margin-bottom: 22px; }
+    .setup-copy h3 { margin: 0 0 6px; font-size: 20px; letter-spacing: -.02em; }
+    .setup-copy p { margin: 0; color: var(--muted); font-size: 13px; }
+    .preset-grid { display: grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap: 10px; }
+    .preset-button {
+      min-height: 76px; padding: 12px; border: 1px solid var(--line); border-radius: 13px; background: #fbfbf9;
+      cursor: pointer; text-align: left; transition: background .15s ease, border-color .15s ease, transform .15s ease;
+    }
+    .preset-button:hover { border-color: color-mix(in srgb, var(--accent) 44%, var(--line)); background: var(--accent-soft); }
+    .preset-button:active { transform: translateY(1px); }
+    .preset-size { display: block; font-size: 20px; font-weight: 820; letter-spacing: -.02em; }
+    .preset-note { display: block; margin-top: 3px; color: var(--muted); font-size: 11px; }
+    .custom-card { margin-top: 14px; padding: 16px; border: 1px solid var(--line); border-radius: 13px; background: var(--surface-muted); }
+    .setup-import-card { margin-top: 14px; padding: 16px; border: 1px dashed var(--line-strong); border-radius: 13px; background: #fbfbf9; }
+    .setup-import-head { display:flex; align-items:flex-start; justify-content:space-between; gap:14px; }
+    .setup-import-copy strong { display:block; font-size:14px; }
+    .setup-import-copy span { display:block; margin-top:3px; color:var(--muted); font-size:11px; }
+    .drop-target.drag-over { border-color:var(--accent); background:var(--accent-soft); box-shadow:0 0 0 2px color-mix(in srgb,var(--accent) 20%,transparent) inset; }
+    .editor-top-actions { display:flex; align-items:center; gap:8px; flex:0 0 auto; }
+    .import-result { margin:10px 14px 0; padding:10px 12px; border:1px solid var(--line); border-radius:10px; background:var(--surface-muted); font-size:11px; }
+    .setup-import-card .import-result { margin:12px 0 0; }
+    .import-summary { display:flex; flex-wrap:wrap; gap:8px 14px; }
+    .import-summary strong { color:var(--text); }
+    .import-failures { margin:7px 0 0; padding-left:18px; color:var(--muted); }
+    .import-failures li + li { margin-top:3px; }
+    .import-more { margin:5px 0 0; color:var(--muted); }
+    .custom-head { display: flex; justify-content: space-between; gap: 14px; align-items: center; margin-bottom: 12px; }
+    .custom-head strong { font-size: 14px; }
+    .custom-head span { color: var(--muted); font-size: 11px; }
+    .custom-row { display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0,1fr) auto; gap: 9px; align-items: end; }
+    .field { display: grid; gap: 5px; }
+    .field-label { color: var(--muted); font-size: 11px; font-weight: 730; }
+    .number-input, .hex-input {
+      width: 100%; min-height: 44px; border: 1px solid var(--line); border-radius: 10px; padding: 8px 10px; background: var(--surface); color: var(--text);
+    }
+    .number-input:hover, .hex-input:hover { border-color: var(--line-strong); }
+    .multiply { padding-bottom: 12px; color: var(--muted); font-weight: 800; }
+    .button {
+      min-height: 42px; padding: 8px 14px; border: 1px solid var(--line); border-radius: 10px; background: var(--surface);
+      cursor: pointer; font-weight: 730; transition: background .15s ease, border-color .15s ease, transform .15s ease;
+    }
+    .button:hover { border-color: var(--line-strong); background: var(--surface-hover); }
+    .button:active { transform: translateY(1px); }
+    .button.primary { color: #fff; border-color: var(--accent); background: var(--accent); }
+    .button.primary:hover { border-color: var(--accent-hover); background: var(--accent-hover); }
+    .button.danger { color: var(--danger); }
+    .inline-error { min-height: 20px; margin: 8px 0 0; color: var(--danger); font-size: 12px; }
+    .editor-panel { overflow: hidden; }
+    .editor-topbar {
+      display: flex; align-items: center; justify-content: space-between; gap: 14px; padding: 12px 14px;
+      border-bottom: 1px solid var(--line); background: #fbfbf9;
+    }
+    .project-info { display: flex; align-items: center; gap: 10px; min-width: 0; }
+    .project-size { font-size: 14px; font-weight: 810; white-space: nowrap; }
+    .project-note { color: var(--muted); font-size: 11px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .editor-layout { display: grid; grid-template-columns: 190px minmax(0,1fr) 220px; min-height: 560px; }
+    .side-panel { padding: 16px; background: var(--surface); }
+    .side-panel.left { border-right: 1px solid var(--line); }
+    .side-panel.right { border-left: 1px solid var(--line); }
+    .panel-title { margin: 0 0 10px; color: var(--muted); font-size: 11px; font-weight: 820; letter-spacing: .06em; text-transform: uppercase; }
+    .tool-list { display: grid; gap: 8px; }
+    .tool-button {
+      display: flex; align-items: center; gap: 9px; width: 100%; min-height: 44px; padding: 8px 10px;
+      border: 1px solid var(--line); border-radius: 10px; background: var(--surface); cursor: pointer; font-weight: 720; text-align: left;
+    }
+    .tool-button svg { width: 19px; height: 19px; flex: 0 0 auto; }
+    .tool-button:hover { background: var(--surface-hover); }
+    .tool-button[aria-pressed="true"] { border-color: color-mix(in srgb, var(--accent) 60%, var(--line)); color: var(--accent); background: var(--accent-soft); }
+    .tool-button:disabled, .segment-button:disabled { opacity: .45; cursor: not-allowed; }
+    .compact-row { display: grid; grid-template-columns: 1fr; gap: 7px; }
+    .compact-button {
+      min-height: 38px; display: inline-flex; align-items: center; justify-content: center; gap: 6px; padding: 6px 9px;
+      border: 1px solid var(--line); border-radius: 9px; background: var(--surface); cursor: pointer; font-weight: 720;
+    }
+    .compact-button:hover { background: var(--surface-hover); border-color: var(--line-strong); }
+    .compact-button:disabled { opacity: .42; cursor: not-allowed; }
+    .compact-button[aria-pressed="true"] { border-color: var(--accent); color: var(--accent); background: var(--accent-soft); }
+    .compact-button svg { width: 17px; height: 17px; flex: 0 0 auto; }
+    .control-group + .control-group { margin-top: 20px; }
+    .segmented { display: grid; grid-template-columns: repeat(3,1fr); gap: 6px; }
+    .segment-button {
+      min-height: 42px; border: 1px solid var(--line); border-radius: 9px; background: var(--surface); cursor: pointer; font-weight: 760;
+    }
+    .segment-button[aria-pressed="true"] { border-color: var(--accent); color: var(--accent); background: var(--accent-soft); }
+    .color-row { display: grid; grid-template-columns: 50px minmax(0,1fr); gap: 8px; align-items: stretch; }
+    .color-well {
+      width: 50px; height: 44px; padding: 4px; border: 1px solid var(--line); border-radius: 10px; background: var(--surface); cursor: pointer;
+    }
+    .color-well input { width: 100%; height: 100%; padding: 0; border: 0; background: transparent; cursor: pointer; }
+    .color-well input::-webkit-color-swatch-wrapper { padding: 0; }
+    .color-well input::-webkit-color-swatch { border: 0; border-radius: 6px; }
+    .color-well input::-moz-color-swatch { border: 0; border-radius: 6px; }
+    .current-color-preview { height: 74px; border: 1px solid var(--line); border-radius: 11px; background: var(--accent); }
+    .recent-colors { display: grid; grid-template-columns: repeat(6, minmax(0,1fr)); gap: 6px; }
+    .recent-color-button { width: 100%; aspect-ratio: 1; min-height: 28px; border: 1px solid rgba(32,33,31,.28); border-radius: 8px; cursor: pointer; box-shadow: inset 0 0 0 1px rgba(255,255,255,.25); }
+    .recent-color-button:hover { outline: 2px solid color-mix(in srgb, var(--accent) 42%, transparent); outline-offset: 1px; }
+    .recent-colors-empty { grid-column: 1 / -1; margin: 0; color: var(--muted); font-size: 11px; }
+    .tip-box { margin-top: 18px; padding: 11px; border-radius: 10px; background: var(--surface-muted); color: var(--muted); font-size: 11px; }
+    .canvas-column { min-width: 0; padding: 16px; display: flex; flex-direction: column; background: #ededeb; }
+    .canvas-toolbar { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 9px; }
+    .canvas-toolbar-group { display: flex; align-items: center; gap: 6px; min-width: 0; }
+    .canvas-toolbar .compact-button { min-width: 38px; min-height: 38px; padding: 6px 8px; }
+    .zoom-label { min-width: 48px; color: var(--muted); font-size: 11px; font-weight: 760; text-align: center; }
+    .canvas-stage {
+      position: relative; flex: 1; min-height: 430px; display: grid; align-items: safe center; justify-items: safe center; overflow: auto; padding: 16px;
+      border: 1px solid var(--line-strong); border-radius: 13px;
+      background: linear-gradient(45deg, var(--checker-b) 25%, transparent 25%) 0 0/16px 16px,
+                  linear-gradient(-45deg, var(--checker-b) 25%, transparent 25%) 0 8px/16px 16px,
+                  linear-gradient(45deg, transparent 75%, var(--checker-b) 75%) 8px -8px/16px 16px,
+                  linear-gradient(-45deg, transparent 75%, var(--checker-b) 75%) -8px 0/16px 16px,
+                  var(--checker-a);
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,.55);
+    }
+    .canvas-surface { position: relative; flex: 0 0 auto; line-height: 0; }
+    #onionCanvas, #pixelCanvas { display:block; width:100%; height:100%; image-rendering:pixelated; image-rendering:crisp-edges; }
+    #onionCanvas { position:absolute; inset:0; pointer-events:none; opacity:.30; }
+    #pixelCanvas {
+      position:relative; z-index:1; touch-action:none; cursor:crosshair;
+      box-shadow: 0 0 0 1px rgba(32,33,31,.38), 0 8px 24px rgba(32,33,31,.12);
+    }
+    #pixelCanvas.is-erasing { cursor: cell; }
+    #pixelCanvas.is-fill { cursor: crosshair; }
+    #pixelCanvas.is-eyedropper { cursor: copy; }
+    #pixelCanvas.is-pan-ready, #pixelCanvas.is-panning, .canvas-stage.is-panning { cursor: grab; }
+    #pixelCanvas.is-panning, .canvas-stage.is-panning { cursor: grabbing; }
+    .brush-preview {
+      position:absolute; z-index:6; display:none; pointer-events:none; box-sizing:border-box;
+      border:1px solid rgba(255,255,255,.96); outline:1px solid rgba(32,33,31,.82);
+      background:color-mix(in srgb, var(--draw-color) 38%, transparent);
+      box-shadow:0 0 0 1px rgba(255,255,255,.18) inset;
+    }
+    .brush-preview.active { display:block; }
+    .brush-preview.eraser {
+      background:repeating-linear-gradient(135deg, rgba(255,255,255,.58) 0 3px, rgba(32,33,31,.14) 3px 6px);
+      outline-color:rgba(32,33,31,.92);
+    }
+    .grid-overlay { position: absolute; inset: 0; pointer-events: none; opacity: .42; background-image: linear-gradient(to right, rgba(32,33,31,.52) 1px, transparent 1px), linear-gradient(to bottom, rgba(32,33,31,.52) 1px, transparent 1px); background-size: var(--pixel-size, 8px) var(--pixel-size, 8px); }
+    .canvas-footer { display: flex; justify-content: space-between; gap: 12px; align-items: center; padding-top: 10px; color: var(--muted); font-size: 11px; }
+    .canvas-footer strong { color: var(--text); }
+    .project-status { display:inline-flex; align-items:center; gap:6px; margin-left:7px; color:var(--muted); font-size:11px; }
+    .project-status-dot { width:7px; height:7px; border-radius:50%; background:var(--accent); flex:0 0 auto; }
+    .project-status[data-state="saving"] .project-status-dot { background:#a26d12; }
+    .project-status[data-state="error"] { color:var(--danger); }
+    .project-status[data-state="error"] .project-status-dot { background:var(--danger); }
+    .storage-warning { margin:0 14px 14px; padding:10px 12px; border:1px solid color-mix(in srgb,var(--danger) 32%,var(--line)); border-radius:10px; background:#fff6f4; color:var(--danger); font-size:12px; }
+    .onion-toggle-row { display:flex; align-items:center; justify-content:space-between; gap:10px; }
+    .onion-toggle-row .compact-button { min-width:74px; }
+    .mobile-workspace-tabs { display:none; }
+
+    .selection-overlay { position:absolute; pointer-events:none; border:1px dashed #fff; outline:1px dashed #16624f; background:color-mix(in srgb,var(--accent) 8%, transparent); z-index:5; display:none; }
+    .selection-overlay.active { display:block; }
+    .selection-actions { display:none; gap:6px; flex-wrap:wrap; align-items:center; padding:8px 10px; border-top:1px solid var(--line); background:var(--surface); }
+    .selection-actions.active { display:flex; }
+    .selection-actions .compact-button { flex:1 1 auto; min-width:70px; }
+    canvas.is-selecting { cursor:crosshair; }
+    canvas.has-selection { cursor:move; }
+    .frames-panel { border-top: 1px solid var(--line); background: #fbfbf9; padding: 12px 14px 14px; }
+    .frames-head { display:flex; align-items:center; justify-content:space-between; gap:10px; margin-bottom:10px; }
+    .frames-head .panel-title { margin:0; }
+    .frame-actions { display:flex; gap:6px; flex-wrap:wrap; }
+    .frame-strip { display:flex; gap:9px; overflow-x:auto; padding:2px 1px 6px; scrollbar-width:thin; }
+    .frame-card { position:relative; flex:0 0 auto; width:82px; padding:7px; border:1px solid var(--line); border-radius:11px; background:var(--surface); cursor:pointer; text-align:left; }
+    .frame-card:hover { border-color:var(--line-strong); background:var(--surface-hover); }
+    .frame-card[aria-current="true"] { border-color:var(--accent); box-shadow:0 0 0 2px var(--accent-soft); }
+    .frame-thumb-wrap { width:66px; height:66px; display:grid; place-items:center; overflow:hidden; border-radius:7px; background:linear-gradient(45deg,var(--checker-b) 25%,transparent 25%) 0 0/10px 10px,linear-gradient(-45deg,var(--checker-b) 25%,transparent 25%) 0 5px/10px 10px,linear-gradient(45deg,transparent 75%,var(--checker-b) 75%) 5px -5px/10px 10px,linear-gradient(-45deg,transparent 75%,var(--checker-b) 75%) -5px 0/10px 10px,var(--checker-a); }
+    .frame-thumb { max-width:66px; max-height:66px; width:auto; height:auto; image-rendering:pixelated; }
+    .frame-meta { display:flex; align-items:center; justify-content:space-between; gap:4px; margin-top:5px; color:var(--muted); font-size:10px; }
+    .frame-meta strong { color:var(--text); font-size:11px; }
+    .frame-count { color:var(--muted); font-size:11px; white-space:nowrap; }
+    .timing-controls { display:flex; align-items:end; gap:8px; flex-wrap:wrap; margin-top:10px; }
+    .duration-field { display:grid; gap:4px; min-width:130px; }
+    .duration-input-wrap { display:grid; grid-template-columns:minmax(0,1fr) auto; align-items:center; overflow:hidden; border:1px solid var(--line); border-radius:9px; background:var(--surface); }
+    .duration-input-wrap:focus-within { border-color:var(--focus); box-shadow:0 0 0 3px color-mix(in srgb,var(--focus) 18%,transparent); }
+    .duration-input { width:100%; min-width:0; min-height:38px; padding:6px 8px; border:0; outline:0; background:transparent; color:var(--text); }
+    .duration-unit { padding:0 9px; color:var(--muted); font-size:11px; }
+    .preview-panel { border-top:1px solid var(--line); padding:14px; background:var(--surface); }
+    .preview-layout { display:grid; grid-template-columns:minmax(150px,220px) minmax(0,1fr); gap:16px; align-items:center; }
+    .preview-stage { min-height:190px; display:grid; place-items:center; overflow:hidden; padding:12px; border:1px solid var(--line); border-radius:12px; background:linear-gradient(45deg,var(--checker-b) 25%,transparent 25%) 0 0/16px 16px,linear-gradient(-45deg,var(--checker-b) 25%,transparent 25%) 0 8px/16px 16px,linear-gradient(45deg,transparent 75%,var(--checker-b) 75%) 8px -8px/16px 16px,linear-gradient(-45deg,transparent 75%,var(--checker-b) 75%) -8px 0/16px 16px,var(--checker-a); }
+    #previewCanvas { display:block; image-rendering:pixelated; image-rendering:crisp-edges; box-shadow:0 0 0 1px rgba(32,33,31,.3); }
+    .preview-copy { min-width:0; }
+    .preview-copy .panel-title { margin-bottom:5px; }
+    .preview-status { margin:0 0 10px; color:var(--muted); font-size:12px; }
+    .preview-actions { display:flex; flex-wrap:wrap; gap:7px; }
+    .preview-actions .compact-button { min-width:86px; }
+    .preview-note { margin:10px 0 0; color:var(--muted); font-size:11px; }
+    .export-panel { border-top:1px solid var(--line); padding:14px; background:#fbfbf9; }
+    .export-head { display:flex; align-items:flex-start; justify-content:space-between; gap:12px; margin-bottom:12px; }
+    .export-head p { margin:4px 0 0; color:var(--muted); font-size:11px; }
+    .export-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:12px; }
+    .export-card { min-width:0; padding:12px; border:1px solid var(--line); border-radius:12px; background:var(--surface); }
+    .export-card h4 { margin:0 0 4px; font-size:13px; }
+    .export-card-note { margin:0 0 10px; color:var(--muted); font-size:11px; }
+    .export-field { display:grid; gap:5px; margin-bottom:10px; }
+    .export-label { color:var(--muted); font-size:10px; font-weight:750; }
+    .filename-control { display:grid; grid-template-columns:minmax(0,1fr) auto; align-items:center; overflow:hidden; border:1px solid var(--line); border-radius:9px; background:var(--surface); }
+    .filename-control:focus-within { border-color:var(--focus); box-shadow:0 0 0 3px color-mix(in srgb,var(--focus) 18%,transparent); }
+    .filename-input { width:100%; min-width:0; min-height:38px; padding:7px 9px; border:0; outline:0; background:transparent; color:var(--text); }
+    .filename-extension { padding:0 9px; color:var(--muted); font-size:11px; user-select:none; }
+    .export-options { display:flex; flex-wrap:wrap; align-items:end; gap:8px; margin-bottom:10px; }
+    .export-options .field { min-width:96px; }
+    .export-info { display:grid; gap:3px; margin:8px 0 10px; padding:8px 10px; border-radius:9px; background:var(--surface-muted); color:var(--muted); font-size:11px; }
+    .export-info strong { color:var(--text); font-size:12px; }
+    .sprite-preview-wrap { min-height:112px; display:grid; place-items:center; overflow:auto; margin:8px 0 10px; padding:10px; border:1px solid var(--line); border-radius:10px; background:linear-gradient(45deg,var(--checker-b) 25%,transparent 25%) 0 0/12px 12px,linear-gradient(-45deg,var(--checker-b) 25%,transparent 25%) 0 6px/12px 12px,linear-gradient(45deg,transparent 75%,var(--checker-b) 75%) 6px -6px/12px 12px,linear-gradient(-45deg,transparent 75%,var(--checker-b) 75%) -6px 0/12px 12px,var(--checker-a); }
+    #spriteSheetPreview { display:block; max-width:100%; max-height:180px; width:auto; height:auto; image-rendering:pixelated; image-rendering:crisp-edges; box-shadow:0 0 0 1px rgba(32,33,31,.18); }
+    .export-action { width:100%; }
+    .gif-progress { display:grid; gap:5px; margin:8px 0 10px; }
+    .gif-progress progress { width:100%; height:8px; accent-color:var(--accent); }
+    .gif-progress span { color:var(--muted); font-size:10px; }
+    .mobile-controls { display: none; }
+    .build-details { margin-top: 18px; border: 1px solid var(--line); border-radius: 12px; background: var(--surface); overflow: hidden; }
+    .build-details summary { cursor: pointer; padding: 11px 13px; color: var(--muted); font-size: 12px; font-weight: 720; }
+    .build-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 8px; padding: 0 13px 13px; }
+    .build-item { padding: 9px; border-radius: 9px; background: var(--surface-muted); }
+    .build-item span { display: block; color: var(--muted); font-size: 10px; }
+    .build-item strong { display: block; overflow-wrap: anywhere; font-size: 11px; }
+    footer { width: min(1180px,100%); margin: 0 auto; padding: 0 clamp(14px,2.8vw,30px) 30px; color: var(--muted); font-size: 12px; }
+    dialog {
+      width: min(560px, calc(100vw - 28px)); max-height: min(82vh, 700px); padding: 0; overflow: hidden;
+      border: 1px solid var(--line); border-radius: 16px; background: var(--surface); color: var(--text); box-shadow: var(--shadow-md);
+    }
+    dialog::backdrop { background: rgba(20,24,21,.34); backdrop-filter: blur(2px); }
+    .dialog-shell { display: flex; flex-direction: column; max-height: min(82vh,700px); }
+    .dialog-head { display: flex; align-items: center; gap: 12px; padding: 15px 16px; border-bottom: 1px solid var(--line); }
+    .dialog-head h2 { margin: 0; font-size: 17px; }
+    .dialog-close { margin-left: auto; width: 38px; height: 38px; display: grid; place-items: center; border: 0; border-radius: 9px; background: transparent; cursor: pointer; }
+    .dialog-close:hover { background: var(--surface-hover); }
+    .dialog-close svg { width: 18px; height: 18px; }
+    .dialog-body { overflow: auto; padding: 16px; overscroll-behavior: contain; }
+    .dialog-body h3 { margin: 18px 0 6px; font-size: 14px; }
+    .dialog-body h3:first-child { margin-top: 0; }
+    .dialog-body p, .dialog-body li { color: var(--muted); font-size: 12px; }
+    .dialog-body ul, .dialog-body ol { padding-left: 20px; }
+    .dialog-actions { display: flex; justify-content: flex-end; gap: 8px; padding: 13px 16px calc(13px + env(safe-area-inset-bottom)); border-top: 1px solid var(--line); }
+    .confirm-message { margin: 0; color: var(--muted); white-space: pre-line; }
+    .app-toast {
+      position: fixed; right: 18px; bottom: calc(18px + env(safe-area-inset-bottom)); z-index: 60;
+      display: flex; align-items: center; gap: 12px; max-width: min(420px, calc(100vw - 36px));
+      padding: 10px 12px 10px 14px; border: 1px solid var(--line); border-radius: 12px;
+      background: var(--surface); color: var(--text); box-shadow: var(--shadow-md); opacity: 0; pointer-events: none; transform: translateY(8px);
+      transition: opacity .16s ease, transform .16s ease;
+    }
+    .app-toast.show { opacity: 1; pointer-events: auto; transform: translateY(0); }
+    .app-toast[data-tone="success"] { border-color: color-mix(in srgb, var(--accent) 42%, var(--line)); }
+    .toast-message { min-width: 0; font-size: 12px; }
+    .toast-action { margin-left: auto; min-height: 34px; padding: 4px 8px; border: 0; border-radius: 8px; background: var(--accent-soft); color: var(--accent); cursor: pointer; font-weight: 780; }
+    @media (max-width: 900px) {
+      .editor-layout { grid-template-columns: 150px minmax(0,1fr); }
+      .side-panel.right { grid-column: 1 / -1; display: grid; grid-template-columns: minmax(0,1fr) minmax(0,1fr); gap: 12px; border-left: 0; border-top: 1px solid var(--line); }
+      .side-panel.right .control-group + .control-group { margin-top: 0; }
+      .canvas-stage { min-height: 400px; }
+    }
+    @media (max-width: 640px) {
+      .main { padding: 16px 12px 36px; }
+      .page-intro { display: block; }
+      .local-badge { margin-top: 12px; }
+      .preset-grid { grid-template-columns: repeat(2, minmax(0,1fr)); }
+      .preset-button { min-height: 68px; }
+      .custom-card { padding: 13px; }
+      .custom-head { align-items: flex-start; }
+      .custom-row { grid-template-columns: minmax(0,1fr) auto minmax(0,1fr); }
+      .custom-row .button { grid-column: 1 / -1; width: 100%; }
+      .editor-topbar { align-items: flex-start; }
+      .project-info { display: block; }
+      .project-note { display: block; margin-top: 2px; }
+      .editor-layout { display: flex; flex-direction: column; min-height: 0; }
+      .side-panel.left, .side-panel.right { display: none; }
+      .canvas-column { order: 1; padding: 10px; }
+      .canvas-toolbar { margin-bottom: 8px; }
+      .canvas-toolbar .compact-button { min-width: 40px; min-height: 40px; }
+      .canvas-toolbar-group:first-child .compact-button span { display: none; }
+      .canvas-stage { min-height: min(54vh, 450px); max-height: 54vh; padding: 12px; }
+      .canvas-footer { padding: 9px 2px 0; }
+      body[data-mobile-page="edit"] .frames-panel, body[data-mobile-page="edit"] .preview-panel, body[data-mobile-page="edit"] .export-panel { display:none; }
+      body[data-mobile-page="frames"] .editor-layout, body[data-mobile-page="frames"] .mobile-controls, body[data-mobile-page="frames"] .preview-panel, body[data-mobile-page="frames"] .export-panel { display:none; }
+      body[data-mobile-page="frames"] .frames-panel { display:block; min-height:52vh; }
+      body[data-mobile-page="preview"] .editor-layout, body[data-mobile-page="preview"] .mobile-controls, body[data-mobile-page="preview"] .frames-panel, body[data-mobile-page="preview"] .export-panel { display:none; }
+      body[data-mobile-page="preview"] .preview-panel { display:block; min-height:52vh; }
+      body[data-mobile-page="export"] .editor-layout, body[data-mobile-page="export"] .mobile-controls, body[data-mobile-page="export"] .frames-panel, body[data-mobile-page="export"] .preview-panel { display:none; }
+      body[data-mobile-page="export"] .export-panel { display:block; min-height:52vh; }
+      .mobile-workspace-tabs { position:sticky; bottom:0; z-index:25; display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:6px; margin:0; padding:8px 10px calc(8px + env(safe-area-inset-bottom)); border-top:1px solid var(--line); background:color-mix(in srgb,var(--surface) 96%,transparent); backdrop-filter:blur(12px); }
+      .mobile-page-button { min-height:44px; padding:6px 4px; border:1px solid var(--line); border-radius:10px; background:var(--surface); font-size:13px; font-weight:760; white-space:nowrap; }
+      .mobile-page-button[aria-pressed="true"] { color:var(--accent); border-color:var(--accent); background:var(--accent-soft); }
+      .frames-panel { padding:10px; }
+      .frames-head { align-items:flex-start; }
+      .frame-actions { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); width:100%; }
+      .frames-head { display:grid; }
+      .frame-card { width:76px; }
+      .frame-thumb-wrap { width:60px; height:60px; }
+      .timing-controls { display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr); align-items:end; }
+      .duration-field { min-width:0; }
+      .preview-layout { grid-template-columns:1fr; }
+      .preview-stage { min-height:min(42vh,320px); }
+      .preview-actions { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); }
+      .preview-actions .compact-button { min-width:0; min-height:44px; }
+      .export-grid { grid-template-columns:1fr; }
+      .editor-topbar { align-items:flex-start; flex-wrap:wrap; }
+      .editor-top-actions { display:grid; grid-template-columns:1fr 1fr; width:100%; }
+      .setup-import-head { display:grid; }
+      .setup-import-head .button { width:100%; }
+      .export-head { display:grid; }
+      .export-panel { padding:10px; }
+      .export-action { min-height:44px; }
+      .mobile-controls {
+        order: 2; display: block; padding: 10px; border-top: 1px solid var(--line); background: var(--surface);
+      }
+      .mobile-tool-row { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 8px; }
+      .mobile-tool-row .tool-button { justify-content: center; }
+      .mobile-setting-row { display: grid; grid-template-columns: minmax(0,1fr) minmax(0,1fr); gap: 10px; margin-top: 10px; }
+      .mobile-setting-card { min-width: 0; padding: 10px; border: 1px solid var(--line); border-radius: 10px; background: var(--surface-muted); }
+      .mobile-setting-card .panel-title { margin-bottom: 7px; }
+      .color-row { grid-template-columns: 46px minmax(0,1fr); }
+      .color-well { width: 46px; }
+      .build-grid { grid-template-columns: 1fr; }
+      .app-toast { right: 12px; bottom: calc(12px + env(safe-area-inset-bottom)); max-width: calc(100vw - 24px); }
+      dialog { width: min(100vw - 16px, 560px); max-height: calc(100dvh - 16px); border-radius: 15px; }
+      .dialog-shell { max-height: calc(100dvh - 16px); }
+    }
+    @media (max-width: 640px) {
+      body[data-project-state="editing"] { height: 100dvh; overflow: hidden; }
+      body[data-project-state="editing"] .page-intro { display: none; }
+      body[data-project-state="editing"] .main {
+        height: calc(100dvh - var(--header-height) - 90px - env(safe-area-inset-bottom));
+        padding-top: 12px; padding-bottom: 16px; overflow-y: auto; overscroll-behavior-y: contain; -webkit-overflow-scrolling: touch;
+      }
+      body[data-project-state="editing"] footer { display: none; }
+      .editor-panel { margin-bottom: 18px; border-radius: 18px; box-shadow: 0 8px 28px rgba(25,28,24,.08); }
+      .editor-topbar { padding: 12px; gap: 10px; background: var(--surface); }
+      .project-info { display: flex; align-items: center; flex-wrap: wrap; gap: 6px 8px; width: 100%; }
+      .project-size { font-size: 15px; }
+      .project-note { display: none; }
+      .project-status { margin-left: 0; padding: 4px 8px; border-radius: 999px; background: var(--accent-soft); color: var(--accent); }
+      .project-status[data-state="saving"] { background: #fff5dc; color: #80570e; }
+      .project-status[data-state="error"] { background: #fff0ed; }
+      .editor-top-actions { gap: 8px; }
+      .editor-top-actions .button { min-height: 42px; border-radius: 11px; }
+      .import-result { margin: 10px 12px 14px; border-radius: 11px; }
+      .canvas-column { padding: 12px; background: #f0f0ed; }
+      .canvas-stage { min-height: min(46vh, 400px); max-height: 46vh; border-radius: 16px; }
+      .canvas-toolbar { padding: 0 1px; }
+      .mobile-controls { padding: 12px; background: #fbfbf9; }
+      .mobile-tool-row { grid-template-columns: repeat(5,minmax(0,1fr)); gap: 6px; }
+      .mobile-tool-row .tool-button { min-width: 0; min-height: 58px; padding: 6px 2px; flex-direction: column; gap: 3px; justify-content: center; border-radius: 12px; font-size: 10px; line-height: 1.15; }
+      .mobile-tool-row .tool-button svg { width: 20px; height: 20px; }
+      .mobile-setting-row { gap: 8px; }
+      .mobile-setting-card { padding: 11px; border-radius: 12px; background: var(--surface); }
+      .selection-actions { margin: 0 10px 10px; padding: 8px; border: 1px solid var(--line); border-radius: 12px; background: #fbfbf9; }
+      .mobile-workspace-tabs {
+        position: fixed; left: 12px; right: 12px; bottom: calc(10px + env(safe-area-inset-bottom)); z-index: 45;
+        grid-template-columns: repeat(4,minmax(0,1fr)); gap: 4px; margin: 0; padding: 6px;
+        border: 1px solid color-mix(in srgb,var(--line) 90%,transparent); border-radius: 17px;
+        background: color-mix(in srgb,var(--surface) 94%,transparent); box-shadow: 0 12px 34px rgba(25,28,24,.16); backdrop-filter: blur(18px) saturate(1.15);
+      }
+      .mobile-page-button { min-height: 54px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; padding: 5px 2px; border: 0; border-radius: 12px; background: transparent; color: var(--muted); font-size: 10px; font-weight: 760; line-height: 1.15; }
+      .mobile-page-button svg { width: 20px; height: 20px; flex: 0 0 auto; }
+      .mobile-page-button[aria-pressed="true"] { color: var(--accent); border-color: transparent; background: var(--accent-soft); box-shadow: inset 0 0 0 1px color-mix(in srgb,var(--accent) 16%,transparent); }
+      .frames-panel, .preview-panel, .export-panel { scroll-margin-bottom: 96px; }
+      .storage-warning { margin: 0 12px 12px; border-radius: 11px; }
+      .app-toast { bottom: calc(84px + env(safe-area-inset-bottom)); }
+    }
+    @media (max-width: 520px) {
+      :root { --header-height: 58px; }
+      .header-inner { padding-block: 8px; }
+      .brand-mark { width: 34px; height: 34px; border-radius: 10px; }
+      .brand-name { font-size: 15px; }
+      .brand-meta { display: none; }
+      .header-actions { gap: 11px; }
+      .language-button { padding-block: 6px; }
+      .header-icon-button { padding-block: 6px; }
+    }
+    @media (max-width: 390px) {
+      .preset-size { font-size: 18px; }
+      .mobile-setting-row { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 360px) {
+      .canvas-toolbar { flex-wrap: wrap; align-items: stretch; }
+      .canvas-toolbar-group { max-width: 100%; }
+      .canvas-toolbar-group:first-child { order: 2; }
+      .canvas-toolbar-group:nth-child(2) { order: 1; margin-left: auto; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { scroll-behavior: auto !important; transition-duration: .001ms !important; animation-duration: .001ms !important; animation-iteration-count: 1 !important; }
+    }
+  </style>
+</head>
+<body>
+  <header class="app-header">
+    <div class="header-inner">
+      <div class="brand">
+        <div class="brand-mark" aria-hidden="true">
+          <img id="appBrandIcon" src="__APP_ICON_DATA_URI__" alt="">
+        </div>
+        <div class="brand-copy">
+          <p class="brand-name"><span id="brandName">Pixel Animation Studio</span><span class="version-badge" id="versionBadge">v1.0.0</span></p>
+          <p class="brand-meta" data-i18n="brandMeta">ドット絵アニメ・PNG読み込み・GIF書き出し</p>
+        </div>
+      </div>
+      <div class="header-actions">
+        <button class="language-button" id="languageButton" type="button" aria-label="Switch language">EN</button>
+        <button class="icon-button header-icon-button" id="helpButton" type="button" data-i18n-title="helpTitle" data-i18n-aria-label="helpTitle" title="使い方と注意事項" aria-label="使い方と注意事項">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M9.8 9a2.35 2.35 0 1 1 3.72 1.9c-.92.67-1.52 1.12-1.52 2.1"/><path d="M12 17h.01"/></svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main class="main">
+    <section class="page-intro" aria-labelledby="introTitle">
+      <div>
+        <h2 id="introTitle" data-i18n="introTitle">小さなドット絵を、すぐ描く。</h2>
+        <p data-i18n="introLead">前のフレームを重ねて動きを描きやすくし、作業内容はこの端末内へ自動保存します。</p>
+      </div>
+      <span class="local-badge">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 3 5 6v5c0 4.8 2.9 8.3 7 10 4.1-1.7 7-5.2 7-10V6l-7-3Z"/><path d="m9 12 2 2 4-4"/></svg>
+        <span data-i18n="localBadge">完全ローカル処理</span>
+      </span>
+    </section>
+
+    <!-- APP:BEGIN -->
+    <section class="panel setup-panel" id="setupView" aria-labelledby="setupTitle">
+      <div class="setup-copy">
+        <h3 id="setupTitle" data-i18n="setupTitle">新しいキャンバス</h3>
+        <p data-i18n="setupBody">サイズを選ぶと、透明なドット絵キャンバスをすぐに編集できます。</p>
+      </div>
+      <div class="preset-grid" aria-label="Canvas presets">
+        <button class="preset-button" type="button" data-preset="16"><span class="preset-size">16 × 16</span><span class="preset-note" data-i18n="presetTiny">小さなアイコン向け</span></button>
+        <button class="preset-button" type="button" data-preset="32"><span class="preset-size">32 × 32</span><span class="preset-note" data-i18n="presetSmall">基本サイズ</span></button>
+        <button class="preset-button" type="button" data-preset="64"><span class="preset-size">64 × 64</span><span class="preset-note" data-i18n="presetMedium">少し細かく描く</span></button>
+        <button class="preset-button" type="button" data-preset="128"><span class="preset-size">128 × 128</span><span class="preset-note" data-i18n="presetLarge">v1.0の最大サイズ</span></button>
+      </div>
+      <div class="custom-card">
+        <div class="custom-head"><strong data-i18n="customTitle">Custom</strong><span data-i18n="customHint">幅・高さはそれぞれ1〜128 px</span></div>
+        <div class="custom-row">
+          <label class="field" for="customWidth"><span class="field-label" data-i18n="widthLabel">幅</span><input class="number-input" id="customWidth" type="number" min="1" max="128" step="1" inputmode="numeric" value="32"></label>
+          <span class="multiply" aria-hidden="true">×</span>
+          <label class="field" for="customHeight"><span class="field-label" data-i18n="heightLabel">高さ</span><input class="number-input" id="customHeight" type="number" min="1" max="128" step="1" inputmode="numeric" value="32"></label>
+          <button class="button primary" id="createCustomButton" type="button" data-i18n="createCanvas">作成</button>
+        </div>
+        <p class="inline-error" id="customError" role="alert"></p>
+      </div>
+      <div class="setup-import-card drop-target" id="setupImportZone">
+        <div class="setup-import-head">
+          <div class="setup-import-copy"><strong data-i18n="importPngTitle">PNGから始める</strong><span data-i18n="importPngSetupHint">1枚または同じサイズの複数PNGを選択・ドロップできます。</span></div>
+          <button class="button" id="setupImportButton" type="button" data-i18n="choosePng">PNGを選択</button>
+        </div>
+        <div class="import-result" id="setupImportResult" role="status" hidden></div>
+      </div>
+      <input id="pngFileInput" type="file" accept="image/png,.png" multiple hidden>
+    </section>
+
+    <section class="panel editor-panel drop-target" id="editorView" hidden aria-label="Pixel editor">
+      <div class="editor-topbar">
+        <div class="project-info">
+          <strong class="project-size" id="projectSize">32 × 32</strong>
+          <span class="project-note" id="projectNote" data-i18n="projectNote">透明キャンバス</span>
+          <span class="project-status" id="projectStatus" data-state="saved"><span class="project-status-dot" aria-hidden="true"></span><span id="projectStatusText" data-i18n="autosaveReady">自動保存</span></span>
+        </div>
+        <div class="editor-top-actions">
+          <button class="button" id="editorImportButton" type="button" data-i18n="addPng">PNGを追加</button>
+          <button class="button" id="newCanvasButton" type="button" data-i18n="newCanvas">新しいキャンバス</button>
+        </div>
+      </div>
+      <div class="storage-warning" id="storageWarning" role="status" hidden data-i18n="autosaveUnavailable">自動保存を利用できません。このタブを閉じると作業内容が失われます。</div>
+      <div class="import-result" id="editorImportResult" role="status" hidden></div>
+
+      <div class="editor-layout">
+        <aside class="side-panel left" aria-label="Drawing tools">
+          <div class="control-group">
+            <h3 class="panel-title" data-i18n="toolsTitle">ツール</h3>
+            <div class="tool-list">
+              <button class="tool-button" id="pencilButton" type="button" data-tool="pencil" aria-pressed="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" aria-hidden="true"><path d="m4 20 4.3-1 10-10a2.1 2.1 0 0 0-3-3l-10 10L4 20Z"/><path d="m13.8 7.5 3 3"/></svg>
+                <span data-i18n="pencil">Pencil</span>
+              </button>
+              <button class="tool-button" id="eraserButton" type="button" data-tool="eraser" aria-pressed="false">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" aria-hidden="true"><path d="m7.5 18.5-3-3a2 2 0 0 1 0-2.8l7.6-7.6a2 2 0 0 1 2.8 0l4 4a2 2 0 0 1 0 2.8l-6.6 6.6H7.5Z"/><path d="m9.2 8 6.8 6.8M12.3 18.5H20"/></svg>
+                <span data-i18n="eraser">Eraser</span>
+              </button>
+              <button class="tool-button" id="fillButton" type="button" data-tool="fill" aria-pressed="false">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" aria-hidden="true"><path d="m4.5 13.5 8-8 6 6-8 8h-6v-6Z"/><path d="m9.5 8.5 6 6"/><path d="M18 16.5s2 2.1 2 3.2a2 2 0 0 1-4 0c0-1.1 2-3.2 2-3.2Z"/></svg>
+                <span data-i18n="fill">Fill</span>
+              </button>
+              <button class="tool-button" id="eyedropperButton" type="button" data-tool="eyedropper" aria-pressed="false">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" aria-hidden="true"><path d="m14.5 5.5 4-2 2 2-2 4-8.7 8.7-4.2.8.8-4.2 8.1-8.3Z"/><path d="m12.5 7.5 4 4"/></svg>
+                <span data-i18n="eyedropper">Eyedropper</span>
+              </button>
+              <button class="tool-button" id="selectionButton" type="button" data-tool="selection" aria-pressed="false">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-dasharray="3 2" aria-hidden="true"><rect x="4" y="4" width="16" height="16" rx="1"/></svg>
+                <span data-i18n="selection">Selection</span>
+              </button>
+            </div>
+          </div>
+          <div class="control-group">
+            <h3 class="panel-title" data-i18n="brushTitle">ブラシサイズ</h3>
+            <div class="segmented" role="group" data-i18n-aria-label="brushTitle">
+              <button class="segment-button" type="button" data-brush="1" aria-pressed="true">1</button>
+              <button class="segment-button" type="button" data-brush="2" aria-pressed="false">2</button>
+              <button class="segment-button" type="button" data-brush="4" aria-pressed="false">4</button>
+            </div>
+          </div>
+          <div class="control-group">
+            <h3 class="panel-title" data-i18n="animationAssistTitle">アニメ補助</h3>
+            <div class="onion-toggle-row"><span data-i18n="onionSkin">Onion Skin</span><button class="compact-button" id="onionSkinButton" type="button" aria-pressed="true" data-i18n="onionOn">ON</button></div>
+          </div>
+          <div class="tip-box" data-i18n="desktopTip">ドラッグして描画します。素早く動かしてもピクセルが途切れないよう補間します。</div>
+        </aside>
+
+        <div class="canvas-column">
+          <div class="canvas-toolbar" aria-label="Canvas view controls">
+            <div class="canvas-toolbar-group">
+              <button class="compact-button" id="mobileUndoButton" type="button" disabled data-i18n-aria-label="undo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" aria-hidden="true"><path d="M9 7 4 12l5 5"/><path d="M5 12h8a6 6 0 0 1 6 6"/></svg><span data-i18n="undo">元に戻す</span></button>
+              <button class="compact-button" id="mobileRedoButton" type="button" disabled data-i18n-aria-label="redo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" aria-hidden="true"><path d="m15 7 5 5-5 5"/><path d="M19 12h-8a6 6 0 0 0-6 6"/></svg><span data-i18n="redo">やり直す</span></button>
+            </div>
+            <div class="canvas-toolbar-group">
+              <button class="compact-button" id="zoomOutButton" type="button" data-i18n-aria-label="zoomOut" aria-label="縮小"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M6 12h12"/></svg></button>
+              <button class="compact-button" id="fitButton" type="button" data-i18n="fit">Fit</button>
+              <span class="zoom-label" id="toolbarScaleValue">1×</span>
+              <button class="compact-button" id="zoomInButton" type="button" data-i18n-aria-label="zoomIn" aria-label="拡大"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 6v12M6 12h12"/></svg></button>
+              <button class="compact-button" id="gridButton" type="button" aria-pressed="true" data-i18n-aria-label="grid"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M4 4h16v16H4zM4 10h16M4 16h16M10 4v16M16 4v16"/></svg></button>
+            </div>
+          </div>
+          <div class="canvas-stage" id="canvasStage">
+            <div class="canvas-surface" id="canvasSurface">
+              <canvas id="onionCanvas" width="32" height="32" aria-hidden="true" hidden></canvas>
+              <canvas id="pixelCanvas" width="32" height="32" tabindex="0" data-i18n-aria-label="canvasLabel" aria-label="ドット絵キャンバス"></canvas>
+              <div class="brush-preview" id="brushPreview" aria-hidden="true"></div>
+              <div class="grid-overlay" id="gridOverlay" aria-hidden="true"></div>
+              <div class="selection-overlay" id="selectionOverlay" aria-hidden="true"></div>
+            </div>
+          </div>
+          <div class="canvas-footer">
+            <span><span data-i18n="displayScale">表示倍率</span>: <strong id="displayScaleValue">1×</strong></span>
+            <span id="toolStatus">Pencil · 1 px</span>
+          </div>
+        </div>
+
+        <aside class="side-panel right" aria-label="Color settings">
+          <div class="control-group">
+            <h3 class="panel-title" data-i18n="colorTitle">描画色</h3>
+            <div class="current-color-preview" id="currentColorPreview" aria-hidden="true"></div>
+            <div class="color-row" style="margin-top:8px">
+              <label class="color-well" data-i18n-title="colorPickerTitle" title="カラーピッカー"><span class="sr-only" data-i18n="colorPickerTitle">カラーピッカー</span><input id="colorPicker" type="color" value="#16624f"></label>
+              <label class="field" for="hexColor"><span class="sr-only">HEX</span><input class="hex-input" id="hexColor" type="text" value="#16624F" maxlength="7" inputmode="text" spellcheck="false" autocomplete="off" aria-label="HEX color"></label>
+            </div>
+          </div>
+          <div class="control-group">
+            <h3 class="panel-title" data-i18n="recentColorsTitle">最近使った色</h3>
+            <div class="recent-colors" id="recentColors"></div>
+          </div>
+          <div class="control-group">
+            <h3 class="panel-title" data-i18n="currentToolTitle">現在の設定</h3>
+            <div class="tip-box" id="currentToolSummary" style="margin-top:0">Pencil · 1 px · #16624F</div>
+          </div>
+        </aside>
+
+        <div class="mobile-controls" aria-label="Mobile drawing controls">
+          <div class="mobile-tool-row">
+            <button class="tool-button" type="button" data-mobile-tool="pencil" aria-pressed="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" aria-hidden="true"><path d="m4 20 4.3-1 10-10a2.1 2.1 0 0 0-3-3l-10 10L4 20Z"/><path d="m13.8 7.5 3 3"/></svg><span data-i18n="pencil">Pencil</span>
+            </button>
+            <button class="tool-button" type="button" data-mobile-tool="eraser" aria-pressed="false">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" aria-hidden="true"><path d="m7.5 18.5-3-3a2 2 0 0 1 0-2.8l7.6-7.6a2 2 0 0 1 2.8 0l4 4a2 2 0 0 1 0 2.8l-6.6 6.6H7.5Z"/><path d="m9.2 8 6.8 6.8M12.3 18.5H20"/></svg><span data-i18n="eraser">Eraser</span>
+            </button>
+            <button class="tool-button" type="button" data-mobile-tool="fill" aria-pressed="false">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" aria-hidden="true"><path d="m4.5 13.5 8-8 6 6-8 8h-6v-6Z"/><path d="m9.5 8.5 6 6"/><path d="M18 16.5s2 2.1 2 3.2a2 2 0 0 1-4 0c0-1.1 2-3.2 2-3.2Z"/></svg><span data-i18n="fill">Fill</span>
+            </button>
+            <button class="tool-button" type="button" data-mobile-tool="eyedropper" aria-pressed="false">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" aria-hidden="true"><path d="m14.5 5.5 4-2 2 2-2 4-8.7 8.7-4.2.8.8-4.2 8.1-8.3Z"/><path d="m12.5 7.5 4 4"/></svg><span data-i18n="eyedropper">Eyedropper</span>
+            </button>
+            <button class="tool-button" type="button" data-mobile-tool="selection" aria-pressed="false">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-dasharray="3 2" aria-hidden="true"><rect x="4" y="4" width="16" height="16" rx="1"/></svg><span data-i18n="selection">Selection</span>
+            </button>
+          </div>
+          <div class="mobile-setting-row">
+            <div class="mobile-setting-card">
+              <h3 class="panel-title" data-i18n="brushTitle">ブラシサイズ</h3>
+              <div class="segmented" role="group">
+                <button class="segment-button" type="button" data-mobile-brush="1" aria-pressed="true">1</button>
+                <button class="segment-button" type="button" data-mobile-brush="2" aria-pressed="false">2</button>
+                <button class="segment-button" type="button" data-mobile-brush="4" aria-pressed="false">4</button>
+              </div>
+            </div>
+            <div class="mobile-setting-card">
+              <h3 class="panel-title" data-i18n="colorTitle">描画色</h3>
+              <div class="color-row">
+                <label class="color-well"><span class="sr-only" data-i18n="colorPickerTitle">カラーピッカー</span><input id="mobileColorPicker" type="color" value="#16624f"></label>
+                <input class="hex-input" id="mobileHexColor" type="text" value="#16624F" maxlength="7" spellcheck="false" autocomplete="off" aria-label="HEX color">
+              </div>
+            </div>
+          </div>
+          <div class="mobile-setting-card" style="margin-top:10px">
+            <h3 class="panel-title" data-i18n="recentColorsTitle">最近使った色</h3>
+            <div class="recent-colors" id="mobileRecentColors"></div>
+          </div>
+          <div class="mobile-setting-card" style="margin-top:10px">
+            <div class="onion-toggle-row"><span class="panel-title" style="margin:0" data-i18n="onionSkin">Onion Skin</span><button class="compact-button" id="mobileOnionSkinButton" type="button" aria-pressed="true" data-i18n="onionOn">ON</button></div>
+          </div>
+        </div>
+      </div>
+      <div class="selection-actions" id="selectionActions" aria-label="Selection actions">
+        <button class="compact-button" id="copySelectionButton" type="button" data-i18n="copySelection">コピー</button>
+        <button class="compact-button" id="cutSelectionButton" type="button" data-i18n="cutSelection">切り取り</button>
+        <button class="compact-button" id="pasteSelectionButton" type="button" data-i18n="pasteSelection">貼り付け</button>
+        <button class="compact-button" id="deleteSelectionButton" type="button" data-i18n="deleteSelection">削除</button>
+        <button class="compact-button" id="clearSelectionButton" type="button" data-i18n="clearSelection">選択解除</button>
+      </div>
+
+      <section class="frames-panel" aria-labelledby="framesTitle">
+          <div class="frames-head">
+            <div><h3 class="panel-title" id="framesTitle" data-i18n="framesTitle">フレーム</h3><div class="frame-count" id="frameCount">1 / 128</div></div>
+            <div class="frame-actions">
+              <button class="compact-button" id="addFrameButton" type="button" data-i18n="addFrame">追加</button>
+              <button class="compact-button" id="duplicateFrameButton" type="button" data-i18n="duplicateFrame">複製</button>
+              <button class="compact-button" id="deleteFrameButton" type="button" data-i18n="deleteFrame">削除</button>
+              <button class="compact-button" id="moveFrameLeftButton" type="button" data-i18n-aria-label="moveFrameLeft" aria-label="前へ移動">←</button>
+              <button class="compact-button" id="moveFrameRightButton" type="button" data-i18n-aria-label="moveFrameRight" aria-label="後ろへ移動">→</button>
+            </div>
+          </div>
+          <div class="frame-strip" id="frameStrip" role="listbox" data-i18n-aria-label="framesTitle"></div>
+          <div class="timing-controls">
+            <label class="duration-field" for="frameDurationInput">
+              <span class="field-label" data-i18n="frameDuration">表示時間</span>
+              <span class="duration-input-wrap"><input class="duration-input" id="frameDurationInput" type="number" min="20" max="5000" step="10" inputmode="numeric" value="100"><span class="duration-unit">ms</span></span>
+            </label>
+            <button class="compact-button" id="applyDurationAllButton" type="button" data-i18n="applyDurationAll">すべてに適用</button>
+          </div>
+      </section>
+
+      <section class="preview-panel" id="previewPanel" aria-labelledby="previewTitle">
+        <div class="preview-layout">
+          <div class="preview-stage" id="previewStage">
+            <canvas id="previewCanvas" width="32" height="32" aria-label="Animation preview"></canvas>
+          </div>
+          <div class="preview-copy">
+            <h3 class="panel-title" id="previewTitle" data-i18n="previewTitle">プレビュー</h3>
+            <p class="preview-status" id="previewStatus">1 / 1 · 100 ms</p>
+            <div class="preview-actions">
+              <button class="compact-button" id="playPreviewButton" type="button" data-i18n="playPreview">再生</button>
+              <button class="compact-button" id="pausePreviewButton" type="button" disabled data-i18n="pausePreview">一時停止</button>
+              <button class="compact-button" id="restartPreviewButton" type="button" data-i18n="restartPreview">最初から</button>
+              <button class="compact-button" id="loopPreviewButton" type="button" aria-pressed="true" data-i18n="loopPreview">ループ</button>
+            </div>
+            <p class="preview-note" data-i18n="previewNote">各フレームの表示時間を使って再生します。</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="export-panel" id="exportPanel" aria-labelledby="exportTitle">
+        <div class="export-head">
+          <div><h3 class="panel-title" id="exportTitle" data-i18n="exportTitle">書き出し</h3><p data-i18n="exportIntro">PNG・Animated GIF・Sprite Sheetとして端末へ保存します。</p></div>
+          <label class="export-field" for="outputFilename">
+            <span class="export-label" data-i18n="outputFilename">ファイル名</span>
+            <span class="filename-control"><input class="filename-input" id="outputFilename" type="text" value="pixel-animation" maxlength="120" autocomplete="off" spellcheck="false"><span class="filename-extension">.png / .gif</span></span>
+          </label>
+        </div>
+        <div class="export-grid">
+          <article class="export-card">
+            <h4 data-i18n="currentFramePng">現在のフレームをPNG</h4>
+            <p class="export-card-note" data-i18n="currentFramePngNote">透明背景を保ったまま、Nearest Neighborで拡大して保存できます。</p>
+            <div class="export-options">
+              <div><span class="export-label" data-i18n="pngScale">倍率</span><div class="segmented" role="group" data-i18n-aria-label="pngScale">
+                <button class="segment-button" type="button" data-png-scale="1" aria-pressed="true">1×</button>
+                <button class="segment-button" type="button" data-png-scale="2" aria-pressed="false">2×</button>
+                <button class="segment-button" type="button" data-png-scale="4" aria-pressed="false">4×</button>
+                <button class="segment-button" type="button" data-png-scale="8" aria-pressed="false">8×</button>
+              </div>
+            </div>
+            <div class="export-info"><strong id="pngOutputSize">32 × 32 px</strong><span id="pngOutputName">pixel-animation-frame-01.png</span></div>
+            <button class="button primary export-action" id="savePngButton" type="button" data-i18n="savePng">PNGを保存</button>
+          </article>
+          <article class="export-card">
+            <h4 data-i18n="animatedGifTitle">Animated GIF</h4>
+            <p class="export-card-note" data-i18n="animatedGifNote">各フレームの表示時間を使い、透明背景・無限ループのGIFとして保存します。</p>
+            <div class="export-info"><strong id="gifOutputSize">32 × 32 px</strong><span id="gifOutputDetails">1フレーム · 100 ms · 無限ループ</span><span id="gifOutputName">pixel-animation.gif</span></div>
+            <div class="gif-progress" id="gifProgress" hidden><progress id="gifProgressBar" max="1" value="0"></progress><span id="gifProgressText">GIFを作成中…</span></div>
+            <button class="button primary export-action" id="saveGifButton" type="button" data-i18n="saveGif">GIFを保存</button>
+          </article>
+          <article class="export-card">
+            <h4 data-i18n="spriteSheetTitle">Sprite Sheet</h4>
+            <p class="export-card-note" data-i18n="spriteSheetNote">全フレームを1枚のPNGへ並べます。</p>
+            <div class="export-options">
+              <div><span class="export-label" data-i18n="spriteLayout">配置</span><div class="segmented" role="group" data-i18n-aria-label="spriteLayout">
+                <button class="segment-button" type="button" data-sprite-layout="horizontal" aria-pressed="true" data-i18n="horizontal">横一列</button>
+                <button class="segment-button" type="button" data-sprite-layout="grid" aria-pressed="false" data-i18n="gridLayout">Grid</button>
+              </div></div>
+              <label class="field" for="spriteColumns"><span class="export-label" data-i18n="columns">列数</span><input class="number-input" id="spriteColumns" type="number" min="1" max="128" step="1" inputmode="numeric" value="4" disabled></label>
+            </div>
+            <div class="sprite-preview-wrap"><canvas id="spriteSheetPreview" width="32" height="32" data-i18n-aria-label="spriteSheetPreviewLabel" aria-label="Sprite Sheet preview"></canvas></div>
+            <div class="export-info"><strong id="spriteOutputSize">32 × 32 px</strong><span id="spriteOutputDetails">Frame 32 × 32 · 1 frame · 1 column × 1 row</span><span id="spriteOutputName">pixel-animation-spritesheet.png</span></div>
+            <button class="button primary export-action" id="saveSpriteSheetButton" type="button" data-i18n="saveSpriteSheet">Sprite Sheetを保存</button>
+          </article>
+        </div>
+      </section>
+
+      <nav class="mobile-workspace-tabs" aria-label="Mobile workspace">
+        <button class="mobile-page-button" type="button" data-mobile-page-button="edit" aria-pressed="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m4 20 4.3-1 10-10a2.1 2.1 0 0 0-3-3l-10 10L4 20Z"/><path d="m13.8 7.5 3 3"/></svg><span data-i18n="mobileEditTab">編集</span></button>
+        <button class="mobile-page-button" type="button" data-mobile-page-button="frames" aria-pressed="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="14" height="14" rx="2"/><path d="M7 3h12a2 2 0 0 1 2 2v12"/></svg><span data-i18n="mobileFramesTab">フレーム</span></button>
+        <button class="mobile-page-button" type="button" data-mobile-page-button="preview" aria-pressed="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 7 8 5-8 5V7Z"/><circle cx="12" cy="12" r="9"/></svg><span data-i18n="mobilePreviewTab">プレビュー</span></button>
+        <button class="mobile-page-button" type="button" data-mobile-page-button="export" aria-pressed="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M5 20h14"/></svg><span data-i18n="mobileExportTab">書き出し</span></button>
+      </nav>
+    </section>
+    <!-- APP:END -->
+
+    <details class="build-details">
+      <summary data-i18n="buildInfo">ビルド情報</summary>
+      <div class="build-grid">
+        <div class="build-item"><span data-i18n="appVersion">アプリバージョン</span><strong id="buildVersion">1.0.0</strong></div>
+        <div class="build-item"><span data-i18n="builtAt">生成日時</span><strong id="builtAt">—</strong></div>
+        <div class="build-item"><span data-i18n="dependencies">内包依存数</span><strong id="dependencyCount">0</strong></div>
+      </div>
+    </details>
+    <div class="sr-only" id="liveStatus" aria-live="polite"></div>
+  </main>
+
+  <footer><span id="footerName">Pixel Animation Studio</span> · <span data-i18n="footer">ブラウザー内で処理</span></footer>
+
+  <div class="app-toast" id="appToast" role="status" aria-live="polite" data-tone="default">
+    <span class="toast-message" id="appToastMessage"></span>
+    <button class="toast-action" id="appToastAction" type="button" hidden></button>
+  </div>
+
+  <dialog id="appConfirmDialog">
+    <div class="dialog-shell">
+      <div class="dialog-head"><h2 id="appConfirmTitle">確認</h2><button class="dialog-close" id="appConfirmClose" type="button" data-i18n-aria-label="close" aria-label="閉じる"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18"/></svg></button></div>
+      <div class="dialog-body"><p class="confirm-message" id="appConfirmMessage"></p></div>
+      <div class="dialog-actions"><button class="button" id="appConfirmCancel" type="button">キャンセル</button><button class="button primary" id="appConfirmOk" type="button">実行する</button></div>
+    </div>
+  </dialog>
+
+  <dialog id="helpDialog">
+    <div class="dialog-shell">
+      <div class="dialog-head"><h2 data-i18n="helpTitle">使い方と注意事項</h2><button class="dialog-close" id="closeHelpButton" type="button" data-i18n-aria-label="close" aria-label="閉じる"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18"/></svg></button></div>
+      <div class="dialog-body">
+        <h3 data-i18n="helpStartTitle">基本操作</h3>
+        <ol>
+          <li data-i18n="helpStep1">16×16〜128×128、またはCustomからキャンバスサイズを選びます。</li>
+          <li data-i18n="helpStep2">鉛筆 / 消しゴム / 塗りつぶし / スポイト / 選択を使い分けます。</li>
+          <li data-i18n="helpStep3">選択範囲は別のツールへ切り替えると解除されます。貼り付けは貼り付け先を選択してから行います。</li>
+          <li data-i18n="helpStep4">フレームを追加・複製し、サムネイルから切り替えます。</li>
+        </ol>
+        <h3 data-i18n="helpPrivacyTitle">プライバシー</h3>
+        <p data-i18n="helpPrivacyBody">描画データはこのブラウザー内で処理され、このアプリから外部サーバーへ送信されません。実行時の外部通信も行いません。</p>
+        <h3 data-i18n="helpLimitsTitle">v1.0.0の範囲</h3>
+        <ul>
+          <li data-i18n="helpLimit1">前のフレームを約30%で重ねるOnion SkinをON/OFFできます。</li>
+          <li data-i18n="helpLimit2">作業内容はIndexedDBへ端末内自動保存し、再読み込み後に復元できます。</li>
+          <li data-i18n="helpLimit3">PNGを1枚または複数読み込み、PNG・Animated GIF・Sprite Sheetを書き出せます。GIFは256色制約があり、半透明は透明/不透明へ変換されます。</li>
+        </ul>
+        <h3 data-i18n="helpTouchTitle">スマートフォン</h3>
+        <p data-i18n="helpTouchBody">1本指で描画します。2本指でPan / Pinch Zoomできます。2本指操作へ移った場合は、誤って始まった描画を取り消して表示操作へ切り替えます。</p>
+      </div>
+    </div>
+  </dialog>
+
+  <script>
+    (() => {
+      'use strict';
+
+      const APP_CONFIG = __APP_CONFIG_JSON__;
+      const BUILD_MANIFEST = __BUILD_MANIFEST_JSON__;
+      // Asset payloads are Base64 exactly once. The JSON bundle itself is embedded directly.
+      const assetBundle = __EMBEDDED_ASSET_BUNDLE_JSON__;
+      const blobUrls = new Set();
+      const assetByteCache = new Map();
+
+      function decodeBase64Bytes(base64) {
+        const binary = atob(base64);
+        const bytes = new Uint8Array(binary.length);
+        for (let index = 0; index < binary.length; index += 1) bytes[index] = binary.charCodeAt(index);
+        return bytes;
+      }
+      function getAsset(dependencyId, assetKey) {
+        const asset = assetBundle.dependencies?.[dependencyId]?.assets?.[assetKey];
+        if (!asset) throw new Error(`Embedded asset not found: ${dependencyId}/${assetKey}`);
+        return asset;
+      }
+      async function inflateAsset(asset) {
+        const stored = decodeBase64Bytes(asset.base64);
+        if (!asset.compression || asset.compression === 'none') return stored;
+        if (asset.compression !== 'gzip') throw new Error(`Unsupported embedded asset compression: ${asset.compression}`);
+        if (typeof DecompressionStream !== 'function') throw new Error('This browser cannot expand gzip-compressed embedded assets.');
+        const stream = new Blob([stored]).stream().pipeThrough(new DecompressionStream('gzip'));
+        const expanded = new Uint8Array(await new Response(stream).arrayBuffer());
+        if (Number.isFinite(asset.originalBytes) && expanded.byteLength !== asset.originalBytes) throw new Error(`Embedded gzip asset size mismatch: expected ${asset.originalBytes}, got ${expanded.byteLength}`);
+        return expanded;
+      }
+      window.StandaloneAssets = Object.freeze({
+        manifest: BUILD_MANIFEST,
+        list() { return Object.entries(assetBundle.dependencies || {}).flatMap(([dependencyId, dependency]) => Object.keys(dependency.assets || {}).map(assetKey => `${dependencyId}/${assetKey}`)); },
+        has(dependencyId, assetKey) { return Boolean(assetBundle.dependencies?.[dependencyId]?.assets?.[assetKey]); },
+        bytes(dependencyId, assetKey) {
+          const asset = getAsset(dependencyId, assetKey);
+          if (asset.compression && asset.compression !== 'none') throw new Error(`Embedded asset ${dependencyId}/${assetKey} is gzip-compressed; use await StandaloneAssets.bytesAsync().`);
+          return decodeBase64Bytes(asset.base64);
+        },
+        async bytesAsync(dependencyId, assetKey) {
+          const cacheKey = `${dependencyId}/${assetKey}`;
+          if (!assetByteCache.has(cacheKey)) assetByteCache.set(cacheKey, inflateAsset(getAsset(dependencyId, assetKey)));
+          return new Uint8Array(await assetByteCache.get(cacheKey));
+        },
+        text(dependencyId, assetKey) { return new TextDecoder().decode(this.bytes(dependencyId, assetKey)); },
+        async textAsync(dependencyId, assetKey) { return new TextDecoder().decode(await this.bytesAsync(dependencyId, assetKey)); },
+        blobUrl(dependencyId, assetKey) {
+          const asset = getAsset(dependencyId, assetKey);
+          const url = URL.createObjectURL(new Blob([this.bytes(dependencyId, assetKey)], { type: asset.mime || 'application/octet-stream' }));
+          blobUrls.add(url); return url;
+        },
+        async blobUrlAsync(dependencyId, assetKey) {
+          const asset = getAsset(dependencyId, assetKey);
+          const url = URL.createObjectURL(new Blob([await this.bytesAsync(dependencyId, assetKey)], { type: asset.mime || 'application/octet-stream' }));
+          blobUrls.add(url); return url;
+        }
+      });
+      window.addEventListener('pagehide', () => { blobUrls.forEach(url => URL.revokeObjectURL(url)); blobUrls.clear(); });
+
+      const translations = {
+        ja: {
+          brandMeta: 'ドット絵アニメ・PNG読み込み・GIF書き出し', helpButtonLabel: '使い方', close: '閉じる',
+          introTitle: '小さなドット絵を、すぐ描く。', introLead: 'PNGを読み込むかフレームごとに描いて、動きを確認し、PNG・GIF・Sprite Sheetとして保存できます。', localBadge: '完全ローカル処理',
+          setupTitle: '新しいキャンバス', setupBody: 'サイズを選ぶかPNGを読み込むと、透明なドット絵キャンバスをすぐに編集できます。',
+          importPngTitle:'PNGから始める', importPngSetupHint:'1枚または同じサイズの複数PNGを選択・ドロップできます。', choosePng:'PNGを選択', addPng:'PNGを追加', importingPng:'PNGを読み込み中…', importAdded:'追加しました', importFailed:'追加できませんでした', importAllFailed:'PNGを読み込めませんでした', importReasonNotPng:'PNGファイルではありません', importReasonDecode:'画像を読み込めません', importReasonTooLarge:'最大128×128を超えています（{size}）', importReasonMismatch:'サイズが異なります（{actual} / 必要: {expected}）', importReasonFrameLimit:'最大128フレームを超えます', importMore:'ほか{count}件',
+          presetTiny: '小さなアイコン向け', presetSmall: '基本サイズ', presetMedium: '少し細かく描く', presetLarge: 'v1.0の最大サイズ',
+          customTitle: 'Custom', customHint: '幅・高さはそれぞれ1〜128 px', widthLabel: '幅', heightLabel: '高さ', createCanvas: '作成', invalidCustom: '幅と高さは1〜128の整数で指定してください。',
+          projectNote: '透明キャンバス', newCanvas: '新しいキャンバス', toolsTitle: 'ツール', pencil: '鉛筆', eraser: '消しゴム', fill: '塗りつぶし', eyedropper: 'スポイト', selection: '選択', brushTitle: 'ブラシサイズ',
+          historyTitle: '履歴', undo: '元に戻す', redo: 'やり直す', fit: 'Fit', zoomIn: '拡大', zoomOut: '縮小', grid: 'グリッド', recentColorsTitle: '最近使った色', recentColorsEmpty: '色を選ぶとここに表示されます。',
+          desktopTip: 'ドラッグして描画。Space + DragでPan、ホイールでZoomできます。', colorTitle: '描画色', colorPickerTitle: 'カラーピッカー', currentToolTitle: '現在の設定', displayScale: '表示倍率', canvasLabel: 'ドット絵キャンバス', framesTitle: 'フレーム', mobileEditTab: '編集', mobileFramesTab: 'フレーム', addFrame: '追加', duplicateFrame: '複製', deleteFrame: '削除', moveFrameLeft: '前へ移動', moveFrameRight: '後ろへ移動', frameLabel: 'フレーム', frameAdded: 'フレームを追加しました', frameDuplicated: 'フレームを複製しました', frameDeleted: 'フレームを削除しました', frameRestored: 'フレームを元に戻しました', frameMoved: 'フレームを並べ替えました', frameLimit: 'フレームは最大128個です', keepOneFrame: '少なくとも1フレーム必要です', restore: '元に戻す', mobilePreviewTab: 'プレビュー', frameDuration: '表示時間', applyDurationAll: 'すべてに適用', durationAppliedAll: 'すべてのフレームに表示時間を適用しました', invalidDuration: '表示時間は20〜5000msを10ms単位で指定してください', previewTitle: 'プレビュー', playPreview: '再生', pausePreview: '一時停止', restartPreview: '最初から', loopPreview: 'ループ', previewNote: '各フレームの表示時間を使って再生します。', previewStarted: 'プレビューを再生しました', previewPaused: 'プレビューを一時停止しました', previewRestarted: '最初のフレームへ戻しました', loopOn: 'ループを有効にしました', loopOff: 'ループを無効にしました', animationAssistTitle: 'アニメ補助', onionSkin: 'Onion Skin', onionOn: 'ON', onionOff: 'OFF', onionEnabled: 'Onion Skinを表示しました', onionDisabled: 'Onion Skinを非表示にしました', autosaveReady: '自動保存', autosaveSaving: '保存中…', autosaveSaved: '自動保存済み', autosaveUnavailable: '自動保存を利用できません。このタブを閉じると作業内容が失われます。', autosaveUnavailableShort: '自動保存不可', restoreTitle: '前回の作業があります', restoreContinue: '続きから', restoreNew: '新しく作る', restoreSummary: '{size} · {frames}フレーム', restoredProject: '前回の作業を復元しました',
+          buildInfo: 'ビルド情報', appVersion: 'アプリバージョン', builtAt: '生成日時', dependencies: '内包依存数', footer: 'ブラウザー内で処理',
+          helpTitle: '使い方と注意事項', helpStartTitle: '基本操作', helpStep1: '16×16〜128×128、またはCustomからキャンバスサイズを選びます。', helpStep2: '鉛筆 / 消しゴム / 塗りつぶし / スポイト / 選択を使い分けます。', helpStep3: '選択範囲は別のツールへ切り替えると解除されます。貼り付けは貼り付け先を選択してから行います。元に戻す / やり直す、Zoom / Pan / GridはCanvas上部から操作できます。', helpStep4: 'フレームを追加・複製し、表示時間を設定してPreviewで動きを確認します。',
+          helpPrivacyTitle: 'プライバシー', helpPrivacyBody: '描画データはこのブラウザー内で処理され、このアプリから外部サーバーへ送信されません。実行時の外部通信も行いません。',
+          helpLimitsTitle: 'v1.0.0の範囲', helpLimit1: '前のフレームを約30%で重ねるOnion SkinをON/OFFできます。', helpLimit2: '作業内容はIndexedDBへ端末内自動保存し、再読み込み後に復元できます。', helpLimit3: 'PNGを1枚または複数読み込み、PNG・Animated GIF・Sprite Sheetを書き出せます。GIFは256色制約があり、半透明は透明/不透明へ変換されます。',
+          helpTouchTitle: 'スマートフォン', helpTouchBody: '1本指で描画します。2本指でPan / Pinch Zoomできます。2本指操作へ移った場合は、誤って始まった描画を取り消して表示操作へ切り替えます。',
+          confirmTitle: '確認', cancel: 'キャンセル', confirmNew: '新しく作る', newConfirmMessage: '現在の自動保存データを置き換えて、新しいキャンバスを作成しますか？',
+          created: 'キャンバスを作成しました', toolChangedPencil: '鉛筆に切り替えました', toolChangedEraser: '消しゴムに切り替えました', toolChangedFill: '塗りつぶしに切り替えました', toolChangedEyedropper: 'スポイトに切り替えました', brushChanged: 'ブラシサイズを変更しました', colorChanged: '描画色を変更しました',
+          undone: '元に戻しました', redone: 'やり直しました', noUndo: '元に戻せる操作はありません', noRedo: 'やり直せる操作はありません', transparentPixel: '透明なピクセルです', copySelection:'コピー', cutSelection:'切り取り', pasteSelection:'貼り付け', deleteSelection:'削除', clearSelection:'選択解除', selectionCopied:'選択範囲をコピーしました', selectionCut:'選択範囲を切り取りました', selectionPasted:'貼り付けました', selectionDeleted:'選択範囲を削除しました', noSelection:'選択範囲がありません', clipboardEmpty:'コピーしたピクセルがありません', selectPasteTarget:'貼り付け先を選択してください', toolChangedSelection:'選択ツールに切り替えました', gridOn: 'グリッドを表示しました', gridOff: 'グリッドを非表示にしました', fitApplied: 'キャンバスを画面に合わせました', mobileExportTab:'書き出し', exportTitle:'書き出し', exportIntro:'PNG・Animated GIF・Sprite Sheetとして端末へ保存します。', outputFilename:'ファイル名', currentFramePng:'現在のフレームをPNG', currentFramePngNote:'透明背景を保ったまま、Nearest Neighborで拡大して保存できます。', pngScale:'倍率', savePng:'PNGを保存', spriteSheetTitle:'Sprite Sheet', spriteSheetNote:'全フレームを1枚のPNGへ並べます。', spriteLayout:'配置', horizontal:'横一列', gridLayout:'Grid', columns:'列数', saveSpriteSheet:'Sprite Sheetを保存', spriteSheetPreviewLabel:'Sprite Sheetプレビュー', pngSaved:'PNGを保存しました', spriteSheetSaved:'Sprite Sheetを保存しました', exportFailed:'画像を書き出せませんでした', invalidFilename:'ファイル名を確認してください', spriteDetails:'Frame {frame} · {frames}フレーム · {columns}列 × {rows}行', animatedGifTitle:'Animated GIF', animatedGifNote:'各フレームの表示時間を使い、透明背景・無限ループのGIFとして保存します。', saveGif:'GIFを保存', gifSaved:'GIFを保存しました', gifEncoding:'GIFを作成中… {current} / {total}', gifDetails:'{frames}フレーム · {duration} ms · 無限ループ', gifFailed:'GIFを書き出せませんでした'
+        },
+        en: {
+          brandMeta: 'Pixel animation · PNG import · GIF export', helpButtonLabel: 'Help', close: 'Close',
+          introTitle: 'Draw small pixel art, right away.', introLead: 'Import PNG files or draw frame by frame, preview the motion, then save PNG, GIF, or sprite-sheet output to your device.', localBadge: 'Fully local processing',
+          setupTitle: 'New canvas', setupBody: 'Choose a size or import PNG files to start editing a transparent pixel canvas.',
+          importPngTitle:'Start from PNG', importPngSetupHint:'Choose or drop one PNG, or multiple PNGs with matching dimensions.', choosePng:'Choose PNG', addPng:'Add PNG', importingPng:'Importing PNG…', importAdded:'Added', importFailed:'Could not add', importAllFailed:'Could not import PNG files', importReasonNotPng:'Not a PNG file', importReasonDecode:'Could not decode the image', importReasonTooLarge:'Exceeds the 128×128 maximum ({size})', importReasonMismatch:'Dimensions differ ({actual} / expected: {expected})', importReasonFrameLimit:'Would exceed the 128-frame limit', importMore:'{count} more',
+          presetTiny: 'For tiny icons', presetSmall: 'A practical default', presetMedium: 'More room for detail', presetLarge: 'v1.0 maximum size',
+          customTitle: 'Custom', customHint: 'Width and height: 1–128 px', widthLabel: 'Width', heightLabel: 'Height', createCanvas: 'Create', invalidCustom: 'Enter whole-number width and height values from 1 to 128.',
+          projectNote: 'Transparent canvas', newCanvas: 'New canvas', toolsTitle: 'Tools', pencil: 'Pencil', eraser: 'Eraser', fill: 'Fill', eyedropper: 'Eyedropper', selection: 'Selection', brushTitle: 'Brush size',
+          historyTitle: 'History', undo: 'Undo', redo: 'Redo', fit: 'Fit', zoomIn: 'Zoom in', zoomOut: 'Zoom out', grid: 'Grid', recentColorsTitle: 'Recent colors', recentColorsEmpty: 'Selected colors appear here.',
+          desktopTip: 'Drag to draw. Use Space + Drag to pan and the wheel to zoom.', colorTitle: 'Drawing color', colorPickerTitle: 'Color picker', currentToolTitle: 'Current settings', displayScale: 'Display scale', canvasLabel: 'Pixel art canvas', framesTitle: 'Frames', mobileEditTab: 'Edit', mobileFramesTab: 'Frames', addFrame: 'Add', duplicateFrame: 'Duplicate', deleteFrame: 'Delete', moveFrameLeft: 'Move earlier', moveFrameRight: 'Move later', frameLabel: 'Frame', frameAdded: 'Frame added', frameDuplicated: 'Frame duplicated', frameDeleted: 'Frame deleted', frameRestored: 'Frame restored', frameMoved: 'Frame reordered', frameLimit: 'Up to 128 frames are supported', keepOneFrame: 'At least one frame is required', restore: 'Undo', mobilePreviewTab: 'Preview', frameDuration: 'Frame delay', applyDurationAll: 'Apply to all', durationAppliedAll: 'Frame delay applied to all frames', invalidDuration: 'Use a frame delay from 20 to 5000 ms in 10 ms steps', previewTitle: 'Preview', playPreview: 'Play', pausePreview: 'Pause', restartPreview: 'Restart', loopPreview: 'Loop', previewNote: 'Playback uses each frame’s individual delay.', previewStarted: 'Preview started', previewPaused: 'Preview paused', previewRestarted: 'Returned to the first frame', loopOn: 'Loop enabled', loopOff: 'Loop disabled', animationAssistTitle: 'Animation assist', onionSkin: 'Onion Skin', onionOn: 'ON', onionOff: 'OFF', onionEnabled: 'Onion skin shown', onionDisabled: 'Onion skin hidden', autosaveReady: 'Autosave', autosaveSaving: 'Saving…', autosaveSaved: 'Autosaved', autosaveUnavailable: 'Autosave is unavailable. Closing this tab will discard your work.', autosaveUnavailableShort: 'Autosave unavailable', restoreTitle: 'Previous work found', restoreContinue: 'Continue', restoreNew: 'Start new', restoreSummary: '{size} · {frames} frames', restoredProject: 'Previous work restored',
+          buildInfo: 'Build information', appVersion: 'App version', builtAt: 'Built at', dependencies: 'Embedded dependencies', footer: 'Processed in your browser',
+          helpTitle: 'How to use & notes', helpStartTitle: 'Basics', helpStep1: 'Choose 16×16 through 128×128, or enter a Custom canvas size.', helpStep2: 'Choose Pencil, Eraser, Fill, Eyedropper, or Selection.', helpStep3: 'Selection clears when you switch tools. Choose a destination before pasting. Undo / Redo, Zoom / Pan, and Grid stay above the canvas.', helpStep4: 'Add or duplicate frames, set their delays, and check the motion in Preview.',
+          helpPrivacyTitle: 'Privacy', helpPrivacyBody: 'Pixel data is processed in this browser and is not sent to an external server by this app. The app also makes no runtime network requests.',
+          helpLimitsTitle: 'v1.0.0 scope', helpLimit1: 'Onion Skin can show the previous frame at about 30% opacity while editing.', helpLimit2: 'Your project is autosaved locally to IndexedDB and can be restored after reload.', helpLimit3: 'Import one or more PNG files and export PNG, animated GIF, or sprite-sheet output. GIF is limited to 256 colors and converts partial alpha to transparent or opaque pixels.',
+          helpTouchTitle: 'Smartphones', helpTouchBody: 'Draw with one finger. Use two fingers to pan or pinch zoom. When a second finger arrives, any accidental stroke start is restored before the view gesture begins.',
+          confirmTitle: 'Confirm', cancel: 'Cancel', confirmNew: 'Start new', newConfirmMessage: 'Replace the current autosaved project and create a new canvas?',
+          created: 'Canvas created', toolChangedPencil: 'Switched to Pencil', toolChangedEraser: 'Switched to Eraser', toolChangedFill: 'Switched to Fill', toolChangedEyedropper: 'Switched to Eyedropper', brushChanged: 'Brush size changed', colorChanged: 'Drawing color changed',
+          undone: 'Undone', redone: 'Redone', noUndo: 'Nothing to undo', noRedo: 'Nothing to redo', transparentPixel: 'That pixel is transparent', copySelection:'Copy', cutSelection:'Cut', pasteSelection:'Paste', deleteSelection:'Delete', clearSelection:'Clear selection', selectionCopied:'Selection copied', selectionCut:'Selection cut', selectionPasted:'Pasted', selectionDeleted:'Selection deleted', noSelection:'No selection', clipboardEmpty:'Nothing has been copied', selectPasteTarget:'Select a destination before pasting', toolChangedSelection:'Switched to Selection', gridOn: 'Grid shown', gridOff: 'Grid hidden', fitApplied: 'Canvas fitted to view', mobileExportTab:'Export', exportTitle:'Export', exportIntro:'Save PNG, animated GIF, or sprite-sheet output directly to your device.', outputFilename:'Filename', currentFramePng:'Current frame PNG', currentFramePngNote:'Preserve transparency and scale with nearest-neighbor pixels.', pngScale:'Scale', savePng:'Save PNG', spriteSheetTitle:'Sprite Sheet', spriteSheetNote:'Arrange every frame into one PNG image.', spriteLayout:'Layout', horizontal:'Horizontal', gridLayout:'Grid', columns:'Columns', saveSpriteSheet:'Save Sprite Sheet', spriteSheetPreviewLabel:'Sprite Sheet preview', pngSaved:'PNG saved', spriteSheetSaved:'Sprite Sheet saved', exportFailed:'Could not export the image', invalidFilename:'Check the filename', spriteDetails:'Frame {frame} · {frames} frames · {columns} columns × {rows} rows', animatedGifTitle:'Animated GIF', animatedGifNote:'Uses each frame delay and saves a transparent, infinitely looping GIF.', saveGif:'Save GIF', gifSaved:'GIF saved', gifEncoding:'Creating GIF… {current} / {total}', gifDetails:'{frames} frames · {duration} ms · infinite loop', gifFailed:'Could not export the GIF'
+        }
+      };
+
+      const $ = selector => document.querySelector(selector);
+      const $$ = selector => [...document.querySelectorAll(selector)];
+      const storageKeyLanguage = `${APP_CONFIG.slug}:language`;
+      const MAX_HISTORY = 100;
+      const MAX_SCALE = 32;
+      const MAX_FRAMES = 128;
+      const DEFAULT_FRAME_DURATION = 100;
+      const MIN_FRAME_DURATION = 20;
+      const MAX_FRAME_DURATION = 5000;
+      const FRAME_DURATION_STEP = 10;
+      const PROJECT_SCHEMA_VERSION = 1;
+      const AUTOSAVE_DELAY = 700;
+      const DB_NAME = `${APP_CONFIG.slug}-db`;
+      const DB_STORE = 'projects';
+      const DB_KEY = 'autosave';
+      const state = {
+        width: 0, height: 0, tool: 'pencil', brushSize: 1, color: '#16624F', previousValidColor: '#16624F',
+        dirty: false, drawing: false, pointerId: null, lastPoint: null, scale: 1, fitScale: 1, grid: true,
+        undoStack: [], redoStack: [], strokeBefore: null, spacePressed: false, pan: null,
+        touchPointers: new Map(), touchGesture: null, touchGestureBlocked: false, deferredTouchAction: null,
+        recentColors: [], frames: [], currentFrameIndex: 0,
+        previewPlaying: false, previewIndex: 0, previewTimer: 0, previewLoop: true, onionSkin: true,
+        persistenceAvailable: true, persistenceReady: false, autosaveTimer: 0, autosaveInFlight: false, autosaveQueued: false, selection:null, selectionDrag:null, clipboard:null, pngScale:1, spriteLayout:'horizontal', spriteColumns:4, outputBase:'pixel-animation', importBusy:false, importReport:null, gifBusy:false
+      };
+      const canvas = $('#pixelCanvas');
+      const ctx = canvas.getContext('2d', { alpha: true });
+      const onionCanvas = $('#onionCanvas');
+      const onionCtx = onionCanvas.getContext('2d', { alpha: true });
+      onionCtx.imageSmoothingEnabled = false;
+      const stage = $('#canvasStage');
+      const surface = $('#canvasSurface');
+      const gridOverlay = $('#gridOverlay');
+      const selectionOverlay = $('#selectionOverlay');
+      const brushPreview = $('#brushPreview');
+      const previewCanvas = $('#previewCanvas');
+      const previewCtx = previewCanvas.getContext('2d', { alpha: true });
+      previewCtx.imageSmoothingEnabled = false;
+      ctx.imageSmoothingEnabled = false;
+      const outputFilename = $('#outputFilename');
+
+      function readStorage(key) { try { return localStorage.getItem(key); } catch { return null; } }
+      function writeStorage(key, value) { try { localStorage.setItem(key, value); } catch { /* language preference can remain ephemeral */ } }
+      function detectLanguage() {
+        if (APP_CONFIG.defaultLanguage === 'ja' || APP_CONFIG.defaultLanguage === 'en') return APP_CONFIG.defaultLanguage;
+        return (navigator.language || '').toLowerCase().startsWith('ja') ? 'ja' : 'en';
+      }
+      let language = readStorage(storageKeyLanguage) || detectLanguage();
+      function t(key) { return translations[language]?.[key] ?? translations.en[key] ?? key; }
+      function formatText(template, values = {}) { return Object.entries(values).reduce((text,[key,value]) => text.replaceAll(`{${key}}`, String(value)), template); }
+
+      function openProjectDb() {
+        return new Promise((resolve, reject) => {
+          if (!('indexedDB' in window)) { reject(new Error('IndexedDB unavailable')); return; }
+          const request = indexedDB.open(DB_NAME, 1);
+          request.onupgradeneeded = () => { const db=request.result; if(!db.objectStoreNames.contains(DB_STORE)) db.createObjectStore(DB_STORE); };
+          request.onsuccess = () => resolve(request.result);
+          request.onerror = () => reject(request.error || new Error('IndexedDB open failed'));
+          request.onblocked = () => reject(new Error('IndexedDB blocked'));
+        });
+      }
+      async function idbGetProject() { const db=await openProjectDb(); try { return await new Promise((resolve,reject)=>{ const tx=db.transaction(DB_STORE,'readonly'); const req=tx.objectStore(DB_STORE).get(DB_KEY); req.onsuccess=()=>resolve(req.result||null); req.onerror=()=>reject(req.error); }); } finally { db.close(); } }
+      async function idbPutProject(project) { const db=await openProjectDb(); try { await new Promise((resolve,reject)=>{ const tx=db.transaction(DB_STORE,'readwrite'); tx.oncomplete=()=>resolve(); tx.onerror=()=>reject(tx.error); tx.objectStore(DB_STORE).put(project,DB_KEY); }); } finally { db.close(); } }
+      async function idbDeleteProject() { const db=await openProjectDb(); try { await new Promise((resolve,reject)=>{ const tx=db.transaction(DB_STORE,'readwrite'); tx.oncomplete=()=>resolve(); tx.onerror=()=>reject(tx.error); tx.objectStore(DB_STORE).delete(DB_KEY); }); } finally { db.close(); } }
+      function updateAutosaveStatus(mode='saved') { const root=$('#projectStatus'); const text=$('#projectStatusText'); if(!root||!text)return; root.dataset.state=mode; text.textContent=t(mode==='saving'?'autosaveSaving':mode==='error'?'autosaveUnavailableShort':'autosaveSaved'); }
+      function disablePersistence() { state.persistenceAvailable=false; state.persistenceReady=true; clearTimeout(state.autosaveTimer); state.autosaveTimer=0; $('#storageWarning').hidden=false; updateAutosaveStatus('error'); }
+      function serializeProject() {
+        if (!state.width || !state.height || !state.frames.length) return null; saveCurrentFrame();
+        return { schemaVersion:PROJECT_SCHEMA_VERSION, savedAt:new Date().toISOString(), width:state.width, height:state.height, currentFrameIndex:state.currentFrameIndex, color:state.color, recentColors:[...state.recentColors], grid:state.grid, onionSkin:state.onionSkin, outputBase:state.outputBase, frames:state.frames.map(frame=>({ duration:frame.duration||DEFAULT_FRAME_DURATION, data:new Uint8ClampedArray(frame.imageData.data) })) };
+      }
+      async function performAutosave() {
+        if(!state.persistenceAvailable || !state.persistenceReady) return; if(state.autosaveInFlight){ state.autosaveQueued=true; return; } const project=serializeProject(); if(!project)return;
+        clearTimeout(state.autosaveTimer); state.autosaveTimer=0; state.autosaveInFlight=true; updateAutosaveStatus('saving');
+        try { await idbPutProject(project); updateAutosaveStatus('saved'); } catch { disablePersistence(); } finally { state.autosaveInFlight=false; if(state.autosaveQueued && state.persistenceAvailable){ state.autosaveQueued=false; scheduleAutosave(); } }
+      }
+      async function waitForAutosaveIdle() { while(state.autosaveInFlight) await new Promise(resolve=>setTimeout(resolve,20)); }
+      function scheduleAutosave() { if(!state.persistenceAvailable || !state.persistenceReady || !state.width)return; clearTimeout(state.autosaveTimer); state.autosaveTimer=window.setTimeout(performAutosave,AUTOSAVE_DELAY); updateAutosaveStatus('saving'); }
+      async function clearAutosave() { if(!state.persistenceAvailable)return; try { await idbDeleteProject(); } catch { disablePersistence(); } }
+      function validateSavedProject(project) { return project && project.schemaVersion===PROJECT_SCHEMA_VERSION && validateDimension(project.width) && validateDimension(project.height) && Array.isArray(project.frames) && project.frames.length>=1 && project.frames.length<=MAX_FRAMES; }
+      function restoreProject(project) {
+        pausePreview({announceChange:false}); state.width=project.width; state.height=project.height; state.frames=project.frames.map(item=>{ const data=item?.data instanceof Uint8ClampedArray?item.data:new Uint8ClampedArray(item?.data||[]); if(data.length!==project.width*project.height*4) throw new Error('Invalid saved frame'); return makeFrame(new ImageData(new Uint8ClampedArray(data),project.width,project.height),item.duration); });
+        state.currentFrameIndex=Math.max(0,Math.min(Number(project.currentFrameIndex)||0,state.frames.length-1)); state.selection=null; state.selectionDrag=null; state.clipboard=null; state.color=normalizeHex(project.color)||'#16624F'; state.previousValidColor=state.color; state.recentColors=Array.isArray(project.recentColors)?project.recentColors.map(normalizeHex).filter(Boolean).slice(0,12):[]; state.grid=project.grid!==false; state.onionSkin=project.onionSkin!==false; state.outputBase=sanitizeFilenameBase(project.outputBase||'pixel-animation'); state.undoStack=[]; state.redoStack=[]; state.dirty=false; state.previewIndex=state.currentFrameIndex;
+        canvas.width=state.width; canvas.height=state.height; onionCanvas.width=state.width; onionCanvas.height=state.height; ctx.imageSmoothingEnabled=false; onionCtx.imageSmoothingEnabled=false; ctx.putImageData(cloneImageData(state.frames[state.currentFrameIndex].imageData),0,0);
+        $('#projectSize').textContent=`${state.width} × ${state.height}`; $('#setupView').hidden=true; $('#editorView').hidden=false; document.body.dataset.projectState='editing'; $('#storageWarning').hidden=true; applyColor(state.color); outputFilename.value=state.outputBase; renderRecentColors(); updateHistoryButtons(); renderFrames(); updateOnionSkin(); updatePreviewControls(); setMobilePage('edit'); requestAnimationFrame(()=>fitCanvas()); updateAutosaveStatus('saved'); announce(t('restoredProject')); AppToast.show({message:t('restoredProject'),tone:'success'});
+      }
+      async function initializePersistence() {
+        try { const saved=await idbGetProject(); state.persistenceReady=true; if(!saved){ if(state.width) scheduleAutosave(); return; } if(!validateSavedProject(saved)){ await clearAutosave(); return; } const summary=formatText(t('restoreSummary'),{size:`${saved.width} × ${saved.height}`,frames:saved.frames.length}); const useSaved=await AppConfirm.ask({title:t('restoreTitle'),message:summary,confirmLabel:t('restoreContinue'),cancelLabel:t('restoreNew')}); if(useSaved){ try { restoreProject(saved); } catch { await clearAutosave(); } } else { await clearAutosave(); } } catch { disablePersistence(); }
+      }
+
+      const AppToast = (() => {
+        const root = $('#appToast'); const message = $('#appToastMessage'); const action = $('#appToastAction');
+        let timer = 0; let actionHandler = null;
+        function dismiss() { clearTimeout(timer); timer = 0; root.classList.remove('show'); actionHandler = null; }
+        function show({ message: text = '', actionLabel = '', onAction = null, duration = 2800, tone = 'default' } = {}) {
+          clearTimeout(timer); message.textContent = String(text); root.dataset.tone = tone;
+          actionHandler = typeof onAction === 'function' ? onAction : null; action.textContent = actionLabel || ''; action.hidden = !actionHandler || !actionLabel;
+          root.classList.add('show'); if (duration > 0) timer = window.setTimeout(dismiss, duration); return Object.freeze({ dismiss });
+        }
+        action.addEventListener('click', () => { const handler = actionHandler; dismiss(); if (handler) handler(); });
+        return Object.freeze({ show, dismiss });
+      })();
+      window.AppToast = AppToast;
+
+      const AppConfirm = (() => {
+        const dialog = $('#appConfirmDialog'); const title = $('#appConfirmTitle'); const message = $('#appConfirmMessage'); const closeButton = $('#appConfirmClose'); const cancelButton = $('#appConfirmCancel'); const okButton = $('#appConfirmOk');
+        let resolver = null; let restoreFocus = null;
+        function finish(result) {
+          if (!dialog.open) return; const currentResolver = resolver; resolver = null; dialog.close();
+          if (restoreFocus instanceof HTMLElement && restoreFocus.isConnected) restoreFocus.focus({ preventScroll: true }); restoreFocus = null; if (currentResolver) currentResolver(result);
+        }
+        function ask({ title: heading, message: body, confirmLabel, cancelLabel, tone = 'default' } = {}) {
+          if (dialog.open) finish(false); title.textContent = heading || t('confirmTitle'); message.textContent = body || ''; cancelButton.textContent = cancelLabel || t('cancel'); okButton.textContent = confirmLabel || t('confirmNew');
+          okButton.classList.toggle('danger', tone === 'danger'); okButton.classList.toggle('primary', tone !== 'danger'); restoreFocus = document.activeElement;
+          return new Promise(resolve => { resolver = resolve; dialog.showModal(); requestAnimationFrame(() => cancelButton.focus({ preventScroll: true })); });
+        }
+        closeButton.addEventListener('click', () => finish(false)); cancelButton.addEventListener('click', () => finish(false)); okButton.addEventListener('click', () => finish(true));
+        dialog.addEventListener('cancel', event => { event.preventDefault(); finish(false); });
+        dialog.addEventListener('click', event => { const rect = dialog.getBoundingClientRect(); const outside = event.clientX < rect.left || event.clientX > rect.right || event.clientY < rect.top || event.clientY > rect.bottom; if (outside) finish(false); });
+        return Object.freeze({ ask });
+      })();
+      window.AppConfirm = AppConfirm;
+
+      function announce(text) { $('#liveStatus').textContent = ''; requestAnimationFrame(() => { $('#liveStatus').textContent = text; }); }
+      function applyLanguage() {
+        document.documentElement.lang = language;
+        $$('[data-i18n]').forEach(element => { element.textContent = t(element.dataset.i18n); });
+        $$('[data-i18n-title]').forEach(element => { element.title = t(element.dataset.i18nTitle); });
+        $$('[data-i18n-aria-label]').forEach(element => { element.setAttribute('aria-label', t(element.dataset.i18nAriaLabel)); });
+        $('#languageButton').textContent = language === 'ja' ? 'EN' : '日本語';
+        $('#languageButton').setAttribute('aria-label', language === 'ja' ? '英語に切り替え' : 'Switch to Japanese');
+        document.title = APP_CONFIG.name;
+        $('#brandName').textContent = APP_CONFIG.name;
+        $('#footerName').textContent = APP_CONFIG.name;
+        updateToolSummary(); renderRecentColors(); renderFrames(); updatePreviewControls(); updateOnionSkinControls(); updateExportPanel(); renderImportReport(); if(state.persistenceReady) updateAutosaveStatus(state.persistenceAvailable?'saved':'error');
+      }
+
+      function normalizeHex(value) {
+        const raw = String(value || '').trim().replace(/^#/, '');
+        return /^[0-9a-fA-F]{6}$/.test(raw) ? `#${raw.toUpperCase()}` : null;
+      }
+      function hexToRgba(hex) {
+        const value = normalizeHex(hex) || '#000000';
+        return [parseInt(value.slice(1,3),16), parseInt(value.slice(3,5),16), parseInt(value.slice(5,7),16), 255];
+      }
+      function rgbaToHex(r,g,b) { return `#${[r,g,b].map(value => value.toString(16).padStart(2,'0')).join('').toUpperCase()}`; }
+      function rememberColor(color) {
+        const normalized = normalizeHex(color); if (!normalized) return;
+        state.recentColors = [normalized, ...state.recentColors.filter(item => item !== normalized)].slice(0, 12); renderRecentColors();
+      }
+      function renderRecentColors() {
+        ['recentColors','mobileRecentColors'].forEach(id => {
+          const root = $('#'+id); if (!root) return; root.replaceChildren();
+          if (!state.recentColors.length) { const empty = document.createElement('p'); empty.className = 'recent-colors-empty'; empty.textContent = t('recentColorsEmpty'); root.append(empty); return; }
+          state.recentColors.forEach(color => { const button = document.createElement('button'); button.type = 'button'; button.className = 'recent-color-button'; button.style.background = color; button.setAttribute('aria-label', color); button.title = color; button.addEventListener('click', () => applyColor(color, { announceChange: true, remember: true })); root.append(button); });
+        });
+      }
+      function applyColor(value, { announceChange = false, remember = false } = {}) {
+        const normalized = normalizeHex(value); if (!normalized) return false;
+        state.color = normalized; state.previousValidColor = normalized; document.documentElement.style.setProperty('--draw-color', normalized);
+        $('#colorPicker').value = normalized.toLowerCase(); $('#mobileColorPicker').value = normalized.toLowerCase();
+        $('#hexColor').value = normalized; $('#mobileHexColor').value = normalized; $('#currentColorPreview').style.background = normalized;
+        $$('[data-brush], [data-mobile-brush]').forEach(button => { const ownSize=Number(button.dataset.brush || button.dataset.mobileBrush); button.title=`${ownSize} px`; });
+        if (remember) { rememberColor(normalized); scheduleAutosave(); } updateToolSummary(); if (announceChange) announce(t('colorChanged')); return true;
+      }
+      function toolName() { return ({ pencil:t('pencil'), eraser:t('eraser'), fill:t('fill'), eyedropper:t('eyedropper'), selection:t('selection') })[state.tool] || t('pencil'); }
+      function updateToolSummary() {
+        const name = toolName(); const usesBrush = state.tool === 'pencil' || state.tool === 'eraser';
+        $('#toolStatus').textContent = usesBrush ? `${name} · ${state.brushSize} px` : name;
+        $('#currentToolSummary').textContent = usesBrush ? `${name} · ${state.brushSize} px · ${state.color}` : `${name} · ${state.color}`;
+        $$('[data-brush], [data-mobile-brush]').forEach(button => { button.disabled = !usesBrush; });
+      }
+      function setTool(tool, { announceChange = true } = {}) {
+        const allowed = ['pencil','eraser','fill','eyedropper','selection']; const nextTool = allowed.includes(tool) ? tool : 'pencil';
+        if (state.tool === 'selection' && nextTool !== 'selection' && state.selection) clearSelection();
+        state.tool = nextTool;
+        $$('[data-tool], [data-mobile-tool]').forEach(button => { const ownTool = button.dataset.tool || button.dataset.mobileTool; button.setAttribute('aria-pressed', String(ownTool === state.tool)); });
+        canvas.classList.toggle('is-erasing', state.tool === 'eraser'); canvas.classList.toggle('is-fill', state.tool === 'fill'); canvas.classList.toggle('is-eyedropper', state.tool === 'eyedropper');
+        updateSelectionOverlay(); updateToolSummary();
+        if (state.tool !== 'pencil' && state.tool !== 'eraser') hideBrushPreview();
+        if (announceChange) announce(({pencil:t('toolChangedPencil'), eraser:t('toolChangedEraser'), fill:t('toolChangedFill'), eyedropper:t('toolChangedEyedropper'), selection:t('toolChangedSelection')})[state.tool]);
+      }
+      function setBrushSize(size, { announceChange = true } = {}) {
+        const next = [1,2,4].includes(Number(size)) ? Number(size) : 1; state.brushSize = next;
+        $$('[data-brush], [data-mobile-brush]').forEach(button => { const ownSize = Number(button.dataset.brush || button.dataset.mobileBrush); button.setAttribute('aria-pressed', String(ownSize === next)); button.title = `${ownSize} px`; });
+        updateToolSummary(); if (announceChange) announce(t('brushChanged'));
+      }
+
+      function captureCanvas() { return ctx.getImageData(0, 0, canvas.width, canvas.height); }
+      function imageDataEquals(a, b) {
+        if (!a || !b || a.width !== b.width || a.height !== b.height || a.data.length !== b.data.length) return false;
+        for (let index = 0; index < a.data.length; index += 1) if (a.data[index] !== b.data[index]) return false; return true;
+      }
+      function updateHistoryButtons() {
+        const canUndo = state.undoStack.length > 0; const canRedo = state.redoStack.length > 0;
+        ['mobileUndoButton'].forEach(id => { const button=$('#'+id); if(button) button.disabled=!canUndo; });
+        ['mobileRedoButton'].forEach(id => { const button=$('#'+id); if(button) button.disabled=!canRedo; });
+      }
+      function commitHistory(before) {
+        if (!before) return false; const after = captureCanvas(); if (imageDataEquals(before, after)) return false;
+        state.undoStack.push(before); if (state.undoStack.length > MAX_HISTORY) state.undoStack.shift(); state.redoStack = []; state.dirty = true; updateHistoryButtons(); if(state.frames.length) renderFrames(); updateOnionSkin(); scheduleAutosave(); return true;
+      }
+      function undo() {
+        if (!state.undoStack.length) { announce(t('noUndo')); return; }
+        const current = captureCanvas(); const previous = state.undoStack.pop(); state.redoStack.push(current); ctx.putImageData(previous,0,0); state.dirty = true; updateHistoryButtons(); renderFrames(); updateOnionSkin(); scheduleAutosave(); announce(t('undone'));
+      }
+      function redo() {
+        if (!state.redoStack.length) { announce(t('noRedo')); return; }
+        const current = captureCanvas(); const next = state.redoStack.pop(); state.undoStack.push(current); if (state.undoStack.length > MAX_HISTORY) state.undoStack.shift(); ctx.putImageData(next,0,0); state.dirty = true; updateHistoryButtons(); renderFrames(); updateOnionSkin(); scheduleAutosave(); announce(t('redone'));
+      }
+
+      function setMobilePage(page) { const next = ['frames','preview','export'].includes(page) ? page : 'edit'; document.body.dataset.mobilePage = next; $$('[data-mobile-page-button]').forEach(button => button.setAttribute('aria-pressed', String(button.dataset.mobilePageButton === next))); }
+      function cloneImageData(image) { return image ? new ImageData(new Uint8ClampedArray(image.data), image.width, image.height) : new ImageData(state.width, state.height); }
+      function makeFrame(imageData = null, duration = DEFAULT_FRAME_DURATION) { return { imageData: imageData ? cloneImageData(imageData) : new ImageData(state.width, state.height), undoStack: [], redoStack: [], duration: normalizeFrameDuration(duration) || DEFAULT_FRAME_DURATION }; }
+      function saveCurrentFrame() {
+        const frame = state.frames[state.currentFrameIndex]; if (!frame || !state.width) return;
+        frame.imageData = captureCanvas(); frame.undoStack = state.undoStack; frame.redoStack = state.redoStack;
+      }
+      function updateOnionSkinControls() {
+        ['onionSkinButton','mobileOnionSkinButton'].forEach(id=>{ const button=$('#'+id); if(!button)return; button.setAttribute('aria-pressed',String(state.onionSkin)); button.textContent=t(state.onionSkin?'onionOn':'onionOff'); });
+      }
+      function updateOnionSkin() {
+        if(!onionCanvas || !state.width || !state.height) return; onionCanvas.width=state.width; onionCanvas.height=state.height; onionCtx.imageSmoothingEnabled=false; onionCtx.clearRect(0,0,state.width,state.height); const previous=state.frames[state.currentFrameIndex-1]; const visible=Boolean(state.onionSkin && previous); onionCanvas.hidden=!visible; if(visible) onionCtx.putImageData(previous.imageData,0,0); updateOnionSkinControls();
+      }
+      function toggleOnionSkin() { state.onionSkin=!state.onionSkin; updateOnionSkin(); scheduleAutosave(); announce(t(state.onionSkin?'onionEnabled':'onionDisabled')); }
+      function loadFrame(index, { focus = true } = {}) {
+        if (index < 0 || index >= state.frames.length || index === state.currentFrameIndex && !state.frames[index]) return;
+        saveCurrentFrame(); clearSelection(); state.currentFrameIndex = index; const frame = state.frames[index]; ctx.putImageData(cloneImageData(frame.imageData), 0, 0);
+        state.undoStack = frame.undoStack || []; state.redoStack = frame.redoStack || []; updateHistoryButtons(); renderFrames(); updateOnionSkin(); scheduleAutosave(); if (focus) canvas.focus({preventScroll:true});
+      }
+      function normalizeFrameDuration(value) {
+        const numeric = Number(value);
+        if (!Number.isInteger(numeric) || numeric < MIN_FRAME_DURATION || numeric > MAX_FRAME_DURATION || numeric % FRAME_DURATION_STEP !== 0) return null;
+        return numeric;
+      }
+      function currentFrameDuration() { return state.frames[state.currentFrameIndex]?.duration || DEFAULT_FRAME_DURATION; }
+      function sanitizeFilenameBase(value) {
+        const raw=String(value||'').trim().replace(/[\\/:*?"<>|\u0000-\u001f]/g,'-').replace(/\.+$/g,'').trim();
+        let base=raw.replace(/\.(?:png|gif)$/i,'') || 'pixel-animation';
+        if(/^(con|prn|aux|nul|com[1-9]|lpt[1-9])$/i.test(base)) base=`${base}-file`;
+        return base.slice(0,120);
+      }
+      function syncOutputBase({save=true}={}) { state.outputBase=sanitizeFilenameBase(outputFilename.value); outputFilename.value=state.outputBase; if(save) scheduleAutosave(); updateExportPanel(); return state.outputBase; }
+      function canvasToPngBlob(targetCanvas) { return new Promise((resolve,reject)=>targetCanvas.toBlob(blob=>blob?resolve(blob):reject(new Error('PNG encode failed')),'image/png')); }
+      function downloadBlob(blob,filename) { const url=URL.createObjectURL(blob); const a=document.createElement('a'); a.href=url; a.download=filename; document.body.append(a); a.click(); a.remove(); setTimeout(()=>URL.revokeObjectURL(url),1000); }
+      function makeFrameCanvas(imageData,scale=1) {
+        const source=document.createElement('canvas'); source.width=state.width; source.height=state.height; const sourceCtx=source.getContext('2d',{alpha:true}); sourceCtx.putImageData(imageData,0,0);
+        if(scale===1)return source; const out=document.createElement('canvas'); out.width=state.width*scale; out.height=state.height*scale; const outCtx=out.getContext('2d',{alpha:true}); outCtx.imageSmoothingEnabled=false; outCtx.clearRect(0,0,out.width,out.height); outCtx.drawImage(source,0,0,out.width,out.height); return out;
+      }
+      function spriteGrid() { const count=Math.max(1,state.frames.length); const columns=state.spriteLayout==='horizontal'?count:Math.max(1,Math.min(count,Math.round(Number(state.spriteColumns)||1))); const rows=Math.ceil(count/columns); return {columns,rows}; }
+      function renderSpriteSheet(targetCanvas=$('#spriteSheetPreview')) {
+        if(!state.width||!state.height||!state.frames.length||!targetCanvas)return null; saveCurrentFrame(); const {columns,rows}=spriteGrid(); targetCanvas.width=state.width*columns; targetCanvas.height=state.height*rows; const targetCtx=targetCanvas.getContext('2d',{alpha:true}); targetCtx.imageSmoothingEnabled=false; targetCtx.clearRect(0,0,targetCanvas.width,targetCanvas.height);
+        state.frames.forEach((frame,index)=>{ const col=index%columns,row=Math.floor(index/columns); targetCtx.putImageData(frame.imageData,col*state.width,row*state.height); }); return {columns,rows,width:targetCanvas.width,height:targetCanvas.height};
+      }
+      function updateExportPanel() {
+        if(!outputFilename)return; const base=sanitizeFilenameBase(outputFilename.value||state.outputBase); const frameNo=String(state.currentFrameIndex+1).padStart(2,'0'); const scale=state.pngScale||1;
+        const pngW=Math.max(0,state.width*scale),pngH=Math.max(0,state.height*scale); $('#pngOutputSize').textContent=`${pngW} × ${pngH} px`; $('#pngOutputName').textContent=`${base}-frame-${frameNo}.png`;
+        $$('[data-png-scale]').forEach(button=>button.setAttribute('aria-pressed',String(Number(button.dataset.pngScale)===scale))); $$('[data-sprite-layout]').forEach(button=>button.setAttribute('aria-pressed',String(button.dataset.spriteLayout===state.spriteLayout)));
+        const columnsInput=$('#spriteColumns'); state.spriteColumns=Math.max(1,Math.min(Math.max(1,state.frames.length),Math.round(Number(state.spriteColumns)||1))); columnsInput.disabled=state.spriteLayout!=='grid'; columnsInput.max=String(Math.max(1,state.frames.length)); if(Number(columnsInput.value)!==state.spriteColumns) columnsInput.value=String(state.spriteColumns);
+        const info=renderSpriteSheet(); if(info){ $('#spriteOutputSize').textContent=`${info.width} × ${info.height} px`; $('#spriteOutputDetails').textContent=formatText(t('spriteDetails'),{frame:`${state.width} × ${state.height}`,frames:state.frames.length,columns:info.columns,rows:info.rows}); }
+        $('#spriteOutputName').textContent=`${base}-spritesheet.png`;
+        const totalDuration=state.frames.reduce((sum,frame)=>sum+(frame.duration||DEFAULT_FRAME_DURATION),0); $('#gifOutputSize').textContent=`${state.width} × ${state.height} px`; $('#gifOutputDetails').textContent=formatText(t('gifDetails'),{frames:state.frames.length,duration:totalDuration}); $('#gifOutputName').textContent=`${base}.gif`;
+      }
+      async function saveCurrentFramePng() {
+        if(!state.frames.length)return; try { saveCurrentFrame(); syncOutputBase(); const frame=state.frames[state.currentFrameIndex]; const out=makeFrameCanvas(frame.imageData,state.pngScale); const blob=await canvasToPngBlob(out); const filename=`${state.outputBase}-frame-${String(state.currentFrameIndex+1).padStart(2,'0')}.png`; downloadBlob(blob,filename); AppToast.show({message:t('pngSaved'),tone:'success'}); } catch(error){ console.error(error); AppToast.show({message:t('exportFailed'),tone:'warning'}); }
+      }
+      async function saveSpriteSheet() {
+        if(!state.frames.length)return; try { syncOutputBase(); const out=document.createElement('canvas'); renderSpriteSheet(out); const blob=await canvasToPngBlob(out); downloadBlob(blob,`${state.outputBase}-spritesheet.png`); AppToast.show({message:t('spriteSheetSaved'),tone:'success'}); } catch(error){ console.error(error); AppToast.show({message:t('exportFailed'),tone:'warning'}); }
+      }
+
+
+      function gifLe16(value) { return [value & 255, (value >> 8) & 255]; }
+      function gifNextPow2(value) { let size=2; while(size<value && size<256) size*=2; return size; }
+      function gifPaletteAndIndices(imageData) {
+        const data=imageData.data; const counts=new Map();
+        for(let i=0;i<data.length;i+=4){ if(data[i+3]<128) continue; const key=(data[i]<<16)|(data[i+1]<<8)|data[i+2]; counts.set(key,(counts.get(key)||0)+1); }
+        const opaqueColors=[...counts.keys()]; let palette=[]; let bucketIndex=null;
+        if(opaqueColors.length<=255){ palette=opaqueColors.map(key=>[(key>>16)&255,(key>>8)&255,key&255]); }
+        else {
+          const buckets=new Map();
+          for(const [key,count] of counts){ const r=(key>>16)&255,g=(key>>8)&255,b=key&255; const ri=Math.round(r*5/255),gi=Math.round(g*6/255),bi=Math.round(b*5/255); const bucketKey=(ri<<16)|(gi<<8)|bi; let value=buckets.get(bucketKey); if(!value)value={count:0,r:0,g:0,b:0}; value.count+=count; value.r+=r*count; value.g+=g*count; value.b+=b*count; buckets.set(bucketKey,value); }
+          palette=[...buckets.values()].map(value=>[Math.round(value.r/value.count),Math.round(value.g/value.count),Math.round(value.b/value.count)]).slice(0,255);
+          bucketIndex=new Map(); let index=1; for(const key of buckets.keys()){ if(index>palette.length) break; bucketIndex.set(key,index++); }
+        }
+        if(!palette.length) palette=[[0,0,0]];
+        const fullPalette=[[0,0,0],...palette]; const exact=new Map(); if(!bucketIndex) fullPalette.forEach((color,index)=>{ if(index) exact.set((color[0]<<16)|(color[1]<<8)|color[2],index); });
+        const indices=new Uint8Array(state.width*state.height);
+        for(let pixel=0,offset=0;offset<data.length;offset+=4,pixel++){
+          if(data[offset+3]<128){ indices[pixel]=0; continue; }
+          if(bucketIndex){ const ri=Math.round(data[offset]*5/255),gi=Math.round(data[offset+1]*6/255),bi=Math.round(data[offset+2]*5/255); indices[pixel]=bucketIndex.get((ri<<16)|(gi<<8)|bi)||1; }
+          else indices[pixel]=exact.get((data[offset]<<16)|(data[offset+1]<<8)|data[offset+2])||1;
+        }
+        return { palette:fullPalette, indices };
+      }
+      function gifLiteralLzw(indices,minCodeSize) {
+        const clear=1<<minCodeSize,end=clear+1,codeSize=minCodeSize+1; const bytes=[]; let current=0,bits=0;
+        const emit=code=>{ current|=code<<bits; bits+=codeSize; while(bits>=8){ bytes.push(current&255); current>>>=8; bits-=8; } };
+        emit(clear); for(let i=0;i<indices.length;i++){ emit(indices[i]); if(i!==indices.length-1) emit(clear); } emit(end); if(bits) bytes.push(current&255); return Uint8Array.from(bytes);
+      }
+      async function encodeAnimatedGif() {
+        saveCurrentFrame(); const bytes=[]; const push=(...values)=>bytes.push(...values); const ascii=text=>{for(const char of text)bytes.push(char.charCodeAt(0));};
+        ascii('GIF89a'); push(...gifLe16(state.width),...gifLe16(state.height),0xF0,0,0,0,0,0,255,255,255); push(0x21,0xFF,0x0B); ascii('NETSCAPE2.0'); push(3,1,0,0,0);
+        const progress=$('#gifProgress'),bar=$('#gifProgressBar'),label=$('#gifProgressText'); progress.hidden=false; bar.max=state.frames.length; bar.value=0;
+        for(let frameIndex=0;frameIndex<state.frames.length;frameIndex++){
+          const frame=state.frames[frameIndex]; const {palette,indices}=gifPaletteAndIndices(frame.imageData); const tableSize=gifNextPow2(palette.length); const sizeCode=Math.max(0,Math.log2(tableSize)-1); const local=[...palette]; while(local.length<tableSize)local.push([0,0,0]); const delay=Math.max(2,Math.min(65535,Math.round((frame.duration||DEFAULT_FRAME_DURATION)/10)));
+          push(0x21,0xF9,4,0x09,...gifLe16(delay),0,0); push(0x2C,...gifLe16(0),...gifLe16(0),...gifLe16(state.width),...gifLe16(state.height),0x80|sizeCode); for(const color of local) push(color[0],color[1],color[2]);
+          const minCodeSize=Math.max(2,Math.ceil(Math.log2(tableSize))); const compressed=gifLiteralLzw(indices,minCodeSize); push(minCodeSize); for(let offset=0;offset<compressed.length;offset+=255){ const length=Math.min(255,compressed.length-offset); push(length); for(let i=0;i<length;i++)bytes.push(compressed[offset+i]); } push(0);
+          bar.value=frameIndex+1; label.textContent=formatText(t('gifEncoding'),{current:frameIndex+1,total:state.frames.length}); await new Promise(resolve=>setTimeout(resolve,0));
+        }
+        push(0x3B); progress.hidden=true; return new Blob([Uint8Array.from(bytes)],{type:'image/gif'});
+      }
+      async function saveAnimatedGif() {
+        if(!state.frames.length||state.gifBusy)return; state.gifBusy=true; const button=$('#saveGifButton'); button.disabled=true;
+        try { syncOutputBase(); const blob=await encodeAnimatedGif(); downloadBlob(blob,`${state.outputBase}.gif`); AppToast.show({message:t('gifSaved'),tone:'success'}); }
+        catch(error){ console.error(error); $('#gifProgress').hidden=true; AppToast.show({message:t('gifFailed'),tone:'warning'}); }
+        finally { state.gifBusy=false; button.disabled=false; }
+      }
+
+      function isPngFile(file) { return Boolean(file && ((file.type||'').toLowerCase()==='image/png' || /\.png$/i.test(file.name||''))); }
+      function decodeImageElement(file) { return new Promise((resolve,reject)=>{ const url=URL.createObjectURL(file); const image=new Image(); image.onload=()=>{URL.revokeObjectURL(url);resolve(image);}; image.onerror=()=>{URL.revokeObjectURL(url);reject(new Error('decode'));}; image.src=url; }); }
+      async function decodePngFile(file) {
+        if(!isPngFile(file)) throw Object.assign(new Error('not-png'),{code:'notPng'});
+        let source=null; try { source=typeof createImageBitmap==='function' ? await createImageBitmap(file) : await decodeImageElement(file); } catch { throw Object.assign(new Error('decode'),{code:'decode'}); }
+        const width=source.width||source.naturalWidth,height=source.height||source.naturalHeight; if(!validateDimension(width)||!validateDimension(height)){ source.close?.(); throw Object.assign(new Error('too-large'),{code:'tooLarge',width,height}); }
+        const temp=document.createElement('canvas'); temp.width=width; temp.height=height; const tempCtx=temp.getContext('2d',{alpha:true,willReadFrequently:true}); tempCtx.clearRect(0,0,width,height); tempCtx.drawImage(source,0,0); source.close?.(); return {width,height,imageData:tempCtx.getImageData(0,0,width,height)};
+      }
+      function importFailureText(failure) {
+        if(failure.code==='notPng')return t('importReasonNotPng'); if(failure.code==='decode')return t('importReasonDecode'); if(failure.code==='tooLarge')return formatText(t('importReasonTooLarge'),{size:`${failure.width} × ${failure.height}`}); if(failure.code==='mismatch')return formatText(t('importReasonMismatch'),{actual:`${failure.width} × ${failure.height}`,expected:`${failure.expectedWidth} × ${failure.expectedHeight}`}); if(failure.code==='frameLimit')return t('importReasonFrameLimit'); return t('importReasonDecode');
+      }
+      function renderImportReport() {
+        const report=state.importReport; for(const id of ['setupImportResult','editorImportResult']){ const root=$('#'+id); if(!root)continue; root.replaceChildren(); if(!report){root.hidden=true;continue;} const summary=document.createElement('div'); summary.className='import-summary'; if(report.added){const ok=document.createElement('span');const strong=document.createElement('strong');strong.textContent=String(report.added);ok.append(strong,document.createTextNode(` ${t('importAdded')}`));summary.append(ok);} if(report.failures.length){const bad=document.createElement('span');const strong=document.createElement('strong');strong.textContent=String(report.failures.length);bad.append(strong,document.createTextNode(` ${t('importFailed')}`));summary.append(bad);} root.append(summary); if(report.failures.length){const list=document.createElement('ul');list.className='import-failures'; report.failures.slice(0,5).forEach(failure=>{const li=document.createElement('li');li.textContent=`${failure.name}: ${importFailureText(failure)}`;list.append(li);});root.append(list);if(report.failures.length>5){const more=document.createElement('p');more.className='import-more';more.textContent=formatText(t('importMore'),{count:report.failures.length-5});root.append(more);}} root.hidden=false; }
+      }
+      function activateImportedProject(width,height,items) {
+        pausePreview({announceChange:false}); state.width=width; state.height=height; state.frames=items.map(item=>makeFrame(item.imageData,DEFAULT_FRAME_DURATION)); state.currentFrameIndex=0; state.previewIndex=0; state.selection=null; state.selectionDrag=null; state.clipboard=null; state.undoStack=[]; state.redoStack=[]; state.dirty=true; state.outputBase='pixel-animation'; outputFilename.value=state.outputBase;
+        canvas.width=width; canvas.height=height; onionCanvas.width=width; onionCanvas.height=height; ctx.imageSmoothingEnabled=false; onionCtx.imageSmoothingEnabled=false; ctx.putImageData(cloneImageData(state.frames[0].imageData),0,0); $('#projectSize').textContent=`${width} × ${height}`; $('#setupView').hidden=true; $('#editorView').hidden=false; document.body.dataset.projectState='editing'; clearSelection(); updateHistoryButtons(); renderFrames(); updateOnionSkin(); updatePreviewControls(); setMobilePage('edit'); requestAnimationFrame(()=>fitCanvas()); scheduleAutosave();
+      }
+      async function importPngFiles(fileList) {
+        const files=[...fileList]; if(!files.length||state.importBusy)return; state.importBusy=true; $('#setupImportButton').disabled=true; $('#editorImportButton').disabled=true; AppToast.show({message:t('importingPng'),duration:0});
+        const failures=[],items=[]; let expectedWidth=state.width||0,expectedHeight=state.height||0; let remaining=state.width ? MAX_FRAMES-state.frames.length : MAX_FRAMES;
+        for(const file of files){
+          if(remaining<=0){failures.push({name:file.name,code:'frameLimit'});continue;}
+          try { const decoded=await decodePngFile(file); if(!expectedWidth){expectedWidth=decoded.width;expectedHeight=decoded.height;} if(decoded.width!==expectedWidth||decoded.height!==expectedHeight){failures.push({name:file.name,code:'mismatch',width:decoded.width,height:decoded.height,expectedWidth,expectedHeight});continue;} items.push({file,imageData:decoded.imageData}); remaining--; }
+          catch(error){failures.push({name:file.name||'file',code:error.code||'decode',width:error.width,height:error.height});}
+          await new Promise(resolve=>setTimeout(resolve,0));
+        }
+        if(items.length){ if(!state.width) activateImportedProject(expectedWidth,expectedHeight,items); else { saveCurrentFrame(); const start=state.frames.length; items.forEach(item=>state.frames.push(makeFrame(item.imageData,DEFAULT_FRAME_DURATION))); state.currentFrameIndex=start; ctx.putImageData(cloneImageData(state.frames[start].imageData),0,0); state.undoStack=[];state.redoStack=[];state.dirty=true;clearSelection();updateHistoryButtons();renderFrames();updateOnionSkin();scheduleAutosave(); } }
+        state.importReport={added:items.length,failures}; renderImportReport(); AppToast.dismiss(); if(!items.length)AppToast.show({message:t('importAllFailed'),tone:'warning'}); else AppToast.show({message:`${items.length} ${t('importAdded')}${failures.length?` · ${failures.length} ${t('importFailed')}`:''}`,tone:failures.length?'warning':'success'}); state.importBusy=false; $('#setupImportButton').disabled=false; $('#editorImportButton').disabled=false; $('#pngFileInput').value='';
+      }
+      function installPngDropTarget(target) {
+        ['dragenter','dragover'].forEach(type=>target.addEventListener(type,event=>{ if(!event.dataTransfer?.types?.includes('Files'))return; event.preventDefault(); event.dataTransfer.dropEffect='copy'; target.classList.add('drag-over'); }));
+        ['dragleave','drop'].forEach(type=>target.addEventListener(type,event=>{ if(type==='drop'&&event.dataTransfer?.files?.length){event.preventDefault();importPngFiles(event.dataTransfer.files);} target.classList.remove('drag-over'); }));
+      }
+
+      function renderFrames() {
+        const strip = $('#frameStrip'); if (!strip) return; saveCurrentFrame(); strip.replaceChildren();
+        state.frames.forEach((frame,index) => { const card=document.createElement('button'); card.type='button'; card.className='frame-card'; card.setAttribute('role','option'); card.setAttribute('aria-current',String(index===state.currentFrameIndex)); card.setAttribute('aria-selected',String(index===state.currentFrameIndex)); card.setAttribute('aria-label',`${t('frameLabel')} ${index+1}, ${frame.duration || DEFAULT_FRAME_DURATION} ms`);
+          const wrap=document.createElement('span'); wrap.className='frame-thumb-wrap'; const thumb=document.createElement('canvas'); thumb.className='frame-thumb'; thumb.width=state.width; thumb.height=state.height; const tctx=thumb.getContext('2d',{alpha:true}); tctx.imageSmoothingEnabled=false; tctx.putImageData(frame.imageData,0,0); const scale=Math.min(66/state.width,66/state.height); thumb.style.width=`${Math.max(1,Math.round(state.width*scale))}px`; thumb.style.height=`${Math.max(1,Math.round(state.height*scale))}px`; wrap.append(thumb);
+          const meta=document.createElement('span'); meta.className='frame-meta'; meta.innerHTML=`<strong>${index+1}</strong><span>${frame.duration || DEFAULT_FRAME_DURATION} ms</span>`; card.append(wrap,meta); card.addEventListener('click',()=>loadFrame(index)); strip.append(card); });
+        $('#frameCount').textContent = `${state.frames.length} / ${MAX_FRAMES}`; $('#deleteFrameButton').disabled=state.frames.length<=1; $('#addFrameButton').disabled=state.frames.length>=MAX_FRAMES; $('#duplicateFrameButton').disabled=state.frames.length>=MAX_FRAMES; $('#moveFrameLeftButton').disabled=state.currentFrameIndex<=0; $('#moveFrameRightButton').disabled=state.currentFrameIndex>=state.frames.length-1;
+        $('#frameDurationInput').value = String(currentFrameDuration());
+        if (!state.previewPlaying) { state.previewIndex = state.currentFrameIndex; renderPreviewFrame(state.previewIndex); }
+        updateExportPanel();
+      }
+      function addFrame() { if(state.frames.length>=MAX_FRAMES){AppToast.show({message:t('frameLimit')});return;} saveCurrentFrame(); const insert=state.currentFrameIndex+1; state.frames.splice(insert,0,makeFrame()); state.currentFrameIndex=insert; ctx.clearRect(0,0,state.width,state.height); state.undoStack=[]; state.redoStack=[]; state.dirty=true; updateHistoryButtons(); renderFrames(); updateOnionSkin(); scheduleAutosave(); AppToast.show({message:t('frameAdded'),tone:'success'}); }
+      function duplicateFrame() { if(state.frames.length>=MAX_FRAMES){AppToast.show({message:t('frameLimit')});return;} saveCurrentFrame(); const source=state.frames[state.currentFrameIndex]; const insert=state.currentFrameIndex+1; state.frames.splice(insert,0,makeFrame(source.imageData, source.duration)); state.currentFrameIndex=insert; ctx.putImageData(cloneImageData(source.imageData),0,0); state.undoStack=[]; state.redoStack=[]; state.dirty=true; updateHistoryButtons(); renderFrames(); updateOnionSkin(); scheduleAutosave(); AppToast.show({message:t('frameDuplicated'),tone:'success'}); }
+      function deleteFrame() { if(state.frames.length<=1){AppToast.show({message:t('keepOneFrame')});return;} saveCurrentFrame(); const index=state.currentFrameIndex; const removed=state.frames.splice(index,1)[0]; state.currentFrameIndex=Math.min(index,state.frames.length-1); const target=state.frames[state.currentFrameIndex]; ctx.putImageData(cloneImageData(target.imageData),0,0); state.undoStack=target.undoStack||[]; state.redoStack=target.redoStack||[]; state.dirty=true; updateHistoryButtons(); renderFrames(); updateOnionSkin(); scheduleAutosave(); AppToast.show({message:t('frameDeleted'),actionLabel:t('restore'),duration:5000,onAction:()=>{state.frames.splice(index,0,removed);state.currentFrameIndex=index;ctx.putImageData(cloneImageData(removed.imageData),0,0);state.undoStack=removed.undoStack||[];state.redoStack=removed.redoStack||[];updateHistoryButtons();renderFrames();updateOnionSkin();scheduleAutosave();AppToast.show({message:t('frameRestored'),tone:'success'});}}); }
+      function moveFrame(direction) { saveCurrentFrame(); const from=state.currentFrameIndex; const to=from+direction; if(to<0||to>=state.frames.length)return; const [frame]=state.frames.splice(from,1); state.frames.splice(to,0,frame); state.currentFrameIndex=to; state.dirty=true; renderFrames(); updateOnionSkin(); scheduleAutosave(); announce(t('frameMoved')); }
+      function setFrameDuration(value, { applyAll = false, announceChange = true } = {}) {
+        const duration = normalizeFrameDuration(value);
+        if (!duration) { $('#frameDurationInput').value = String(currentFrameDuration()); if (announceChange) AppToast.show({message:t('invalidDuration')}); return false; }
+        saveCurrentFrame();
+        if (applyAll) state.frames.forEach(frame => { frame.duration = duration; });
+        else if (state.frames[state.currentFrameIndex]) state.frames[state.currentFrameIndex].duration = duration;
+        state.dirty = true; renderFrames(); updatePreviewControls(); scheduleAutosave(); if (state.previewPlaying) schedulePreviewTick();
+        if (announceChange && applyAll) AppToast.show({message:t('durationAppliedAll'),tone:'success'});
+        return true;
+      }
+      function renderPreviewFrame(index) {
+        if (!state.frames.length || !state.width || !state.height || !previewCanvas) return;
+        const safeIndex = Math.max(0, Math.min(index, state.frames.length - 1));
+        const frame = state.frames[safeIndex];
+        previewCanvas.width = state.width; previewCanvas.height = state.height; previewCtx.imageSmoothingEnabled = false; previewCtx.clearRect(0,0,state.width,state.height); previewCtx.putImageData(frame.imageData,0,0);
+        const target = window.matchMedia('(max-width: 640px)').matches ? Math.min(280, Math.max(150, window.innerWidth - 72)) : 180;
+        const scale = Math.max(1, Math.floor(Math.min(target / state.width, target / state.height)));
+        previewCanvas.style.width = `${state.width * scale}px`; previewCanvas.style.height = `${state.height * scale}px`;
+        $('#previewStatus').textContent = `${safeIndex + 1} / ${state.frames.length} · ${frame.duration || DEFAULT_FRAME_DURATION} ms`;
+      }
+      function updatePreviewControls() {
+        const hasFrames = state.frames.length > 0;
+        $('#playPreviewButton').disabled = !hasFrames || state.previewPlaying;
+        $('#pausePreviewButton').disabled = !hasFrames || !state.previewPlaying;
+        $('#restartPreviewButton').disabled = !hasFrames;
+        $('#loopPreviewButton').disabled = !hasFrames;
+        $('#loopPreviewButton').setAttribute('aria-pressed', String(state.previewLoop));
+        if (hasFrames) renderPreviewFrame(state.previewIndex);
+      }
+      function clearPreviewTimer() { if (state.previewTimer) { clearTimeout(state.previewTimer); state.previewTimer = 0; } }
+      function schedulePreviewTick() {
+        clearPreviewTimer(); if (!state.previewPlaying || !state.frames.length) return;
+        const duration = state.frames[state.previewIndex]?.duration || DEFAULT_FRAME_DURATION;
+        state.previewTimer = window.setTimeout(() => {
+          if (!state.previewPlaying) return;
+          const last = state.previewIndex >= state.frames.length - 1;
+          if (last && !state.previewLoop) { pausePreview({ announceChange:false }); return; }
+          state.previewIndex = last ? 0 : state.previewIndex + 1; renderPreviewFrame(state.previewIndex); schedulePreviewTick();
+        }, duration);
+      }
+      function playPreview({ announceChange = true } = {}) {
+        if (!state.frames.length || state.previewPlaying) return; saveCurrentFrame(); state.previewPlaying = true;
+        if (state.previewIndex < 0 || state.previewIndex >= state.frames.length) state.previewIndex = 0;
+        renderPreviewFrame(state.previewIndex); updatePreviewControls(); schedulePreviewTick(); if (announceChange) announce(t('previewStarted'));
+      }
+      function pausePreview({ announceChange = true } = {}) {
+        clearPreviewTimer(); state.previewPlaying = false; updatePreviewControls(); if (announceChange) announce(t('previewPaused'));
+      }
+      function restartPreview() {
+        saveCurrentFrame(); state.previewIndex = 0; renderPreviewFrame(0); if (state.previewPlaying) schedulePreviewTick(); updatePreviewControls(); announce(t('previewRestarted'));
+      }
+      function togglePreviewLoop() { state.previewLoop = !state.previewLoop; updatePreviewControls(); announce(t(state.previewLoop ? 'loopOn' : 'loopOff')); }
+
+      function validateDimension(value) { const numeric = Number(value); return Number.isInteger(numeric) && numeric >= 1 && numeric <= 128 ? numeric : null; }
+      function createProject(width, height) {
+        pausePreview({announceChange:false}); clearSelection(); state.clipboard=null; state.importReport=null; renderImportReport(); state.width = width; state.height = height; state.dirty = false; state.drawing = false; state.lastPoint = null; state.undoStack = []; state.redoStack = []; state.touchPointers.clear(); state.touchGesture = null; state.touchGestureBlocked = false;
+        canvas.width = width; canvas.height = height; onionCanvas.width=width; onionCanvas.height=height; ctx.imageSmoothingEnabled = false; onionCtx.imageSmoothingEnabled=false; ctx.clearRect(0, 0, width, height); onionCtx.clearRect(0,0,width,height); state.frames=[makeFrame(captureCanvas(), DEFAULT_FRAME_DURATION)]; state.currentFrameIndex=0; state.previewIndex=0; state.outputBase='pixel-animation'; outputFilename.value=state.outputBase; updateHistoryButtons(); renderFrames(); updatePreviewControls();
+        $('#projectSize').textContent = `${width} × ${height}`; $('#setupView').hidden = true; $('#editorView').hidden = false; document.body.dataset.projectState='editing'; setMobilePage('edit');
+        updateOnionSkin(); scheduleAutosave(); requestAnimationFrame(() => { fitCanvas(); canvas.focus({ preventScroll: true }); });
+        AppToast.show({ message: t('created'), tone: 'success' }); announce(`${t('created')}: ${width} × ${height}`);
+      }
+      function updateCanvasPresentation() {
+        if (!state.width || !state.height) return;
+        surface.style.width = `${state.width * state.scale}px`; surface.style.height = `${state.height * state.scale}px`; surface.style.setProperty('--pixel-size', `${state.scale}px`);
+        gridOverlay.hidden = !state.grid || state.scale < 4; $('#gridButton').setAttribute('aria-pressed', String(state.grid));
+        $('#displayScaleValue').textContent = `${state.scale}×`; $('#toolbarScaleValue').textContent = `${state.scale}×`;
+        $('#zoomOutButton').disabled = state.scale <= 1; $('#zoomInButton').disabled = state.scale >= MAX_SCALE; updateSelectionOverlay();
+      }
+      function setScale(value, { anchorClientX = null, anchorClientY = null } = {}) {
+        if (!state.width || !state.height) return;
+        const next = Math.max(1, Math.min(MAX_SCALE, Math.round(value))); if (next === state.scale) return;
+        const oldRect = canvas.getBoundingClientRect();
+        const anchorX = Number.isFinite(anchorClientX) ? anchorClientX : stage.getBoundingClientRect().left + stage.clientWidth / 2;
+        const anchorY = Number.isFinite(anchorClientY) ? anchorClientY : stage.getBoundingClientRect().top + stage.clientHeight / 2;
+        const logicalX = oldRect.width ? (anchorX - oldRect.left) / state.scale : state.width / 2;
+        const logicalY = oldRect.height ? (anchorY - oldRect.top) / state.scale : state.height / 2;
+        state.scale = next; updateCanvasPresentation();
+        const newRect = canvas.getBoundingClientRect(); stage.scrollLeft += (newRect.left + logicalX * state.scale) - anchorX; stage.scrollTop += (newRect.top + logicalY * state.scale) - anchorY;
+      }
+      function fitCanvas({ announceChange = false } = {}) {
+        if (!state.width || !state.height || $('#editorView').hidden) return;
+        const availableWidth = Math.max(80, stage.clientWidth - 32); const availableHeight = Math.max(80, stage.clientHeight - 32);
+        state.fitScale = Math.max(1, Math.min(MAX_SCALE, Math.floor(Math.min(availableWidth / state.width, availableHeight / state.height))));
+        state.scale = state.fitScale; updateCanvasPresentation(); requestAnimationFrame(() => { stage.scrollLeft = Math.max(0,(stage.scrollWidth-stage.clientWidth)/2); stage.scrollTop = Math.max(0,(stage.scrollHeight-stage.clientHeight)/2); });
+        if (announceChange) announce(t('fitApplied'));
+      }
+      function toggleGrid() { state.grid = !state.grid; updateCanvasPresentation(); scheduleAutosave(); announce(state.grid ? t('gridOn') : t('gridOff')); }
+      function eventToPixel(event) {
+        const rect = canvas.getBoundingClientRect(); const x = Math.floor((event.clientX - rect.left) * canvas.width / rect.width); const y = Math.floor((event.clientY - rect.top) * canvas.height / rect.height);
+        return { x: Math.min(canvas.width - 1, Math.max(0, x)), y: Math.min(canvas.height - 1, Math.max(0, y)) };
+      }
+      function hideBrushPreview() {
+        brushPreview.classList.remove('active','eraser');
+      }
+      function updateBrushPreview(event) {
+        if (!state.width || !state.height || (state.tool !== 'pencil' && state.tool !== 'eraser') || state.pan || state.spacePressed || state.touchGesture) { hideBrushPreview(); return; }
+        if (event.pointerType === 'touch') { hideBrushPreview(); return; }
+        const rect = canvas.getBoundingClientRect();
+        if (event.clientX < rect.left || event.clientX >= rect.right || event.clientY < rect.top || event.clientY >= rect.bottom) { hideBrushPreview(); return; }
+        const point = eventToPixel(event);
+        const offset = Math.floor(state.brushSize / 2);
+        const rawX = point.x - offset;
+        const rawY = point.y - offset;
+        const x = Math.max(0, rawX);
+        const y = Math.max(0, rawY);
+        const right = Math.min(state.width, rawX + state.brushSize);
+        const bottom = Math.min(state.height, rawY + state.brushSize);
+        if (right <= x || bottom <= y) { hideBrushPreview(); return; }
+        brushPreview.style.left = `${x * state.scale}px`;
+        brushPreview.style.top = `${y * state.scale}px`;
+        brushPreview.style.width = `${(right - x) * state.scale}px`;
+        brushPreview.style.height = `${(bottom - y) * state.scale}px`;
+        brushPreview.classList.toggle('eraser', state.tool === 'eraser');
+        brushPreview.classList.add('active');
+      }
+      function paintPoint(x, y) {
+        const size = state.brushSize; const offset = Math.floor(size / 2); const px = x - offset; const py = y - offset;
+        if (state.tool === 'eraser') ctx.clearRect(px, py, size, size); else { ctx.fillStyle = state.color; ctx.fillRect(px, py, size, size); }
+      }
+      function drawInterpolated(from, to) {
+        let x0 = from.x; let y0 = from.y; const x1 = to.x; const y1 = to.y;
+        const dx = Math.abs(x1 - x0); const sx = x0 < x1 ? 1 : -1; const dy = -Math.abs(y1 - y0); const sy = y0 < y1 ? 1 : -1; let error = dx + dy;
+        while (true) { paintPoint(x0, y0); if (x0 === x1 && y0 === y1) break; const twice = 2 * error; if (twice >= dy) { error += dy; x0 += sx; } if (twice <= dx) { error += dx; y0 += sy; } }
+      }
+      function beginStroke(event) {
+        state.strokeBefore = captureCanvas(); state.drawing = true; state.pointerId = event.pointerId; canvas.setPointerCapture?.(event.pointerId); const point = eventToPixel(event); state.lastPoint = point; paintPoint(point.x, point.y);
+      }
+      function continueStroke(event) {
+        if (!state.drawing || event.pointerId !== state.pointerId) return; const point = eventToPixel(event); if (state.lastPoint && (point.x !== state.lastPoint.x || point.y !== state.lastPoint.y)) drawInterpolated(state.lastPoint, point); state.lastPoint = point;
+      }
+      function finishStroke(event) {
+        if (!state.drawing || event.pointerId !== state.pointerId) return; state.drawing = false; state.pointerId = null; state.lastPoint = null; const before = state.strokeBefore; state.strokeBefore = null; commitHistory(before);
+        try { if (canvas.hasPointerCapture?.(event.pointerId)) canvas.releasePointerCapture(event.pointerId); } catch { /* already released */ }
+      }
+      function cancelStrokeForGesture() {
+        if (!state.drawing) return; if (state.strokeBefore) ctx.putImageData(state.strokeBefore,0,0); state.drawing = false; state.pointerId = null; state.lastPoint = null; state.strokeBefore = null;
+      }
+      function floodFill(point) {
+        const image = ctx.getImageData(0,0,canvas.width,canvas.height); const data=image.data; const start=(point.y*canvas.width+point.x)*4;
+        const target=[data[start],data[start+1],data[start+2],data[start+3]]; const replacement=hexToRgba(state.color);
+        if (target.every((value,index)=>value===replacement[index])) return false;
+        const matches = index => data[index]===target[0] && data[index+1]===target[1] && data[index+2]===target[2] && data[index+3]===target[3];
+        const stack=[point.y*canvas.width+point.x];
+        while(stack.length){ const cell=stack.pop(); const offset=cell*4; if(!matches(offset)) continue; data[offset]=replacement[0]; data[offset+1]=replacement[1]; data[offset+2]=replacement[2]; data[offset+3]=255; const x=cell%canvas.width; const y=Math.floor(cell/canvas.width); if(x>0)stack.push(cell-1); if(x<canvas.width-1)stack.push(cell+1); if(y>0)stack.push(cell-canvas.width); if(y<canvas.height-1)stack.push(cell+canvas.width); }
+        ctx.putImageData(image,0,0); return true;
+      }
+      function sampleColor(point) {
+        const pixel=ctx.getImageData(point.x,point.y,1,1).data; if(pixel[3]===0){ AppToast.show({message:t('transparentPixel')}); announce(t('transparentPixel')); return; }
+        applyColor(rgbaToHex(pixel[0],pixel[1],pixel[2]), { announceChange: true, remember: true });
+      }
+      function runInstantTool(point) {
+        if (state.tool === 'fill') { const before=captureCanvas(); if (floodFill(point)) { commitHistory(before); rememberColor(state.color); } }
+        else if (state.tool === 'eyedropper') sampleColor(point);
+      }
+
+
+      function normalizeSelection(a,b){ const x=Math.min(a.x,b.x), y=Math.min(a.y,b.y); return {x,y,w:Math.abs(a.x-b.x)+1,h:Math.abs(a.y-b.y)+1}; }
+      function pointInSelection(point){ const r=state.selection; return Boolean(r && point.x>=r.x && point.y>=r.y && point.x<r.x+r.w && point.y<r.y+r.h); }
+      function updateSelectionOverlay(){
+        const r=state.selection; const active=Boolean(r && state.width && state.tool==='selection'); selectionOverlay.classList.toggle('active',active); $('#selectionActions').classList.toggle('active',active);
+        if(active){ selectionOverlay.style.left=`${r.x*state.scale}px`; selectionOverlay.style.top=`${r.y*state.scale}px`; selectionOverlay.style.width=`${r.w*state.scale}px`; selectionOverlay.style.height=`${r.h*state.scale}px`; }
+        canvas.classList.toggle('is-selecting', state.tool==='selection' && !active); canvas.classList.toggle('has-selection', active);
+        ['copySelectionButton','cutSelectionButton','deleteSelectionButton'].forEach(id=>$('#'+id).disabled=!active); $('#pasteSelectionButton').disabled=!(active && state.clipboard); $('#clearSelectionButton').disabled=!active;
+      }
+      function clearSelection({announceChange=false}={}){ state.selection=null; state.selectionDrag=null; updateSelectionOverlay(); if(announceChange) announce(t('clearSelection')); }
+      function selectionImage(){ const r=state.selection; return r ? ctx.getImageData(r.x,r.y,r.w,r.h) : null; }
+      function copySelection(){ if(!state.selection){AppToast.show({message:t('noSelection')});return false;} state.clipboard=cloneImageData(selectionImage()); updateSelectionOverlay(); AppToast.show({message:t('selectionCopied'),tone:'success'}); return true; }
+      function deleteSelection(){ if(!state.selection){AppToast.show({message:t('noSelection')});return false;} const r=state.selection,before=captureCanvas(); ctx.clearRect(r.x,r.y,r.w,r.h); commitHistory(before); AppToast.show({message:t('selectionDeleted')}); return true; }
+      function cutSelection(){ if(!copySelection())return; const r=state.selection,before=captureCanvas(); ctx.clearRect(r.x,r.y,r.w,r.h); commitHistory(before); AppToast.show({message:t('selectionCut'),tone:'success'}); }
+      function pasteSelection(){ if(!state.selection){AppToast.show({message:t('selectPasteTarget')});return;} if(!state.clipboard){AppToast.show({message:t('clipboardEmpty')});return;} const before=captureCanvas(); const x=state.selection.x, y=state.selection.y; ctx.putImageData(state.clipboard,x,y); state.selection={x,y,w:Math.min(state.clipboard.width,state.width-x),h:Math.min(state.clipboard.height,state.height-y)}; commitHistory(before); updateSelectionOverlay(); AppToast.show({message:t('selectionPasted'),tone:'success'}); }
+      function applySelectionMove(dx,dy){ const r=state.selection;if(!r||(dx===0&&dy===0))return false; const nx=Math.max(0,Math.min(state.width-r.w,r.x+dx)); const ny=Math.max(0,Math.min(state.height-r.h,r.y+dy)); if(nx===r.x&&ny===r.y)return false; const before=captureCanvas(); const image=ctx.getImageData(r.x,r.y,r.w,r.h); ctx.clearRect(r.x,r.y,r.w,r.h); ctx.putImageData(image,nx,ny); state.selection={x:nx,y:ny,w:r.w,h:r.h}; commitHistory(before); updateSelectionOverlay(); return true; }
+      function beginSelection(event){ const point=eventToPixel(event); if(state.selection && pointInSelection(point)){ state.selectionDrag={mode:'move',pointerId:event.pointerId,start:point,origin:{...state.selection}}; } else { state.selection={x:point.x,y:point.y,w:1,h:1}; state.selectionDrag={mode:'select',pointerId:event.pointerId,start:point}; } try{canvas.setPointerCapture?.(event.pointerId);}catch{} updateSelectionOverlay(); }
+      function continueSelection(event){ const d=state.selectionDrag;if(!d||d.pointerId!==event.pointerId)return; const point=eventToPixel(event); if(d.mode==='select') state.selection=normalizeSelection(d.start,point); else { const dx=point.x-d.start.x,dy=point.y-d.start.y; state.selection={...d.origin,x:Math.max(0,Math.min(state.width-d.origin.w,d.origin.x+dx)),y:Math.max(0,Math.min(state.height-d.origin.h,d.origin.y+dy))}; } updateSelectionOverlay(); }
+      function finishSelection(event){ const d=state.selectionDrag;if(!d||d.pointerId!==event.pointerId)return; if(d.mode==='move'){ const target={...state.selection}; state.selection={...d.origin}; applySelectionMove(target.x-d.origin.x,target.y-d.origin.y); } state.selectionDrag=null; updateSelectionOverlay(); }
+
+      function startPan(event) {
+        state.pan = { pointerId:event.pointerId, x:event.clientX, y:event.clientY, scrollLeft:stage.scrollLeft, scrollTop:stage.scrollTop }; stage.classList.add('is-panning'); canvas.classList.add('is-panning');
+        try { event.target.setPointerCapture?.(event.pointerId); } catch { /* optional */ }
+      }
+      function continuePan(event) { if(!state.pan || state.pan.pointerId!==event.pointerId) return; stage.scrollLeft=state.pan.scrollLeft-(event.clientX-state.pan.x); stage.scrollTop=state.pan.scrollTop-(event.clientY-state.pan.y); }
+      function endPan(event) { if(!state.pan || state.pan.pointerId!==event.pointerId) return; state.pan=null; stage.classList.remove('is-panning'); canvas.classList.remove('is-panning'); }
+      function touchCenterAndDistance() {
+        const points=[...state.touchPointers.values()].slice(0,2); if(points.length<2) return null; const dx=points[1].x-points[0].x; const dy=points[1].y-points[0].y; return { x:(points[0].x+points[1].x)/2, y:(points[0].y+points[1].y)/2, distance:Math.max(1,Math.hypot(dx,dy)) };
+      }
+      function startTouchGesture() {
+        cancelStrokeForGesture(); state.deferredTouchAction=null; const geometry=touchCenterAndDistance(); if(!geometry) return;
+        const rect=canvas.getBoundingClientRect(); state.touchGestureBlocked=true; state.touchGesture={ startDistance:geometry.distance, startScale:state.scale, logicalX:(geometry.x-rect.left)/state.scale, logicalY:(geometry.y-rect.top)/state.scale };
+      }
+      function continueTouchGesture() {
+        if(!state.touchGesture) return; const geometry=touchCenterAndDistance(); if(!geometry) return; const next=Math.max(1,Math.min(MAX_SCALE,Math.round(state.touchGesture.startScale*(geometry.distance/state.touchGesture.startDistance)))); state.scale=next; updateCanvasPresentation();
+        const rect=canvas.getBoundingClientRect(); stage.scrollLeft += (rect.left + state.touchGesture.logicalX*state.scale) - geometry.x; stage.scrollTop += (rect.top + state.touchGesture.logicalY*state.scale) - geometry.y;
+      }
+      function handleCanvasPointerDown(event) {
+        if (event.pointerType === 'mouse' && event.button !== 0 && event.button !== 1) return; event.preventDefault();
+        if (event.pointerType === 'touch') {
+          state.touchPointers.set(event.pointerId,{x:event.clientX,y:event.clientY});
+          if(state.touchPointers.size>=2){ startTouchGesture(); return; }
+          if(state.touchGestureBlocked) return;
+          if(state.tool==='pencil'||state.tool==='eraser') beginStroke(event); else if(state.tool==='selection') beginSelection(event); else state.deferredTouchAction={pointerId:event.pointerId,point:eventToPixel(event)}; return;
+        }
+        if (event.button===1 || state.spacePressed) { startPan(event); return; }
+        if (state.tool==='pencil'||state.tool==='eraser') beginStroke(event); else if(state.tool==='selection') beginSelection(event); else runInstantTool(eventToPixel(event));
+      }
+      function handleCanvasPointerMove(event) {
+        if(event.pointerType!=='touch') updateBrushPreview(event);
+        if(event.pointerType==='touch'){
+          if(state.touchPointers.has(event.pointerId)) state.touchPointers.set(event.pointerId,{x:event.clientX,y:event.clientY});
+          if(state.touchGesture){ event.preventDefault(); continueTouchGesture(); return; }
+          if(state.drawing){ event.preventDefault(); continueStroke(event); } else if(state.selectionDrag){ event.preventDefault(); continueSelection(event); }
+          else if(state.deferredTouchAction?.pointerId===event.pointerId) state.deferredTouchAction.point=eventToPixel(event); return;
+        }
+        if(state.pan){ event.preventDefault(); continuePan(event); return; }
+        if(state.drawing){ event.preventDefault(); continueStroke(event); } else if(state.selectionDrag){ event.preventDefault(); continueSelection(event); }
+      }
+      function handleCanvasPointerEnd(event) {
+        if(event.pointerType==='touch'){
+          const wasGesture=Boolean(state.touchGesture)||state.touchGestureBlocked; state.touchPointers.delete(event.pointerId);
+          if(wasGesture){ if(state.touchPointers.size<2) state.touchGesture=null; if(state.touchPointers.size===0) state.touchGestureBlocked=false; state.deferredTouchAction=null; return; }
+          if(state.drawing) finishStroke(event); else if(state.selectionDrag) finishSelection(event); else if(state.deferredTouchAction?.pointerId===event.pointerId){ runInstantTool(state.deferredTouchAction.point); state.deferredTouchAction=null; } return;
+        }
+        if(state.pan){ endPan(event); return; } if(state.selectionDrag){finishSelection(event);return;} finishStroke(event);
+      }
+      async function returnToSetup() {
+        if (state.width) { const accepted = await AppConfirm.ask({ title:t('confirmTitle'), message:t('newConfirmMessage'), confirmLabel:t('confirmNew'), cancelLabel:t('cancel'), tone:'danger' }); if(!accepted)return; }
+        pausePreview({announceChange:false}); clearTimeout(state.autosaveTimer); state.autosaveQueued=false; await waitForAutosaveIdle(); await clearAutosave(); state.width=0; state.height=0; state.selection=null; state.selectionDrag=null; state.clipboard=null; state.importReport=null; renderImportReport(); state.dirty=false; state.undoStack=[]; state.redoStack=[]; state.frames=[]; state.currentFrameIndex=0; state.previewIndex=0; state.touchPointers.clear(); state.touchGesture=null; state.touchGestureBlocked=false; ctx.clearRect(0,0,canvas.width,canvas.height); onionCtx.clearRect(0,0,onionCanvas.width,onionCanvas.height); onionCanvas.hidden=true; updateHistoryButtons(); updatePreviewControls(); $('#editorView').hidden=true; $('#setupView').hidden=false; document.body.dataset.projectState='setup'; $('#customError').textContent=''; $('#setupTitle').focus?.(); window.scrollTo({top:0,behavior:'smooth'});
+      }
+
+      $$('[data-preset]').forEach(button => button.addEventListener('click', () => { const size=Number(button.dataset.preset); createProject(size,size); }));
+      $('#createCustomButton').addEventListener('click', () => { const width=validateDimension($('#customWidth').value); const height=validateDimension($('#customHeight').value); if(!width||!height){ $('#customError').textContent=t('invalidCustom'); $('#customWidth').focus(); return; } $('#customError').textContent=''; createProject(width,height); });
+      ['customWidth','customHeight'].forEach(id => $('#'+id).addEventListener('keydown', event => { if(event.key==='Enter') $('#createCustomButton').click(); }));
+      $$('[data-tool]').forEach(button => button.addEventListener('click', () => setTool(button.dataset.tool)));
+      $$('[data-mobile-tool]').forEach(button => button.addEventListener('click', () => setTool(button.dataset.mobileTool)));
+      $$('[data-brush]').forEach(button => button.addEventListener('click', () => setBrushSize(button.dataset.brush)));
+      $$('[data-mobile-brush]').forEach(button => button.addEventListener('click', () => setBrushSize(button.dataset.mobileBrush)));
+      [$('#colorPicker'),$('#mobileColorPicker')].forEach(input => { input.addEventListener('input', event => applyColor(event.target.value)); input.addEventListener('change', event => applyColor(event.target.value,{announceChange:true,remember:true})); });
+      [$('#hexColor'),$('#mobileHexColor')].forEach(input => { input.addEventListener('change', () => { if(!applyColor(input.value,{announceChange:true,remember:true})) input.value=state.previousValidColor; }); input.addEventListener('blur', () => { if(!applyColor(input.value)) input.value=state.previousValidColor; }); input.addEventListener('keydown', event => { if(event.key==='Enter'){event.preventDefault();input.blur();} }); });
+      $('#mobileUndoButton').addEventListener('click',undo); $('#mobileRedoButton').addEventListener('click',redo);
+      ['copySelectionButton','cutSelectionButton','pasteSelectionButton','deleteSelectionButton','clearSelectionButton'].forEach(id => $('#'+id).addEventListener('click', ({currentTarget}) => ({copySelectionButton:copySelection,cutSelectionButton:cutSelection,pasteSelectionButton:pasteSelection,deleteSelectionButton:deleteSelection,clearSelectionButton:()=>clearSelection({announceChange:true})})[currentTarget.id]()));
+      $('#addFrameButton').addEventListener('click',addFrame); $('#duplicateFrameButton').addEventListener('click',duplicateFrame); $('#deleteFrameButton').addEventListener('click',deleteFrame); $('#moveFrameLeftButton').addEventListener('click',()=>moveFrame(-1)); $('#moveFrameRightButton').addEventListener('click',()=>moveFrame(1));
+      $('#frameDurationInput').addEventListener('change', event => setFrameDuration(event.target.value)); $('#frameDurationInput').addEventListener('keydown', event => { if(event.key==='Enter'){event.preventDefault();event.currentTarget.blur();} }); $('#applyDurationAllButton').addEventListener('click', () => setFrameDuration($('#frameDurationInput').value,{applyAll:true}));
+      ['onionSkinButton','mobileOnionSkinButton'].forEach(id => $('#'+id).addEventListener('click', toggleOnionSkin));
+      $('#playPreviewButton').addEventListener('click', () => playPreview()); $('#pausePreviewButton').addEventListener('click', () => pausePreview()); $('#restartPreviewButton').addEventListener('click', restartPreview); $('#loopPreviewButton').addEventListener('click', togglePreviewLoop);
+      $$('[data-mobile-page-button]').forEach(button => button.addEventListener('click', () => setMobilePage(button.dataset.mobilePageButton)));
+      $$('[data-png-scale]').forEach(button => button.addEventListener('click',()=>{state.pngScale=Number(button.dataset.pngScale)||1;updateExportPanel();}));
+      $$('[data-sprite-layout]').forEach(button => button.addEventListener('click',()=>{state.spriteLayout=button.dataset.spriteLayout==='grid'?'grid':'horizontal';updateExportPanel();}));
+      $('#spriteColumns').addEventListener('change',event=>{state.spriteColumns=Math.max(1,Math.min(Math.max(1,state.frames.length),Math.round(Number(event.target.value)||1)));event.target.value=String(state.spriteColumns);updateExportPanel();});
+      outputFilename.addEventListener('input',()=>{state.outputBase=sanitizeFilenameBase(outputFilename.value);updateExportPanel();scheduleAutosave();}); outputFilename.addEventListener('change',()=>syncOutputBase()); outputFilename.addEventListener('blur',()=>syncOutputBase());
+      $('#savePngButton').addEventListener('click',saveCurrentFramePng); $('#saveGifButton').addEventListener('click',saveAnimatedGif); $('#saveSpriteSheetButton').addEventListener('click',saveSpriteSheet);
+      ['setupImportButton','editorImportButton'].forEach(id=>$('#'+id).addEventListener('click',()=>$('#pngFileInput').click())); $('#pngFileInput').addEventListener('change',event=>importPngFiles(event.target.files)); installPngDropTarget($('#setupImportZone')); installPngDropTarget($('#editorView'));
+      $('#zoomOutButton').addEventListener('click', () => setScale(state.scale-1)); $('#zoomInButton').addEventListener('click', () => setScale(state.scale+1)); $('#fitButton').addEventListener('click', () => fitCanvas({announceChange:true})); $('#gridButton').addEventListener('click',toggleGrid);
+      $('#newCanvasButton').addEventListener('click', returnToSetup);
+      canvas.addEventListener('pointerdown', handleCanvasPointerDown); canvas.addEventListener('pointermove', handleCanvasPointerMove); canvas.addEventListener('pointerup', handleCanvasPointerEnd); canvas.addEventListener('pointercancel', handleCanvasPointerEnd); canvas.addEventListener('pointerenter', event => updateBrushPreview(event)); canvas.addEventListener('pointerleave', hideBrushPreview); canvas.addEventListener('contextmenu', event => event.preventDefault());
+      stage.addEventListener('pointerdown', event => { if(event.target===canvas||event.target===surface) return; if(event.pointerType==='mouse' && (event.button===1||state.spacePressed)){event.preventDefault();startPan(event);} });
+      stage.addEventListener('pointermove', event => { if(state.pan) {event.preventDefault();continuePan(event);} }); stage.addEventListener('pointerup',endPan); stage.addEventListener('pointercancel',endPan);
+      stage.addEventListener('wheel', event => { if($('#editorView').hidden) return; event.preventDefault(); const delta=event.deltaY<0?1:-1; setScale(state.scale+delta,{anchorClientX:event.clientX,anchorClientY:event.clientY}); }, {passive:false});
+      window.addEventListener('keydown', event => { const target=event.target; const typing=target instanceof HTMLInputElement||target instanceof HTMLTextAreaElement||target instanceof HTMLSelectElement||target?.isContentEditable; if(typing||document.querySelector('dialog[open]')) return; const modifier=event.ctrlKey||event.metaKey; if(modifier&&event.key.toLowerCase()==='z'){event.preventDefault(); if(event.shiftKey)redo();else undo();return;} if(modifier&&event.key.toLowerCase()==='y'){event.preventDefault();redo();return;} if(state.tool==='selection'&&modifier&&event.key.toLowerCase()==='c'){event.preventDefault();copySelection();return;} if(state.tool==='selection'&&modifier&&event.key.toLowerCase()==='x'){event.preventDefault();cutSelection();return;} if(state.tool==='selection'&&modifier&&event.key.toLowerCase()==='v'){event.preventDefault();pasteSelection();return;} if(state.tool==='selection'&&(event.key==='Delete'||event.key==='Backspace')){event.preventDefault();deleteSelection();return;} if(state.tool==='selection'&&state.selection&&['ArrowLeft','ArrowRight','ArrowUp','ArrowDown'].includes(event.key)){event.preventDefault();const step=event.shiftKey?5:1;applySelectionMove(event.key==='ArrowLeft'?-step:event.key==='ArrowRight'?step:0,event.key==='ArrowUp'?-step:event.key==='ArrowDown'?step:0);return;} if(event.code==='Escape'&&state.selection){event.preventDefault();clearSelection();return;} if(event.code==='Space'&&!$('#editorView').hidden){event.preventDefault();state.spacePressed=true;hideBrushPreview();canvas.classList.add('is-pan-ready');} });
+      window.addEventListener('keyup', event => { if(event.code==='Space'){state.spacePressed=false;canvas.classList.remove('is-pan-ready');} });
+      window.addEventListener('blur', () => { state.spacePressed=false; hideBrushPreview(); canvas.classList.remove('is-pan-ready'); });
+
+      $('#languageButton').addEventListener('click', () => { language=language==='ja'?'en':'ja'; writeStorage(storageKeyLanguage,language); applyLanguage(); });
+      const helpDialog=$('#helpDialog'); $('#helpButton').addEventListener('click',()=>helpDialog.showModal()); $('#closeHelpButton').addEventListener('click',()=>helpDialog.close());
+      helpDialog.addEventListener('click', event => { const rect=helpDialog.getBoundingClientRect(); const outside=event.clientX<rect.left||event.clientX>rect.right||event.clientY<rect.top||event.clientY>rect.bottom; if(outside)helpDialog.close(); });
+      window.addEventListener('resize', () => requestAnimationFrame(() => { if(state.scale===state.fitScale) fitCanvas(); else updateCanvasPresentation(); if(state.frames.length) renderPreviewFrame(state.previewIndex); updateExportPanel(); }));
+
+      $('#versionBadge').textContent = `v${APP_CONFIG.version}`; $('#buildVersion').textContent = APP_CONFIG.version; $('#builtAt').textContent = BUILD_MANIFEST.generatedAtUtc || '—'; $('#dependencyCount').textContent = String(BUILD_MANIFEST.dependencies?.length || 0);
+      document.body.dataset.projectState='setup'; outputFilename.value=state.outputBase; setMobilePage('edit'); setTool('pencil', { announceChange: false }); setBrushSize(1, { announceChange: false }); applyColor('#16624F', { remember: true }); updateHistoryButtons(); applyLanguage(); initializePersistence();
+    })();
+  </script>
+</body>
+</html>
