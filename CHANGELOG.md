@@ -2,6 +2,15 @@
 
 All notable changes to Pixel Animation Studio will be documented in this file.
 
+## [Unreleased]
+
+### Fixed
+
+- Preserve native Space behavior on focused buttons, links, and disclosure controls instead of intercepting it for canvas panning. Preview controls, mobile workspace tabs, and export actions can again be operated with Space.
+- Return keyboard focus to the canvas when drawing starts, so Space-drag panning continues to work after using a toolbar control.
+- Keep canvas Space-drag panning, editable-field/dialog protection, editing shortcuts, and keyup/blur cleanup unchanged; document the keyboard focus behavior in both languages.
+- Add executable keyboard regression checks against source, readable, root standalone, and decompressed self-extracting releases, including root-artifact parity.
+
 ## [1.0.0] - 2026-09-22
 
 ### Changed

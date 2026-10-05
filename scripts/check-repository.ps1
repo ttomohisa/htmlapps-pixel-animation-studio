@@ -233,6 +233,11 @@ $buildArguments = @{}
 if ($ForceDownload) { $buildArguments.ForceDownload = $true }
 & (Join-Path $Root "build-standalone.ps1") @buildArguments
 
+$node = Get-Command node -ErrorAction SilentlyContinue
+if (-not $node) { throw "Node.js 18 or later is required for the keyboard regression tests." }
+& $node.Source --test (Join-Path $Root "scripts\test-keyboard-shortcuts.cjs")
+if ($LASTEXITCODE -ne 0) { throw "Keyboard regression tests failed." }
+
 Write-Host "[OK] Repository check passed." -ForegroundColor Green
 
 # WebRTC readiness DataChannel regression
@@ -249,4 +254,3 @@ if (-not $webrtcReadyText.Contains("readyChannelLabel is required when createDef
 if (-not $webrtcReadyText.Contains("options.requireReadyChannelOpen!==false&&(!readyChannel||readyChannel.readyState!=='open')")) {
   throw "WebRTC application-ready must wait for the designated DataChannel to open."
 }
-
