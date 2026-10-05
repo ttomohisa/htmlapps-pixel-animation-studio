@@ -166,6 +166,9 @@ v1.0.0 freezes the first stable feature set and carries forward the v0.9.1 inter
 - Active tools, Grid, PNG scale, and Sprite Sheet layout use `aria-pressed`, not color alone.
 - Native form labels are associated with filename and Grid column inputs.
 - Keyboard focus is visible.
+- Space and Enter retain native button activation, including Preview and smartphone navigation. Space does not enter canvas pan mode while a button, link, disclosure, editable field, or dialog owns keyboard input.
+- With the canvas or a noninteractive editor surface focused, Space + Drag continues to pan; key release and window blur clear pan readiness.
+- Starting a canvas pointer interaction returns keyboard focus to the canvas without scrolling the page, so prior toolbar focus does not capture the next Space-drag gesture.
 - Existing Undo / Redo and Selection keyboard shortcuts remain intact.
 - Help / confirmation dialogs support Escape and focus restoration.
 - Export status changes are surfaced through the existing toast / `aria-live` system.
@@ -185,6 +188,7 @@ Current stable desktop and mobile Chromium, Firefox, and Safari. Direct `file://
 - Selection clears when leaving the tool; Paste requires an active destination selection.
 - Add / Duplicate / Delete / Reorder works up to 128 frames, including delete Undo.
 - Per-frame timing, Apply to all, Preview, Loop, Restart, and Onion Skin work as specified.
+- Keyboard Space activates focused toolbar, Preview, mobile-page, and export buttons in Japanese and English without starting pan mode. Canvas Space + Drag, key-repeat, key release after focus changes, dialog protection, and blur cleanup remain intact.
 - PNG single/multi import, Drag & Drop, dimension validation, and partial-failure reporting work without silent resize.
 - Current-frame PNG 1×/2×/4×/8×, Animated GIF, Horizontal Sprite Sheet, and Grid Sprite Sheet save valid files with sanitized filenames.
 - Autosave/recovery works when IndexedDB is available; storage-unavailable mode keeps editing/export usable and explains the reload risk.

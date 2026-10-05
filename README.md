@@ -81,6 +81,8 @@ The v1.0.0 application has no runtime third-party package dependency, so the bui
 
 ### Selection and keyboard shortcuts
 
+Use `Tab` to focus controls, then `Space` or `Enter` to activate a button. With the canvas focused, `Space + Drag` pans the canvas. Form fields and dialogs retain their normal keyboard behavior.
+
 | Shortcut | Action |
 | --- | --- |
 | `Ctrl` / `⌘` + `Z` | Undo |
@@ -167,6 +169,8 @@ Each deployment rebuilds the standalone HTML and runs the repository verificatio
 ```powershell
 ./scripts/check-repository.ps1
 ```
+
+The repository check also runs the keyboard regression suite with Node.js 18 or later (no npm dependencies). After changing source, regenerate the root downloadable copy with `Copy-Item dist/index.html pixel-animation-studio.html`; the check verifies it matches the readable build apart from its build timestamp.
 
 The repository check validates the template contract, standalone output, CSP/network policy, dependency metadata, favicon embedding, self-extracting output, and unresolved build placeholders.
 
