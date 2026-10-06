@@ -23,7 +23,7 @@ GitHub Pages delivers the initial HTML. After it loads, drawing, PNG import, fra
 - **See the exact brush footprint** — Pencil and Eraser preview the actual 1 / 2 / 4 px area that will be affected before drawing.
 - **Build animations frame by frame** — Add, duplicate, delete, reorder, and edit up to 128 frames with independent Undo / Redo history.
 - **Tune timing and preview motion** — Set each frame from 20 to 5000 ms, apply one delay to all frames, and use Play / Pause / Restart / Loop plus previous-frame Onion Skin.
-- **Move pixel regions with Selection** — Move, copy, cut, paste, delete, and nudge selected pixels. Paste requires an active destination selection.
+- **Move pixel regions with Selection** — Select the entire canvas with Select all, or draw a rectangle, then move, copy, cut, paste, delete, and nudge selected pixels. Paste requires an active destination selection.
 - **Import PNG frames** — Start from one PNG or add multiple matching-size PNG files through file selection or Drag & Drop, with invalid files reported separately.
 - **Export for different uses** — Save the current frame as scaled PNG, the animation as GIF, or every frame as a horizontal/grid sprite sheet.
 - **Resume work locally** — Project state is autosaved to IndexedDB and can be restored after reload when browser storage is available.
@@ -58,7 +58,7 @@ The v1.0.0 application has no runtime third-party package dependency, so the bui
 3. Add or duplicate frames, then edit each pose. Onion Skin can show the previous frame while drawing the next one.
 4. Set each frame delay. Use **Apply to all** when the animation should use one common timing value.
 5. Open Preview and check the animation with Play / Pause / Restart / Loop.
-6. Use rectangle Selection to move or reuse a region. Copy or Cut first, create the destination selection, then Paste.
+6. Use rectangle Selection to move or reuse a region, or choose **Select all** for the entire canvas. Copy or Cut first, create the destination selection, then Paste.
 7. Open Export, edit the filename, and save a PNG, Animated GIF, or Sprite Sheet PNG.
 8. When autosave is available, reopening the app offers **Continue / Start new** for the previous local project.
 
@@ -68,7 +68,7 @@ The v1.0.0 application has no runtime third-party package dependency, so the bui
 - The pointer preview shows the exact brush footprint on the canvas before drawing.
 - Mouse wheel changes zoom on desktop.
 - `Space + Drag` pans the canvas on desktop.
-- One finger draws on touch devices; two fingers pan or pinch zoom.
+- One finger draws on touch devices; two fingers pan or pinch zoom. Fill and Eyedropper apply on finger release; a cancelled touch does not change pixels or colors.
 - Grid can be toggled without affecting exported pixels.
 
 ### Frames and timing
@@ -94,6 +94,8 @@ Use `Tab` to focus controls, then `Space` or `Enter` to activate a button. With 
 | `Esc` | Clear the selection |
 | `Arrow keys` | Move selected pixels by 1 px |
 | `Shift` + `Arrow keys` | Move selected pixels by 5 px |
+
+**Select all** appears while Selection is active and a project is open, even before a rectangle is drawn. It selects the exact canvas bounds without changing pixels, clipboard contents, frame timing, or Undo/Redo. The button is temporarily disabled during a canvas gesture. Use Tab then Space or Enter to activate it; no global Ctrl/⌘+A shortcut is added.
 
 Switching away from Selection clears the visible selection. Clipboard pixel data may remain inside the app, but Paste is disabled until a new destination selection exists.
 

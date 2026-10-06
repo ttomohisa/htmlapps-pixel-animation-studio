@@ -238,6 +238,9 @@ if (-not $node) { throw "Node.js 18 or later is required for the keyboard regres
 & $node.Source --test (Join-Path $Root "scripts\test-keyboard-shortcuts.cjs")
 if ($LASTEXITCODE -ne 0) { throw "Keyboard regression tests failed." }
 
+& $node.Source --test (Join-Path $Root "scripts\test-selection-touch.cjs")
+if ($LASTEXITCODE -ne 0) { throw "Selection and touch regression tests failed." }
+
 Write-Host "[OK] Repository check passed." -ForegroundColor Green
 
 # WebRTC readiness DataChannel regression

@@ -4,7 +4,15 @@ All notable changes to Pixel Animation Studio will be documented in this file.
 
 ## [Unreleased]
 
+### Added
+
+- Add a native, bilingual Select all action to select the entire canvas without changing pixels, clipboard contents, frame data, or editing history. Keep it unavailable during canvas gestures and retain native keyboard activation.
+- Cover selection, interrupted touch actions, and export invariants with executable synthetic Canvas regressions across source, readable, root standalone, and self-extracting releases.
+
 ### Fixed
+
+- Discard cancelled deferred touch Fill and Eyedropper actions instead of applying them on pointer cancellation. Ordinary releases still apply exactly once.
+- Release stale selection-drag ownership when a two-finger view gesture ends, so Select all becomes available again without committing an edit.
 
 - Preserve native Space behavior on focused buttons, links, and disclosure controls instead of intercepting it for canvas panning. Preview controls, mobile workspace tabs, and export actions can again be operated with Space.
 - Return keyboard focus to the canvas when drawing starts, so Space-drag panning continues to work after using a toolbar control.
