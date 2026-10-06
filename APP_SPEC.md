@@ -38,7 +38,7 @@ Create small pixel-art animations frame by frame in the browser, preview motion,
 - Eraser.
 - Fill.
 - Eyedropper.
-- Rectangle Selection.
+- Rectangle Selection, with a native Select all / すべて選択 button for the full canvas.
 - Pencil / eraser sizes: 1, 2, 4 px.
 - Pointer stroke interpolation must prevent gaps during fast mouse, pen, or touch movement.
 
@@ -118,6 +118,8 @@ v1.0.0 freezes the first stable feature set and carries forward the v0.9.1 inter
 ### Stable UX requirements
 
 - Undo / Redo has one visible control location in the editor toolbar.
+- Select all uses the exact `{x:0,y:0,w:width,h:height}` bounds, is idempotent, and does not modify pixels, clipboard, frame timing, persistence schema, or history. It is disabled during drawing, selection drags, pan, and touch gestures. No global Ctrl/Cmd+A handler is added.
+- Cancelled deferred touch Fill / Eyedropper actions are discarded only for the matching pointer; ordinary release applies once. Two-finger view gestures release stale selection-drag ownership when the final touch ends without committing an edit. Other drawing and selection cancellation behavior stays unchanged.
 - Switching from Selection to another drawing tool clears the selection overlay and selection action bar.
 - Paste requires an active destination selection and must not silently paste at the canvas origin.
 - Pencil and Eraser show the exact clipped 1 / 2 / 4 px affected footprint on the canvas before drawing.
@@ -145,7 +147,7 @@ v1.0.0 freezes the first stable feature set and carries forward the v0.9.1 inter
 - The main workspace scroll area ends above the fixed bottom dock.
 - The fixed dock is Edit / Frames / Preview / Export with SVG icons and text labels.
 - Edit uses a compact five-tool grid plus separate brush/color/settings cards.
-- Selection actions appear only while an active selection exists.
+- Copy / Cut / Paste / Delete / Clear selection actions appear only while an active selection exists. Select all appears whenever the Selection tool and an active project are available, including before a rectangle is drawn.
 - Current Frame PNG, Animated GIF, and Sprite Sheet cards stack vertically in Export.
 - Long filenames remain contained within the viewport.
 - One finger draws; two fingers pan / pinch zoom in Edit.
@@ -185,6 +187,8 @@ Current stable desktop and mobile Chromium, Firefox, and Safari. Direct `file://
 - 16 / 32 / 64 / 128 / Custom canvas creation works, including non-square custom sizes up to 128×128.
 - Pencil / Eraser / Fill / Eyedropper / Selection work with Undo / Redo and do not corrupt another frame's history.
 - Pencil and Eraser preview the exact clipped 1 / 2 / 4 px affected footprint before drawing.
+- Select all covers 1×1, non-square 3×5, and 128×128 canvases including transparent pixels; repeated activation preserves both Undo/Redo stacks and other frames. Full-canvas Cut/Delete remains one undoable edit.
+- Cancelled Fill / Eyedropper preserves pixels, active color, recent colors, history, and saved data; unrelated pointer IDs, duplicate release, mouse actions, and two-finger interruptions remain correct.
 - Selection clears when leaving the tool; Paste requires an active destination selection.
 - Add / Duplicate / Delete / Reorder works up to 128 frames, including delete Undo.
 - Per-frame timing, Apply to all, Preview, Loop, Restart, and Onion Skin work as specified.
@@ -247,7 +251,7 @@ The upper-right help button opens bilingual guidance covering:
 
 - choosing a canvas size,
 - Pencil / Eraser / Fill / Eyedropper / Selection and brush size,
-- Selection clearing and destination-required paste behavior,
+- Select all, Selection clearing, destination-required paste behavior, and cancelled-touch Fill / Eyedropper behavior,
 - choosing a color,
 - frame timing, live preview, and Onion Skin behavior,
 - local-only processing and no runtime transmission,

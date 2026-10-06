@@ -772,6 +772,9 @@
           </div>
         </div>
       </div>
+      <div class="selection-actions" id="selectionTools">
+        <button class="compact-button" id="selectAllButton" type="button" data-i18n="selectAll" disabled>すべて選択</button>
+      </div>
       <div class="selection-actions" id="selectionActions" aria-label="Selection actions">
         <button class="compact-button" id="copySelectionButton" type="button" data-i18n="copySelection">コピー</button>
         <button class="compact-button" id="cutSelectionButton" type="button" data-i18n="cutSelection">切り取り</button>
@@ -910,7 +913,7 @@
         <ol>
           <li data-i18n="helpStep1">16×16〜128×128、またはCustomからキャンバスサイズを選びます。</li>
           <li data-i18n="helpStep2">鉛筆 / 消しゴム / 塗りつぶし / スポイト / 選択を使い分けます。</li>
-          <li data-i18n="helpStep3">選択範囲は別のツールへ切り替えると解除されます。貼り付けは貼り付け先を選択してから行います。</li>
+          <li data-i18n="helpStep3">選択ツールの「すべて選択」でキャンバス全体を選べます。選択範囲は別のツールへ切り替えると解除されます。貼り付けは貼り付け先を選択してから行います。</li>
           <li data-i18n="helpStep4">フレームを追加・複製し、サムネイルから切り替えます。</li>
           <li data-i18n="helpKeyboard">Tabで操作先を選び、ボタンはSpaceまたはEnterで実行できます。キャンバスにフォーカスがあるときはSpace + ドラッグで表示を移動できます。</li>
         </ol>
@@ -923,7 +926,7 @@
           <li data-i18n="helpLimit3">PNGを1枚または複数読み込み、PNG・Animated GIF・Sprite Sheetを書き出せます。GIFは256色制約があり、半透明は透明/不透明へ変換されます。</li>
         </ul>
         <h3 data-i18n="helpTouchTitle">スマートフォン</h3>
-        <p data-i18n="helpTouchBody">1本指で描画します。2本指でPan / Pinch Zoomできます。2本指操作へ移った場合は、誤って始まった描画を取り消して表示操作へ切り替えます。</p>
+        <p data-i18n="helpTouchBody">1本指で描画します。2本指でPan / Pinch Zoomできます。2本指操作へ移った場合は、誤って始まった描画を取り消して表示操作へ切り替えます。塗りつぶしとスポイトは指を離すと実行され、タッチ操作がキャンセルされた場合は実行されません。</p>
       </div>
     </div>
   </dialog>
@@ -933,7 +936,7 @@
       'use strict';
 
       const APP_CONFIG = {"$schema":"./schemas/app-config.schema.json","name":"Pixel Animation Studio","nameJa":"Pixel Animation Studio","slug":"pixel-animation-studio","version":"1.0.0","description":"Create small pixel-art animations locally in your browser and export them as PNG, GIF, and sprite sheets.","descriptionJa":"小さなドット絵アニメーションをブラウザー内で作成し、PNG・GIF・スプライトシートとして保存するツールです。","defaultLanguage":"auto","repository":{"owner":"ttomohisa","name":"htmlapps-pixel-animation-studio"},"build":{"output":"dist/index.html","blockRuntimeNetwork":true,"selfExtract":{"enabled":true,"output":"dist/index.self-extract.html"},"sizeBudget":{"readableWarningMb":25,"selfExtractWarningMb":12}}};
-      const BUILD_MANIFEST = {"schemaVersion":2,"builder":"single-html-app-template/1.3","generatedAtUtc":"2026-10-05T07:42:29.2577157Z","app":{"name":"Pixel Animation Studio","slug":"pixel-animation-studio","version":"1.0.0"},"dependencies":[]};
+      const BUILD_MANIFEST = {"schemaVersion":2,"builder":"single-html-app-template/1.3","generatedAtUtc":"2026-10-06T00:19:14.6639795Z","app":{"name":"Pixel Animation Studio","slug":"pixel-animation-studio","version":"1.0.0"},"dependencies":[]};
       // Asset payloads are Base64 exactly once. The JSON bundle itself is embedded directly.
       const assetBundle = {"schemaVersion":2,"dependencies":{}};
       const blobUrls = new Set();
@@ -1001,14 +1004,14 @@
           historyTitle: '履歴', undo: '元に戻す', redo: 'やり直す', fit: 'Fit', zoomIn: '拡大', zoomOut: '縮小', grid: 'グリッド', recentColorsTitle: '最近使った色', recentColorsEmpty: '色を選ぶとここに表示されます。',
           desktopTip: 'ドラッグして描画。Space + DragでPan、ホイールでZoomできます。', colorTitle: '描画色', colorPickerTitle: 'カラーピッカー', currentToolTitle: '現在の設定', displayScale: '表示倍率', canvasLabel: 'ドット絵キャンバス', framesTitle: 'フレーム', mobileEditTab: '編集', mobileFramesTab: 'フレーム', addFrame: '追加', duplicateFrame: '複製', deleteFrame: '削除', moveFrameLeft: '前へ移動', moveFrameRight: '後ろへ移動', frameLabel: 'フレーム', frameAdded: 'フレームを追加しました', frameDuplicated: 'フレームを複製しました', frameDeleted: 'フレームを削除しました', frameRestored: 'フレームを元に戻しました', frameMoved: 'フレームを並べ替えました', frameLimit: 'フレームは最大128個です', keepOneFrame: '少なくとも1フレーム必要です', restore: '元に戻す', mobilePreviewTab: 'プレビュー', frameDuration: '表示時間', applyDurationAll: 'すべてに適用', durationAppliedAll: 'すべてのフレームに表示時間を適用しました', invalidDuration: '表示時間は20〜5000msを10ms単位で指定してください', previewTitle: 'プレビュー', playPreview: '再生', pausePreview: '一時停止', restartPreview: '最初から', loopPreview: 'ループ', previewNote: '各フレームの表示時間を使って再生します。', previewStarted: 'プレビューを再生しました', previewPaused: 'プレビューを一時停止しました', previewRestarted: '最初のフレームへ戻しました', loopOn: 'ループを有効にしました', loopOff: 'ループを無効にしました', animationAssistTitle: 'アニメ補助', onionSkin: 'Onion Skin', onionOn: 'ON', onionOff: 'OFF', onionEnabled: 'Onion Skinを表示しました', onionDisabled: 'Onion Skinを非表示にしました', autosaveReady: '自動保存', autosaveSaving: '保存中…', autosaveSaved: '自動保存済み', autosaveUnavailable: '自動保存を利用できません。このタブを閉じると作業内容が失われます。', autosaveUnavailableShort: '自動保存不可', restoreTitle: '前回の作業があります', restoreContinue: '続きから', restoreNew: '新しく作る', restoreSummary: '{size} · {frames}フレーム', restoredProject: '前回の作業を復元しました',
           buildInfo: 'ビルド情報', appVersion: 'アプリバージョン', builtAt: '生成日時', dependencies: '内包依存数', footer: 'ブラウザー内で処理',
-          helpTitle: '使い方と注意事項', helpStartTitle: '基本操作', helpStep1: '16×16〜128×128、またはCustomからキャンバスサイズを選びます。', helpStep2: '鉛筆 / 消しゴム / 塗りつぶし / スポイト / 選択を使い分けます。', helpStep3: '選択範囲は別のツールへ切り替えると解除されます。貼り付けは貼り付け先を選択してから行います。元に戻す / やり直す、Zoom / Pan / GridはCanvas上部から操作できます。', helpStep4: 'フレームを追加・複製し、表示時間を設定してPreviewで動きを確認します。',
+          helpTitle: '使い方と注意事項', helpStartTitle: '基本操作', helpStep1: '16×16〜128×128、またはCustomからキャンバスサイズを選びます。', helpStep2: '鉛筆 / 消しゴム / 塗りつぶし / スポイト / 選択を使い分けます。', helpStep3: '選択ツールの「すべて選択」でキャンバス全体を選べます。選択範囲は別のツールへ切り替えると解除されます。貼り付けは貼り付け先を選択してから行います。元に戻す / やり直す、Zoom / Pan / GridはCanvas上部から操作できます。', helpStep4: 'フレームを追加・複製し、表示時間を設定してPreviewで動きを確認します。',
           helpKeyboard: 'Tabで操作先を選び、ボタンはSpaceまたはEnterで実行できます。キャンバスにフォーカスがあるときはSpace + ドラッグで表示を移動できます。',
           helpPrivacyTitle: 'プライバシー', helpPrivacyBody: '描画データはこのブラウザー内で処理され、このアプリから外部サーバーへ送信されません。実行時の外部通信も行いません。',
           helpLimitsTitle: 'v1.0.0の範囲', helpLimit1: '前のフレームを約30%で重ねるOnion SkinをON/OFFできます。', helpLimit2: '作業内容はIndexedDBへ端末内自動保存し、再読み込み後に復元できます。', helpLimit3: 'PNGを1枚または複数読み込み、PNG・Animated GIF・Sprite Sheetを書き出せます。GIFは256色制約があり、半透明は透明/不透明へ変換されます。',
-          helpTouchTitle: 'スマートフォン', helpTouchBody: '1本指で描画します。2本指でPan / Pinch Zoomできます。2本指操作へ移った場合は、誤って始まった描画を取り消して表示操作へ切り替えます。',
+          helpTouchTitle: 'スマートフォン', helpTouchBody: '1本指で描画します。2本指でPan / Pinch Zoomできます。2本指操作へ移った場合は、誤って始まった描画を取り消して表示操作へ切り替えます。塗りつぶしとスポイトは指を離すと実行され、タッチ操作がキャンセルされた場合は実行されません。',
           confirmTitle: '確認', cancel: 'キャンセル', confirmNew: '新しく作る', newConfirmMessage: '現在の自動保存データを置き換えて、新しいキャンバスを作成しますか？',
           created: 'キャンバスを作成しました', toolChangedPencil: '鉛筆に切り替えました', toolChangedEraser: '消しゴムに切り替えました', toolChangedFill: '塗りつぶしに切り替えました', toolChangedEyedropper: 'スポイトに切り替えました', brushChanged: 'ブラシサイズを変更しました', colorChanged: '描画色を変更しました',
-          undone: '元に戻しました', redone: 'やり直しました', noUndo: '元に戻せる操作はありません', noRedo: 'やり直せる操作はありません', transparentPixel: '透明なピクセルです', copySelection:'コピー', cutSelection:'切り取り', pasteSelection:'貼り付け', deleteSelection:'削除', clearSelection:'選択解除', selectionCopied:'選択範囲をコピーしました', selectionCut:'選択範囲を切り取りました', selectionPasted:'貼り付けました', selectionDeleted:'選択範囲を削除しました', noSelection:'選択範囲がありません', clipboardEmpty:'コピーしたピクセルがありません', selectPasteTarget:'貼り付け先を選択してください', toolChangedSelection:'選択ツールに切り替えました', gridOn: 'グリッドを表示しました', gridOff: 'グリッドを非表示にしました', fitApplied: 'キャンバスを画面に合わせました', mobileExportTab:'書き出し', exportTitle:'書き出し', exportIntro:'PNG・Animated GIF・Sprite Sheetとして端末へ保存します。', outputFilename:'ファイル名', currentFramePng:'現在のフレームをPNG', currentFramePngNote:'透明背景を保ったまま、Nearest Neighborで拡大して保存できます。', pngScale:'倍率', savePng:'PNGを保存', spriteSheetTitle:'Sprite Sheet', spriteSheetNote:'全フレームを1枚のPNGへ並べます。', spriteLayout:'配置', horizontal:'横一列', gridLayout:'Grid', columns:'列数', saveSpriteSheet:'Sprite Sheetを保存', spriteSheetPreviewLabel:'Sprite Sheetプレビュー', pngSaved:'PNGを保存しました', spriteSheetSaved:'Sprite Sheetを保存しました', exportFailed:'画像を書き出せませんでした', invalidFilename:'ファイル名を確認してください', spriteDetails:'Frame {frame} · {frames}フレーム · {columns}列 × {rows}行', animatedGifTitle:'Animated GIF', animatedGifNote:'各フレームの表示時間を使い、透明背景・無限ループのGIFとして保存します。', saveGif:'GIFを保存', gifSaved:'GIFを保存しました', gifEncoding:'GIFを作成中… {current} / {total}', gifDetails:'{frames}フレーム · {duration} ms · 無限ループ', gifFailed:'GIFを書き出せませんでした'
+          undone: '元に戻しました', redone: 'やり直しました', noUndo: '元に戻せる操作はありません', noRedo: 'やり直せる操作はありません', transparentPixel: '透明なピクセルです', selectAll:'すべて選択', selectedAll:'キャンバス全体を選択しました', copySelection:'コピー', cutSelection:'切り取り', pasteSelection:'貼り付け', deleteSelection:'削除', clearSelection:'選択解除', selectionCopied:'選択範囲をコピーしました', selectionCut:'選択範囲を切り取りました', selectionPasted:'貼り付けました', selectionDeleted:'選択範囲を削除しました', noSelection:'選択範囲がありません', clipboardEmpty:'コピーしたピクセルがありません', selectPasteTarget:'貼り付け先を選択してください', toolChangedSelection:'選択ツールに切り替えました', gridOn: 'グリッドを表示しました', gridOff: 'グリッドを非表示にしました', fitApplied: 'キャンバスを画面に合わせました', mobileExportTab:'書き出し', exportTitle:'書き出し', exportIntro:'PNG・Animated GIF・Sprite Sheetとして端末へ保存します。', outputFilename:'ファイル名', currentFramePng:'現在のフレームをPNG', currentFramePngNote:'透明背景を保ったまま、Nearest Neighborで拡大して保存できます。', pngScale:'倍率', savePng:'PNGを保存', spriteSheetTitle:'Sprite Sheet', spriteSheetNote:'全フレームを1枚のPNGへ並べます。', spriteLayout:'配置', horizontal:'横一列', gridLayout:'Grid', columns:'列数', saveSpriteSheet:'Sprite Sheetを保存', spriteSheetPreviewLabel:'Sprite Sheetプレビュー', pngSaved:'PNGを保存しました', spriteSheetSaved:'Sprite Sheetを保存しました', exportFailed:'画像を書き出せませんでした', invalidFilename:'ファイル名を確認してください', spriteDetails:'Frame {frame} · {frames}フレーム · {columns}列 × {rows}行', animatedGifTitle:'Animated GIF', animatedGifNote:'各フレームの表示時間を使い、透明背景・無限ループのGIFとして保存します。', saveGif:'GIFを保存', gifSaved:'GIFを保存しました', gifEncoding:'GIFを作成中… {current} / {total}', gifDetails:'{frames}フレーム · {duration} ms · 無限ループ', gifFailed:'GIFを書き出せませんでした'
         },
         en: {
           brandMeta: 'Pixel animation · PNG import · GIF export', helpButtonLabel: 'Help', close: 'Close',
@@ -1021,14 +1024,14 @@
           historyTitle: 'History', undo: 'Undo', redo: 'Redo', fit: 'Fit', zoomIn: 'Zoom in', zoomOut: 'Zoom out', grid: 'Grid', recentColorsTitle: 'Recent colors', recentColorsEmpty: 'Selected colors appear here.',
           desktopTip: 'Drag to draw. Use Space + Drag to pan and the wheel to zoom.', colorTitle: 'Drawing color', colorPickerTitle: 'Color picker', currentToolTitle: 'Current settings', displayScale: 'Display scale', canvasLabel: 'Pixel art canvas', framesTitle: 'Frames', mobileEditTab: 'Edit', mobileFramesTab: 'Frames', addFrame: 'Add', duplicateFrame: 'Duplicate', deleteFrame: 'Delete', moveFrameLeft: 'Move earlier', moveFrameRight: 'Move later', frameLabel: 'Frame', frameAdded: 'Frame added', frameDuplicated: 'Frame duplicated', frameDeleted: 'Frame deleted', frameRestored: 'Frame restored', frameMoved: 'Frame reordered', frameLimit: 'Up to 128 frames are supported', keepOneFrame: 'At least one frame is required', restore: 'Undo', mobilePreviewTab: 'Preview', frameDuration: 'Frame delay', applyDurationAll: 'Apply to all', durationAppliedAll: 'Frame delay applied to all frames', invalidDuration: 'Use a frame delay from 20 to 5000 ms in 10 ms steps', previewTitle: 'Preview', playPreview: 'Play', pausePreview: 'Pause', restartPreview: 'Restart', loopPreview: 'Loop', previewNote: 'Playback uses each frame’s individual delay.', previewStarted: 'Preview started', previewPaused: 'Preview paused', previewRestarted: 'Returned to the first frame', loopOn: 'Loop enabled', loopOff: 'Loop disabled', animationAssistTitle: 'Animation assist', onionSkin: 'Onion Skin', onionOn: 'ON', onionOff: 'OFF', onionEnabled: 'Onion skin shown', onionDisabled: 'Onion skin hidden', autosaveReady: 'Autosave', autosaveSaving: 'Saving…', autosaveSaved: 'Autosaved', autosaveUnavailable: 'Autosave is unavailable. Closing this tab will discard your work.', autosaveUnavailableShort: 'Autosave unavailable', restoreTitle: 'Previous work found', restoreContinue: 'Continue', restoreNew: 'Start new', restoreSummary: '{size} · {frames} frames', restoredProject: 'Previous work restored',
           buildInfo: 'Build information', appVersion: 'App version', builtAt: 'Built at', dependencies: 'Embedded dependencies', footer: 'Processed in your browser',
-          helpTitle: 'How to use & notes', helpStartTitle: 'Basics', helpStep1: 'Choose 16×16 through 128×128, or enter a Custom canvas size.', helpStep2: 'Choose Pencil, Eraser, Fill, Eyedropper, or Selection.', helpStep3: 'Selection clears when you switch tools. Choose a destination before pasting. Undo / Redo, Zoom / Pan, and Grid stay above the canvas.', helpStep4: 'Add or duplicate frames, set their delays, and check the motion in Preview.',
+          helpTitle: 'How to use & notes', helpStartTitle: 'Basics', helpStep1: 'Choose 16×16 through 128×128, or enter a Custom canvas size.', helpStep2: 'Choose Pencil, Eraser, Fill, Eyedropper, or Selection.', helpStep3: 'In Selection, use Select all to select the entire canvas. Selection clears when you switch tools. Choose a destination before pasting. Undo / Redo, Zoom / Pan, and Grid stay above the canvas.', helpStep4: 'Add or duplicate frames, set their delays, and check the motion in Preview.',
           helpKeyboard: 'Use Tab to focus controls and Space or Enter to activate buttons. With the canvas focused, hold Space and drag to pan.',
           helpPrivacyTitle: 'Privacy', helpPrivacyBody: 'Pixel data is processed in this browser and is not sent to an external server by this app. The app also makes no runtime network requests.',
           helpLimitsTitle: 'v1.0.0 scope', helpLimit1: 'Onion Skin can show the previous frame at about 30% opacity while editing.', helpLimit2: 'Your project is autosaved locally to IndexedDB and can be restored after reload.', helpLimit3: 'Import one or more PNG files and export PNG, animated GIF, or sprite-sheet output. GIF is limited to 256 colors and converts partial alpha to transparent or opaque pixels.',
-          helpTouchTitle: 'Smartphones', helpTouchBody: 'Draw with one finger. Use two fingers to pan or pinch zoom. When a second finger arrives, any accidental stroke start is restored before the view gesture begins.',
+          helpTouchTitle: 'Smartphones', helpTouchBody: 'Draw with one finger. Use two fingers to pan or pinch zoom. When a second finger arrives, any accidental stroke start is restored before the view gesture begins. Fill and Eyedropper run when you lift your finger; a cancelled touch does not apply them.',
           confirmTitle: 'Confirm', cancel: 'Cancel', confirmNew: 'Start new', newConfirmMessage: 'Replace the current autosaved project and create a new canvas?',
           created: 'Canvas created', toolChangedPencil: 'Switched to Pencil', toolChangedEraser: 'Switched to Eraser', toolChangedFill: 'Switched to Fill', toolChangedEyedropper: 'Switched to Eyedropper', brushChanged: 'Brush size changed', colorChanged: 'Drawing color changed',
-          undone: 'Undone', redone: 'Redone', noUndo: 'Nothing to undo', noRedo: 'Nothing to redo', transparentPixel: 'That pixel is transparent', copySelection:'Copy', cutSelection:'Cut', pasteSelection:'Paste', deleteSelection:'Delete', clearSelection:'Clear selection', selectionCopied:'Selection copied', selectionCut:'Selection cut', selectionPasted:'Pasted', selectionDeleted:'Selection deleted', noSelection:'No selection', clipboardEmpty:'Nothing has been copied', selectPasteTarget:'Select a destination before pasting', toolChangedSelection:'Switched to Selection', gridOn: 'Grid shown', gridOff: 'Grid hidden', fitApplied: 'Canvas fitted to view', mobileExportTab:'Export', exportTitle:'Export', exportIntro:'Save PNG, animated GIF, or sprite-sheet output directly to your device.', outputFilename:'Filename', currentFramePng:'Current frame PNG', currentFramePngNote:'Preserve transparency and scale with nearest-neighbor pixels.', pngScale:'Scale', savePng:'Save PNG', spriteSheetTitle:'Sprite Sheet', spriteSheetNote:'Arrange every frame into one PNG image.', spriteLayout:'Layout', horizontal:'Horizontal', gridLayout:'Grid', columns:'Columns', saveSpriteSheet:'Save Sprite Sheet', spriteSheetPreviewLabel:'Sprite Sheet preview', pngSaved:'PNG saved', spriteSheetSaved:'Sprite Sheet saved', exportFailed:'Could not export the image', invalidFilename:'Check the filename', spriteDetails:'Frame {frame} · {frames} frames · {columns} columns × {rows} rows', animatedGifTitle:'Animated GIF', animatedGifNote:'Uses each frame delay and saves a transparent, infinitely looping GIF.', saveGif:'Save GIF', gifSaved:'GIF saved', gifEncoding:'Creating GIF… {current} / {total}', gifDetails:'{frames} frames · {duration} ms · infinite loop', gifFailed:'Could not export the GIF'
+          undone: 'Undone', redone: 'Redone', noUndo: 'Nothing to undo', noRedo: 'Nothing to redo', transparentPixel: 'That pixel is transparent', selectAll:'Select all', selectedAll:'Entire canvas selected', copySelection:'Copy', cutSelection:'Cut', pasteSelection:'Paste', deleteSelection:'Delete', clearSelection:'Clear selection', selectionCopied:'Selection copied', selectionCut:'Selection cut', selectionPasted:'Pasted', selectionDeleted:'Selection deleted', noSelection:'No selection', clipboardEmpty:'Nothing has been copied', selectPasteTarget:'Select a destination before pasting', toolChangedSelection:'Switched to Selection', gridOn: 'Grid shown', gridOff: 'Grid hidden', fitApplied: 'Canvas fitted to view', mobileExportTab:'Export', exportTitle:'Export', exportIntro:'Save PNG, animated GIF, or sprite-sheet output directly to your device.', outputFilename:'Filename', currentFramePng:'Current frame PNG', currentFramePngNote:'Preserve transparency and scale with nearest-neighbor pixels.', pngScale:'Scale', savePng:'Save PNG', spriteSheetTitle:'Sprite Sheet', spriteSheetNote:'Arrange every frame into one PNG image.', spriteLayout:'Layout', horizontal:'Horizontal', gridLayout:'Grid', columns:'Columns', saveSpriteSheet:'Save Sprite Sheet', spriteSheetPreviewLabel:'Sprite Sheet preview', pngSaved:'PNG saved', spriteSheetSaved:'Sprite Sheet saved', exportFailed:'Could not export the image', invalidFilename:'Check the filename', spriteDetails:'Frame {frame} · {frames} frames · {columns} columns × {rows} rows', animatedGifTitle:'Animated GIF', animatedGifNote:'Uses each frame delay and saves a transparent, infinitely looping GIF.', saveGif:'Save GIF', gifSaved:'GIF saved', gifEncoding:'Creating GIF… {current} / {total}', gifDetails:'{frames} frames · {duration} ms · infinite loop', gifFailed:'Could not export the GIF'
         }
       };
 
@@ -1555,7 +1558,24 @@
 
       function normalizeSelection(a,b){ const x=Math.min(a.x,b.x), y=Math.min(a.y,b.y); return {x,y,w:Math.abs(a.x-b.x)+1,h:Math.abs(a.y-b.y)+1}; }
       function pointInSelection(point){ const r=state.selection; return Boolean(r && point.x>=r.x && point.y>=r.y && point.x<r.x+r.w && point.y<r.y+r.h); }
+      function canSelectAll(){
+        return Boolean(state.width && state.height && state.frames.length && state.tool==='selection' &&
+          !state.drawing && !state.selectionDrag && !state.pan && !state.touchGesture &&
+          !state.touchGestureBlocked && !state.touchPointers.size && !state.deferredTouchAction);
+      }
+      function updateSelectAllButton(){
+        $('#selectionTools').classList.toggle('active', Boolean(state.width && state.height && state.frames.length && state.tool==='selection'));
+        $('#selectAllButton').disabled=!canSelectAll();
+      }
+      function selectAll(){
+        if(!canSelectAll()) return;
+        const r=state.selection;
+        if(r && r.x===0 && r.y===0 && r.w===state.width && r.h===state.height) return;
+        state.selection={x:0,y:0,w:state.width,h:state.height};
+        updateSelectionOverlay(); announce(t('selectedAll'));
+      }
       function updateSelectionOverlay(){
+        updateSelectAllButton();
         const r=state.selection; const active=Boolean(r && state.width && state.tool==='selection'); selectionOverlay.classList.toggle('active',active); $('#selectionActions').classList.toggle('active',active);
         if(active){ selectionOverlay.style.left=`${r.x*state.scale}px`; selectionOverlay.style.top=`${r.y*state.scale}px`; selectionOverlay.style.width=`${r.w*state.scale}px`; selectionOverlay.style.height=`${r.h*state.scale}px`; }
         canvas.classList.toggle('is-selecting', state.tool==='selection' && !active); canvas.classList.toggle('has-selection', active);
@@ -1574,16 +1594,17 @@
 
       function startPan(event) {
         state.pan = { pointerId:event.pointerId, x:event.clientX, y:event.clientY, scrollLeft:stage.scrollLeft, scrollTop:stage.scrollTop }; stage.classList.add('is-panning'); canvas.classList.add('is-panning');
+        updateSelectAllButton();
         try { event.target.setPointerCapture?.(event.pointerId); } catch { /* optional */ }
       }
       function continuePan(event) { if(!state.pan || state.pan.pointerId!==event.pointerId) return; stage.scrollLeft=state.pan.scrollLeft-(event.clientX-state.pan.x); stage.scrollTop=state.pan.scrollTop-(event.clientY-state.pan.y); }
-      function endPan(event) { if(!state.pan || state.pan.pointerId!==event.pointerId) return; state.pan=null; stage.classList.remove('is-panning'); canvas.classList.remove('is-panning'); }
+      function endPan(event) { if(!state.pan || state.pan.pointerId!==event.pointerId) return; state.pan=null; stage.classList.remove('is-panning'); canvas.classList.remove('is-panning'); updateSelectAllButton(); }
       function touchCenterAndDistance() {
         const points=[...state.touchPointers.values()].slice(0,2); if(points.length<2) return null; const dx=points[1].x-points[0].x; const dy=points[1].y-points[0].y; return { x:(points[0].x+points[1].x)/2, y:(points[0].y+points[1].y)/2, distance:Math.max(1,Math.hypot(dx,dy)) };
       }
       function startTouchGesture() {
         cancelStrokeForGesture(); state.deferredTouchAction=null; const geometry=touchCenterAndDistance(); if(!geometry) return;
-        const rect=canvas.getBoundingClientRect(); state.touchGestureBlocked=true; state.touchGesture={ startDistance:geometry.distance, startScale:state.scale, logicalX:(geometry.x-rect.left)/state.scale, logicalY:(geometry.y-rect.top)/state.scale };
+        const rect=canvas.getBoundingClientRect(); state.touchGestureBlocked=true; state.touchGesture={ startDistance:geometry.distance, startScale:state.scale, logicalX:(geometry.x-rect.left)/state.scale, logicalY:(geometry.y-rect.top)/state.scale }; updateSelectAllButton();
       }
       function continueTouchGesture() {
         if(!state.touchGesture) return; const geometry=touchCenterAndDistance(); if(!geometry) return; const next=Math.max(1,Math.min(MAX_SCALE,Math.round(state.touchGesture.startScale*(geometry.distance/state.touchGesture.startDistance)))); state.scale=next; updateCanvasPresentation();
@@ -1616,10 +1637,12 @@
       function handleCanvasPointerEnd(event) {
         if(event.pointerType==='touch'){
           const wasGesture=Boolean(state.touchGesture)||state.touchGestureBlocked; state.touchPointers.delete(event.pointerId);
-          if(wasGesture){ if(state.touchPointers.size<2) state.touchGesture=null; if(state.touchPointers.size===0) state.touchGestureBlocked=false; state.deferredTouchAction=null; return; }
-          if(state.drawing) finishStroke(event); else if(state.selectionDrag) finishSelection(event); else if(state.deferredTouchAction?.pointerId===event.pointerId){ runInstantTool(state.deferredTouchAction.point); state.deferredTouchAction=null; } return;
+          // A view gesture owns no pending edit once its final touch has ended.
+          if(wasGesture){ if(state.touchPointers.size<2) state.touchGesture=null; if(state.touchPointers.size===0){ state.touchGestureBlocked=false; state.selectionDrag=null; } state.deferredTouchAction=null; updateSelectAllButton(); return; }
+          // Cancellation discards only the matching deferred Fill/Eyedropper action.
+          if(state.drawing) finishStroke(event); else if(state.selectionDrag) finishSelection(event); else if(state.deferredTouchAction?.pointerId===event.pointerId){ const action=state.deferredTouchAction; state.deferredTouchAction=null; if(event.type!=='pointercancel') runInstantTool(action.point); } updateSelectAllButton(); return;
         }
-        if(state.pan){ endPan(event); return; } if(state.selectionDrag){finishSelection(event);return;} finishStroke(event);
+        if(state.pan){ endPan(event); return; } if(state.selectionDrag){finishSelection(event);return;} finishStroke(event); updateSelectAllButton();
       }
       async function returnToSetup() {
         if (state.width) { const accepted = await AppConfirm.ask({ title:t('confirmTitle'), message:t('newConfirmMessage'), confirmLabel:t('confirmNew'), cancelLabel:t('cancel'), tone:'danger' }); if(!accepted)return; }
@@ -1636,6 +1659,7 @@
       [$('#colorPicker'),$('#mobileColorPicker')].forEach(input => { input.addEventListener('input', event => applyColor(event.target.value)); input.addEventListener('change', event => applyColor(event.target.value,{announceChange:true,remember:true})); });
       [$('#hexColor'),$('#mobileHexColor')].forEach(input => { input.addEventListener('change', () => { if(!applyColor(input.value,{announceChange:true,remember:true})) input.value=state.previousValidColor; }); input.addEventListener('blur', () => { if(!applyColor(input.value)) input.value=state.previousValidColor; }); input.addEventListener('keydown', event => { if(event.key==='Enter'){event.preventDefault();input.blur();} }); });
       $('#mobileUndoButton').addEventListener('click',undo); $('#mobileRedoButton').addEventListener('click',redo);
+      $('#selectAllButton').addEventListener('click',selectAll);
       ['copySelectionButton','cutSelectionButton','pasteSelectionButton','deleteSelectionButton','clearSelectionButton'].forEach(id => $('#'+id).addEventListener('click', ({currentTarget}) => ({copySelectionButton:copySelection,cutSelectionButton:cutSelection,pasteSelectionButton:pasteSelection,deleteSelectionButton:deleteSelection,clearSelectionButton:()=>clearSelection({announceChange:true})})[currentTarget.id]()));
       $('#addFrameButton').addEventListener('click',addFrame); $('#duplicateFrameButton').addEventListener('click',duplicateFrame); $('#deleteFrameButton').addEventListener('click',deleteFrame); $('#moveFrameLeftButton').addEventListener('click',()=>moveFrame(-1)); $('#moveFrameRightButton').addEventListener('click',()=>moveFrame(1));
       $('#frameDurationInput').addEventListener('change', event => setFrameDuration(event.target.value)); $('#frameDurationInput').addEventListener('keydown', event => { if(event.key==='Enter'){event.preventDefault();event.currentTarget.blur();} }); $('#applyDurationAllButton').addEventListener('click', () => setFrameDuration($('#frameDurationInput').value,{applyAll:true}));

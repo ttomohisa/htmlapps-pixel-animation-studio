@@ -6,10 +6,11 @@ const { test } = require('node:test');
 const { gunzipSync } = require('node:zlib');
 
 const root = path.resolve(__dirname, '..');
+const buildDir = path.resolve(process.env.PIXEL_BUILD_DIR || path.join(root, 'dist'));
 const source = fs.readFileSync(path.join(root, 'src/index.template.html'), 'utf8');
-const readable = fs.readFileSync(path.join(root, 'dist/index.html'), 'utf8');
+const readable = fs.readFileSync(path.join(buildDir, 'index.html'), 'utf8');
 const standalone = fs.readFileSync(path.join(root, 'pixel-animation-studio.html'), 'utf8');
-const wrapper = fs.readFileSync(path.join(root, 'dist/index.self-extract.html'), 'utf8');
+const wrapper = fs.readFileSync(path.join(buildDir, 'index.self-extract.html'), 'utf8');
 const payload = wrapper.match(/<script id="self-extract-payload"[^>]*>([\s\S]*?)<\/script>/);
 assert.ok(payload, 'Self-extracting release must contain its payload');
 const restored = gunzipSync(Buffer.from(payload[1], 'base64')).toString('utf8');
@@ -66,7 +67,7 @@ function harness(html) {
     $: selector => { assert.equal(selector, '#editorView'); return editor; },
     hideBrushPreview: () => calls.push('hideBrushPreview'),
     updateBrushPreview: () => {}, beginStroke: () => calls.push('beginStroke'),
-    finishStroke: () => calls.push('finishStroke'),
+    finishStroke: () => calls.push('finishStroke'), updateSelectAllButton() {},
   };
   for (const name of ['undo', 'redo', 'copySelection', 'cutSelection', 'pasteSelection', 'deleteSelection', 'clearSelection', 'applySelectionMove']) {
     context[name] = (...args) => calls.push([name, ...args]);
@@ -158,6 +159,13 @@ for (const [label, html] of [['source', source], ['readable', readable], ['stand
     h.editor.hidden = false;
     h.key('keydown', h.canvas, { defaultPrevented: true });
     assert.equal(h.state.spacePressed, false);
+  });
+  test(`${label}: Ctrl/Cmd+A remains native and Select All does not claim a global shortcut`, () => {
+    const h = harness(html); h.state.tool = 'selection';
+    for (const target of [new Element('button'), new Input(), h.canvas]) {
+      assert.equal(h.key('keydown', target, {key: 'a', code: 'KeyA', ctrlKey: true}).defaultPrevented, false);
+      assert.equal(h.key('keydown', target, {key: 'a', code: 'KeyA', metaKey: true}).defaultPrevented, false);
+    }
   });
   test(`${label}: editing shortcuts still work while a toolbar button is focused`, () => {
     const h = harness(html), target = new Element('button');
