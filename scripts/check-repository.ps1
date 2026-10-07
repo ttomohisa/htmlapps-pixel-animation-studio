@@ -241,6 +241,9 @@ if ($LASTEXITCODE -ne 0) { throw "Keyboard regression tests failed." }
 & $node.Source --test (Join-Path $Root "scripts\test-selection-touch.cjs")
 if ($LASTEXITCODE -ne 0) { throw "Selection and touch regression tests failed." }
 
+& $node.Source --test (Join-Path $Root "scripts\test-header.cjs")
+if ($LASTEXITCODE -ne 0) { throw "Header regression tests failed." }
+
 Write-Host "[OK] Repository check passed." -ForegroundColor Green
 
 # WebRTC readiness DataChannel regression

@@ -1,6 +1,6 @@
 # Offline Verification — Pixel Animation Studio
 
-## v1.0.0 readable build
+## v1.0.1 readable build
 
 1. Run `build-standalone.bat` on Windows.
 2. Open `dist/index.html` directly with `file://`.
@@ -25,6 +25,10 @@
 21. Test a context where IndexedDB is blocked or unavailable. Confirm editing and export still work while the visible storage warning explains the reload risk.
 22. Confirm no external runtime request is made and the Console has no application error.
 23. Confirm CSP still contains `connect-src 'none'`.
+
+Confirm the header shows `v1.0.1`, Build information shows `1.0.1`, and repeated language switching shows `EN` in Japanese / `JA` in English. The language target and Help open/close buttons must have matching localized accessible labels and tooltips, including after a reload.
+
+When preparing a release, copy the generated readable HTML to the tracked download with `Copy-Item .\dist\index.html .\pixel-animation-studio.html -Force` before running `scripts/check-repository.ps1`. The check rebuilds `dist`; after it passes, repeat the copy so the published root download and final readable output are byte-identical. Do not edit either HTML artifact by hand. The repository check exercises the source, readable, root, and decompressed self-extracting header behavior.
 
 For GitHub Pages, one initial request downloads the HTML. Clear Network after load, enable offline mode, then repeat the same checks.
 
