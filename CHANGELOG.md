@@ -19,6 +19,14 @@ All notable changes to Pixel Animation Studio will be documented in this file.
 - Keep canvas Space-drag panning, editable-field/dialog protection, editing shortcuts, and keyup/blur cleanup unchanged; document the keyboard focus behavior in both languages.
 - Add executable keyboard regression checks against source, readable, root standalone, and decompressed self-extracting releases, including root-artifact parity.
 
+## [1.0.1] - 2026-10-07
+
+### Fixed
+
+- Standardize the header language target as EN / JA with matching localized accessible names and tooltips.
+- Keep Help open/close labels and tooltips localized and synchronize the header version with canonical release metadata.
+- Add executable bilingual header regressions across source, readable, self-extracting, and root releases.
+
 ## [1.0.0] - 2026-09-22
 
 ### Changed

@@ -6,7 +6,7 @@
 - **Japanese description:** ドット絵アニメーション
 - **Repository:** `ttomohisa/htmlapps-pixel-animation-studio`
 - **Slug:** `pixel-animation-studio`
-- **Current stable release:** v1.0.0
+- **Current stable release:** v1.0.1
 - **Release artifacts:** `dist/index.html` and `dist/index.self-extract.html`
 
 ## 2. One-sentence purpose
@@ -163,6 +163,10 @@ v1.0.0 freezes the first stable feature set and carries forward the v0.9.1 inter
 - CSP keeps `connect-src 'none'`.
 
 ## 9. Accessibility
+
+- The header language button shows the target language: `EN` in Japanese and `JA` in English. Preserve the saved language preference and set matching localized `aria-label` / `title` (`英語に切り替え` / `Switch to Japanese`).
+- Help open and close controls retain localized accessible names and matching tooltips in both languages.
+- The header version is `v` followed by the canonical three-part `app.config.json` version; generated release metadata must match the same version. The Build information version uses that canonical value without the header prefix.
 
 - All icon buttons have accessible text or `aria-label`.
 - Active tools, Grid, PNG scale, and Sprite Sheet layout use `aria-pressed`, not color alone.
