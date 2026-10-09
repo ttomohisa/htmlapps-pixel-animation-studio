@@ -6,7 +6,7 @@
 - **Japanese description:** ドット絵アニメーション
 - **Repository:** `ttomohisa/htmlapps-pixel-animation-studio`
 - **Slug:** `pixel-animation-studio`
-- **Current stable release:** v1.0.1
+- **Current stable release:** v1.0.2
 - **Release artifacts:** `dist/index.html` and `dist/index.self-extract.html`
 
 ## 2. One-sentence purpose
@@ -262,3 +262,9 @@ The upper-right help button opens bilingual guidance covering:
 - local autosave / restore behavior and what happens when browser storage is unavailable.
 
 Help must be updated whenever user-facing behavior changes and remain fully scrollable on short smartphone viewports.
+
+## v1.0.2 icon consistency
+
+- The canonical icon background and matching green details use `#16624f`.
+- Background corner radii are exactly 25% of their corresponding width and height; existing bounds, padding, and foreground artwork are preserved.
+- Header, favicon, and self-extract loader inherit the canonical `assets/favicon.svg`.
