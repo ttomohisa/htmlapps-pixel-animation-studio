@@ -1,5 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1095 1095">
-<rect x="100" y="102" width="896" height="894" rx="224" ry="223.5" fill="#066751"/>
+<rect x="100" y="102" width="896" height="894" rx="224" ry="223.5" fill="#16624f"/>
 <g fill="#fcfcfc">
  <rect x="190" y="265" width="491" height="487" rx="39"/>
  <path d="M707 289h58q33 0 33 33v386q0 33-33 33h-60q3-16 3-39V327q0-22-1-38Z"/>
@@ -9,7 +9,7 @@
  <rect x="565" y="820" width="49" height="49" rx="5"/>
  <path d="M665 787q4 0 16 8l57 37q13 8 13 13t-13 14l-57 36q-12 8-17 9-9 0-9-18v-81q0-18 10-18Z"/>
 </g>
-<g fill="#066751">
+<g fill="#16624f">
  <rect x="220" y="299" width="47" height="48" rx="5"/><rect x="220" y="389" width="47" height="47" rx="5"/><rect x="220" y="478" width="47" height="48" rx="5"/><rect x="220" y="568" width="47" height="47" rx="5"/><rect x="220" y="657" width="47" height="47" rx="5"/>
  <rect x="605" y="299" width="47" height="48" rx="5"/><rect x="605" y="389" width="47" height="47" rx="5"/><rect x="605" y="478" width="47" height="48" rx="5"/><rect x="605" y="568" width="47" height="47" rx="5"/><rect x="605" y="657" width="47" height="47" rx="5"/>
  <rect x="731" y="325" width="41" height="44" rx="4"/><rect x="731" y="409" width="41" height="44" rx="4"/><rect x="731" y="492" width="41" height="44" rx="4"/><rect x="731" y="576" width="41" height="44" rx="4"/><rect x="731" y="660" width="41" height="44" rx="4"/>
@@ -21,5 +21,5 @@
  <path d="M401 533H357l-1 22h-23v21l23 2v27h18v-47l27-2Z"/>
  <rect x="473" y="558" width="19" height="47"/>
 </g>
-<rect x="477" y="438" width="23" height="42" rx="2" fill="#066751"/>
+<rect x="477" y="438" width="23" height="42" rx="2" fill="#16624f"/>
 </svg>
