@@ -390,6 +390,7 @@
     .build-item span { display: block; color: var(--muted); font-size: 10px; }
     .build-item strong { display: block; overflow-wrap: anywhere; font-size: 11px; }
     footer { width: min(1180px,100%); margin: 0 auto; padding: 0 clamp(14px,2.8vw,30px) 30px; color: var(--muted); font-size: 12px; }
+    html:has(dialog:modal), body:has(dialog:modal) { overflow: hidden; }
     dialog {
       width: min(560px, calc(100vw - 28px)); max-height: min(82vh, 700px); padding: 0; overflow: hidden;
       border: 1px solid var(--line); border-radius: 16px; background: var(--surface); color: var(--text); box-shadow: var(--shadow-md);
@@ -566,7 +567,7 @@
           <img id="appBrandIcon" src="__APP_ICON_DATA_URI__" alt="">
         </div>
         <div class="brand-copy">
-          <p class="brand-name"><span id="brandName">Pixel Animation Studio</span><span class="version-badge" id="versionBadge">v1.0.2</span></p>
+          <p class="brand-name"><span id="brandName">Pixel Animation Studio</span><span class="version-badge" id="versionBadge">v1.0.3</span></p>
           <p class="brand-meta" data-i18n="brandMeta">ドット絵アニメ・PNG読み込み・GIF書き出し</p>
         </div>
       </div>
@@ -909,7 +910,9 @@
     <div class="dialog-shell">
       <div class="dialog-head"><h2 data-i18n="helpTitle">使い方と注意事項</h2><button class="dialog-close" id="closeHelpButton" type="button" data-i18n-title="close" data-i18n-aria-label="close" title="閉じる" aria-label="閉じる"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18"/></svg></button></div>
       <div class="dialog-body">
+        <!-- APP:HELP:BEGIN -->
         <p data-i18n="helpLanguage">ヘッダーのENで英語、JAで日本語に切り替えられます。</p>
+        <p data-i18n="helpDialogScroll">使い方や確認画面を開いている間、背景はスクロールしません。長い説明は使い方の中をスクロールして読めます。</p>
         <h3 data-i18n="helpStartTitle">基本操作</h3>
         <ol>
           <li data-i18n="helpStep1">16×16〜128×128、またはCustomからキャンバスサイズを選びます。</li>
@@ -928,6 +931,7 @@
         </ul>
         <h3 data-i18n="helpTouchTitle">スマートフォン</h3>
         <p data-i18n="helpTouchBody">1本指で描画します。2本指でPan / Pinch Zoomできます。2本指操作へ移った場合は、誤って始まった描画を取り消して表示操作へ切り替えます。塗りつぶしとスポイトは指を離すと実行され、タッチ操作がキャンセルされた場合は実行されません。</p>
+        <!-- APP:HELP:END -->
       </div>
     </div>
   </dialog>
@@ -1006,6 +1010,7 @@
           desktopTip: 'ドラッグして描画。Space + DragでPan、ホイールでZoomできます。', colorTitle: '描画色', colorPickerTitle: 'カラーピッカー', currentToolTitle: '現在の設定', displayScale: '表示倍率', canvasLabel: 'ドット絵キャンバス', framesTitle: 'フレーム', mobileEditTab: '編集', mobileFramesTab: 'フレーム', addFrame: '追加', duplicateFrame: '複製', deleteFrame: '削除', moveFrameLeft: '前へ移動', moveFrameRight: '後ろへ移動', frameLabel: 'フレーム', frameAdded: 'フレームを追加しました', frameDuplicated: 'フレームを複製しました', frameDeleted: 'フレームを削除しました', frameRestored: 'フレームを元に戻しました', frameMoved: 'フレームを並べ替えました', frameLimit: 'フレームは最大128個です', keepOneFrame: '少なくとも1フレーム必要です', restore: '元に戻す', mobilePreviewTab: 'プレビュー', frameDuration: '表示時間', applyDurationAll: 'すべてに適用', durationAppliedAll: 'すべてのフレームに表示時間を適用しました', invalidDuration: '表示時間は20〜5000msを10ms単位で指定してください', previewTitle: 'プレビュー', playPreview: '再生', pausePreview: '一時停止', restartPreview: '最初から', loopPreview: 'ループ', previewNote: '各フレームの表示時間を使って再生します。', previewStarted: 'プレビューを再生しました', previewPaused: 'プレビューを一時停止しました', previewRestarted: '最初のフレームへ戻しました', loopOn: 'ループを有効にしました', loopOff: 'ループを無効にしました', animationAssistTitle: 'アニメ補助', onionSkin: 'Onion Skin', onionOn: 'ON', onionOff: 'OFF', onionEnabled: 'Onion Skinを表示しました', onionDisabled: 'Onion Skinを非表示にしました', autosaveReady: '自動保存', autosaveSaving: '保存中…', autosaveSaved: '自動保存済み', autosaveUnavailable: '自動保存を利用できません。このタブを閉じると作業内容が失われます。', autosaveUnavailableShort: '自動保存不可', restoreTitle: '前回の作業があります', restoreContinue: '続きから', restoreNew: '新しく作る', restoreSummary: '{size} · {frames}フレーム', restoredProject: '前回の作業を復元しました',
           buildInfo: 'ビルド情報', appVersion: 'アプリバージョン', builtAt: '生成日時', dependencies: '内包依存数', footer: 'ブラウザー内で処理',
           helpLanguage: 'ヘッダーのENで英語、JAで日本語に切り替えられます。',
+          helpDialogScroll: '使い方や確認画面を開いている間、背景はスクロールしません。長い説明は使い方の中をスクロールして読めます。',
           helpTitle: '使い方と注意事項', helpStartTitle: '基本操作', helpStep1: '16×16〜128×128、またはCustomからキャンバスサイズを選びます。', helpStep2: '鉛筆 / 消しゴム / 塗りつぶし / スポイト / 選択を使い分けます。', helpStep3: '選択ツールの「すべて選択」でキャンバス全体を選べます。選択範囲は別のツールへ切り替えると解除されます。貼り付けは貼り付け先を選択してから行います。元に戻す / やり直す、Zoom / Pan / GridはCanvas上部から操作できます。', helpStep4: 'フレームを追加・複製し、表示時間を設定してPreviewで動きを確認します。',
           helpKeyboard: 'Tabで操作先を選び、ボタンはSpaceまたはEnterで実行できます。キャンバスにフォーカスがあるときはSpace + ドラッグで表示を移動できます。',
           helpPrivacyTitle: 'プライバシー', helpPrivacyBody: '描画データはこのブラウザー内で処理され、このアプリから外部サーバーへ送信されません。実行時の外部通信も行いません。',
@@ -1027,6 +1032,7 @@
           desktopTip: 'Drag to draw. Use Space + Drag to pan and the wheel to zoom.', colorTitle: 'Drawing color', colorPickerTitle: 'Color picker', currentToolTitle: 'Current settings', displayScale: 'Display scale', canvasLabel: 'Pixel art canvas', framesTitle: 'Frames', mobileEditTab: 'Edit', mobileFramesTab: 'Frames', addFrame: 'Add', duplicateFrame: 'Duplicate', deleteFrame: 'Delete', moveFrameLeft: 'Move earlier', moveFrameRight: 'Move later', frameLabel: 'Frame', frameAdded: 'Frame added', frameDuplicated: 'Frame duplicated', frameDeleted: 'Frame deleted', frameRestored: 'Frame restored', frameMoved: 'Frame reordered', frameLimit: 'Up to 128 frames are supported', keepOneFrame: 'At least one frame is required', restore: 'Undo', mobilePreviewTab: 'Preview', frameDuration: 'Frame delay', applyDurationAll: 'Apply to all', durationAppliedAll: 'Frame delay applied to all frames', invalidDuration: 'Use a frame delay from 20 to 5000 ms in 10 ms steps', previewTitle: 'Preview', playPreview: 'Play', pausePreview: 'Pause', restartPreview: 'Restart', loopPreview: 'Loop', previewNote: 'Playback uses each frame’s individual delay.', previewStarted: 'Preview started', previewPaused: 'Preview paused', previewRestarted: 'Returned to the first frame', loopOn: 'Loop enabled', loopOff: 'Loop disabled', animationAssistTitle: 'Animation assist', onionSkin: 'Onion Skin', onionOn: 'ON', onionOff: 'OFF', onionEnabled: 'Onion skin shown', onionDisabled: 'Onion skin hidden', autosaveReady: 'Autosave', autosaveSaving: 'Saving…', autosaveSaved: 'Autosaved', autosaveUnavailable: 'Autosave is unavailable. Closing this tab will discard your work.', autosaveUnavailableShort: 'Autosave unavailable', restoreTitle: 'Previous work found', restoreContinue: 'Continue', restoreNew: 'Start new', restoreSummary: '{size} · {frames} frames', restoredProject: 'Previous work restored',
           buildInfo: 'Build information', appVersion: 'App version', builtAt: 'Built at', dependencies: 'Embedded dependencies', footer: 'Processed in your browser',
           helpLanguage: 'Use EN in the header to switch to English, or JA to switch to Japanese.',
+          helpDialogScroll: 'While Help or a confirmation is open, the background stays still. Scroll within Help to read longer guidance.',
           helpTitle: 'How to use & notes', helpStartTitle: 'Basics', helpStep1: 'Choose 16×16 through 128×128, or enter a Custom canvas size.', helpStep2: 'Choose Pencil, Eraser, Fill, Eyedropper, or Selection.', helpStep3: 'In Selection, use Select all to select the entire canvas. Selection clears when you switch tools. Choose a destination before pasting. Undo / Redo, Zoom / Pan, and Grid stay above the canvas.', helpStep4: 'Add or duplicate frames, set their delays, and check the motion in Preview.',
           helpKeyboard: 'Use Tab to focus controls and Space or Enter to activate buttons. With the canvas focused, hold Space and drag to pan.',
           helpPrivacyTitle: 'Privacy', helpPrivacyBody: 'Pixel data is processed in this browser and is not sent to an external server by this app. The app also makes no runtime network requests.',

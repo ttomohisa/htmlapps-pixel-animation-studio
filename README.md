@@ -62,6 +62,8 @@ The v1.0.0 application has no runtime third-party package dependency, so the bui
 7. Open Export, edit the filename, and save a PNG, Animated GIF, or Sprite Sheet PNG.
 8. When autosave is available, reopening the app offers **Continue / Start new** for the previous local project.
 
+While Help or a confirmation is open, the background stays still. Scroll within Help to read longer guidance; close the dialog to return to the page.
+
 ### Drawing and navigation
 
 - Pencil and Eraser support 1 / 2 / 4 px brushes.

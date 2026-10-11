@@ -2,6 +2,12 @@
 
 All notable changes to Pixel Animation Studio will be documented in this file.
 
+## [1.0.3] - 2026-10-11
+
+### Fixed
+- Stop document and body scrolling while Help or a confirmation is modal, preserving the existing dialog layouts and internal scroll areas.
+- Document modal scrolling in Japanese and English and add source/release regression checks to the canonical repository check.
+
 ## [1.0.2] - 2026-10-09
 
 ### Fixed
