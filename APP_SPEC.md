@@ -6,7 +6,7 @@
 - **Japanese description:** ドット絵アニメーション
 - **Repository:** `ttomohisa/htmlapps-pixel-animation-studio`
 - **Slug:** `pixel-animation-studio`
-- **Current stable release:** v1.0.2
+- **Current stable release:** v1.0.3
 - **Release artifacts:** `dist/index.html` and `dist/index.self-extract.html`
 
 ## 2. One-sentence purpose
@@ -177,6 +177,7 @@ v1.0.0 freezes the first stable feature set and carries forward the v0.9.1 inter
 - Starting a canvas pointer interaction returns keyboard focus to the canvas without scrolling the page, so prior toolbar focus does not capture the next Space-drag gesture.
 - Existing Undo / Redo and Selection keyboard shortcuts remain intact.
 - Help / confirmation dialogs support Escape and focus restoration.
+- While Help or a confirmation is modal, both the document root and body stop background scrolling. Help retains its own scrollable body and reachable close control on short viewports.
 - Export status changes are surfaced through the existing toast / `aria-live` system.
 - Motion respects `prefers-reduced-motion`.
 - Japanese and English both fit at approximately 320 px width without page-level horizontal overflow.
@@ -202,6 +203,7 @@ Current stable desktop and mobile Chromium, Firefox, and Safari. Direct `file://
 - Autosave/recovery works when IndexedDB is available; storage-unavailable mode keeps editing/export usable and explains the reload risk.
 - At 320 / 360 / 375 / 390 px widths there is no page-level horizontal overflow and no workspace content is covered by the bottom dock.
 - Japanese and English fit without clipped navigation labels or dialogs.
+- Opening, closing, and reopening Help or the New canvas confirmation locks and releases background scrolling in Japanese and English, while existing dialog sizing, internal scrolling, Escape, and cancellation behavior remain intact.
 - The supplied Pixel Animation Studio SVG remains the only artwork source for favicon and header icon.
 - Runtime external network requests remain blocked and CSP includes `connect-src 'none'`.
 - `dist/index.html` and `dist/index.self-extract.html` are generated and the self-extracting variant restores the readable HTML byte-for-byte.
