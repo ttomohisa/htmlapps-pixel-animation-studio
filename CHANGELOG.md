@@ -1,5 +1,9 @@
 # Changelog
 
+## Unreleased
+
+- Clarify Japanese and English help by removing internal layout, implementation, and audit commentary while preserving usage guidance and cautions.
+
 All notable changes to Pixel Animation Studio will be documented in this file.
 
 ## [1.0.3] - 2026-10-11
