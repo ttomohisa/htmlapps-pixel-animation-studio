@@ -53,16 +53,14 @@ for (const [label, html] of variants) {
     }
   });
   for (const language of ['ja', 'en']) {
-    test(`${label}/${language}: Help explains modal background and inner scrolling`, () => {
+    test(`${label}/${language}: Help omits modal audit prose`, () => {
       const start = html.indexOf('      const translations =');
       const end = html.indexOf('      const $ =', start);
       assert.ok(start >= 0 && end > start, 'Production translations are present');
       const translations = vm.runInNewContext(html.slice(start, end) + '\ntranslations;');
       const text = translations[language].helpDialogScroll;
-      assert.equal(typeof text, 'string', 'Localized modal scroll guidance must exist');
-      assert.match(text, language === 'ja' ? /背景.*スクロールしません/ : /background stays still/);
-      assert.match(text, language === 'ja' ? /説明.*スクロール/ : /Scroll within Help/);
-      assert.match(html, /<p data-i18n="helpDialogScroll">[^<]+<\/p>/);
+      assert.equal(text, undefined, 'Internal modal audit prose must not appear in Help');
+      assert.doesNotMatch(html, /<p data-i18n="helpDialogScroll">[^<]+<\/p>/);
     });
   }
 }
