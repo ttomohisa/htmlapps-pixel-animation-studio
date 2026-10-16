@@ -1,6 +1,19 @@
 # Changelog
 
-## Unreleased
+## [1.0.4] - 2026-10-16
+
+### Added
+- Portable versioned project files with bounded validation, exact frame/color/timing round trips and confirmed replacement, independent of autosave.
+- Project-file regression tests for maximum dimensions/frame count, malformed input, size limits, cancellation, and unchanged work on failed imports.
+
+### Fixed
+- Keep zoom inside a fixed-height scrollable viewport on desktop and mobile.
+- Show grab/grabbing cursors for selection moves; release uncommitted moves when touch navigation takes over.
+- Restrict mobile selection controls to Edit without clearing selections on tab switches.
+- Keep all four PNG scales together, repair the PNG card markup, and align compact desktop export actions.
+- Synchronize help/release version, remove obsolete language-switch instructions, and simplify the Japanese heading.
+
+## Earlier help clarification
 
 - Clarify Japanese and English help by removing internal layout, implementation, and audit commentary while preserving usage guidance and cautions.
 
