@@ -6,7 +6,7 @@
 - **Japanese description:** ドット絵アニメーション
 - **Repository:** `ttomohisa/htmlapps-pixel-animation-studio`
 - **Slug:** `pixel-animation-studio`
-- **Current stable release:** v1.0.3
+- **Current stable release:** v1.0.4
 - **Release artifacts:** `dist/index.html` and `dist/index.self-extract.html`
 
 ## 2. One-sentence purpose
@@ -92,7 +92,6 @@ Create small pixel-art animations frame by frame in the browser, preview motion,
 - GIF/WebP/JPEG import.
 - Sprite sheet import.
 - Aseprite import.
-- Project-file import/export.
 - Lasso / Magic Wand.
 - Line / rectangle / circle drawing tools.
 - Palette editor or palette files.
@@ -270,3 +269,18 @@ Help must be updated whenever user-facing behavior changes and remain fully scro
 - The canonical icon background and matching green details use `#16624f`.
 - Background corner radii are exactly 25% of their corresponding width and height; existing bounds, padding, and foreground artwork are preserved.
 - Header, favicon, and self-extract loader inherit the canonical `assets/favicon.svg`.
+
+## v1.0.4 — Portable projects and editing ergonomics
+
+- Save/Open an editable `.pixel-project.json` from Export; Open is also available before creating a canvas. The existing editable filename base applies to project downloads.
+- Format marker `pixel-animation-studio`, file version 1, independent from IndexedDB autosave. Maximum 12 MiB; dimensions 1–128, 1–128 frames, durations 20–5000 ms in 10 ms steps, canonical Base64 RGBA buffers of exactly width × height × 4 bytes.
+- Restore every pixel including partial alpha, frame order, active frame, timing, active/recent colors (the current palette), Grid, Onion Skin, filename, drawing tool, brush size, preview loop and export settings. Undo history, transient selection/clipboard and viewport position are intentionally excluded; opening fits the canvas.
+- Fully validate and prepare all frames before replacing live work. Confirm replacement of an active document. Failed/cancelled imports leave current pixels, frames, settings and histories unchanged. Reject unsupported versions, malformed dimensions/colors/settings/frame buffers, and oversized files before expensive decoding.
+- Project loading temporarily prevents editing/source changes. Local autosave remains separate and saves the successfully loaded document; storage-unavailable mode still allows project downloads.
+- Zoom changes pixel display size, never the canvas viewport height. Both axes remain scrollable; Space-drag and two-finger pan/pinch continue to work.
+- Selection hover shows grab only inside the rectangle, dragging it shows grabbing; starting a two-finger view gesture restores an uncommitted move and releases selection-drag ownership.
+- Smartphone selection controls appear only on Edit. Switching tabs preserves selection data.
+- PNG scale 1×/2×/4×/8× remains one group. Export actions align in compact desktop cards; sheet preview remains available through a disclosure. Mobile cards stack naturally.
+- Help and metadata use v1.0.4; obsolete language-switch boilerplate is removed in both languages.
+
+Selection moves show a reversible cut preview during dragging. Cancellation, gesture navigation and frame/tool changes discard the preview; committing creates one undo step. Autosave captures only committed pixels. Build information is hidden at smartphone widths (640px and below).

@@ -54,3 +54,7 @@ Before adding or upgrading a package:
 - Refresh the selected lock entry with the dependency scripts; never hand-edit a lock hash to bypass a mismatch.
 - Rebuild with a clean cache.
 - Test with the network disabled.
+
+### Pixel project files
+
+Project JSON is treated as untrusted data, never executable content. Before file reading, enforce a 12 MiB byte limit. After JSON parsing, validate the format/version, bounded dimensions and frame count, integer timing, colors and settings, and exact canonical Base64 RGBA sizes. Decode and prepare all frame buffers before a confirmed replacement. Files stay in the browser, with no new network permissions or dependencies. Files do not contain Undo history or clipboard contents.

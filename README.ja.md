@@ -49,7 +49,14 @@ GitHub Pagesから最初のHTMLを読み込んだ後、描画、PNG読み込み�
 3. 読みやすい単一HTMLとして `dist/index.html` が生成されます。
 4. さらに、小さな自己展開版 `dist/index.self-extract.html` も生成されます。
 
-v1.0.0のアプリ本体には実行時の第三者パッケージ依存がないため、エディターやGIFライブラリをビルド時に取得する必要はありません。リポジトリのビルド・検証フローはBrowser Kittyの標準テンプレートに従います。
+v1.0.4のアプリ本体には実行時の第三者パッケージ依存がないため、エディターやGIFライブラリをビルド時に取得する必要はありません。リポジトリのビルド・検証フローはBrowser Kittyの標準テンプレートに従います。
+
+
+### 編集用プロジェクトを保存する
+
+「書き出し」でファイル名を編集し、「プロジェクトを保存」から `.pixel-project.json` を保存します。開始画面または「書き出し」の「プロジェクトを開く」で、この端末や別の端末から編集を再開できます。IndexedDBへの端末内自動保存とは別の機能です。全フレーム、正確なRGBAピクセル、表示時間、現在色・最近使った色、編集・書き出し設定を保持します。最大12 MiBです。現在の作業がある場合は置換確認を表示し、不正なファイルでは作業を変更しません。Undo履歴、選択範囲、クリップボードは含まず、表示はFitで開きます。
+
+拡大しても描画領域全体の高さは変わりません。PCではスクロールやSpace＋ドラッグ、タッチでは2本指で表示を移動できます。スマホの選択操作は「編集」タブにだけ表示され、タブを切り替えても選択範囲は保持されます。
 
 ## 使い方
 
@@ -103,7 +110,7 @@ v1.0.0のアプリ本体には実行時の第三者パッケージ依存がな�
 
 ## 読み込み
 
-- v1.0.0ではPNGのみ対応します。
+- v1.0.4ではPNGのみ対応します。
 - 最大128×128のPNG 1枚から、元の寸法でプロジェクトを開始できます。
 - 同じサイズの複数PNGをフレームとして追加できます。
 - 既存プロジェクトへ追加できるのは、現在のCanvasと同じサイズのPNGだけです。
@@ -153,7 +160,7 @@ v1.0.0のアプリ本体には実行時の第三者パッケージ依存がな�
 ├─ src/index.template.html       # アプリ本体のテンプレート
 ├─ assets/favicon.svg            # アプリアイコン / favicon の元データ
 ├─ app.config.json               # アプリ情報とビルド設定
-├─ dependencies.json             # 実行時依存定義（v1.0.0は空）
+├─ dependencies.json             # 実行時依存定義（v1.0.4は空）
 ├─ dependencies.lock.json        # 依存ロック情報
 ├─ build-standalone.bat          # Windows用ビルド入口
 ├─ build-standalone.ps1          # 読みやすい単一HTMLの生成処理
@@ -193,18 +200,18 @@ GitHub Pages版ではページ本体を取得する最初の通信は発生し�
 
 ## 制限事項
 
-- v1.0.0のCanvasは最大128×128です。
+- v1.0.4のCanvasは最大128×128です。
 - 1プロジェクトは最大128フレームです。
-- 読み込みはPNGのみで、GIF / WebP / JPEG / Aseprite / Sprite Sheetの読み込みには対応していません。
+- 画像の読み込みはPNGのみで、GIF / WebP / JPEG / Aseprite / Sprite Sheetの読み込みには対応していません。
 - GIFは最大256色で、半透明を保持できません。
-- Layers、Lasso、Paletteファイル、Animation Tag、Projectファイル入出力、Animated WebP、Sprite metadata JSONはv1.0.0にはありません。
+- Layers、Lasso、Paletteファイル、Animation Tag、Animated WebP、Sprite metadata JSONはv1.0.4にはありません。
 - 自動保存はIndexedDBに依存します。ブラウザーのサイトデータを削除すると保存済みプロジェクトも消える場合があります。
 - Undo / Redo履歴はページ再読み込み後には復元されません。
 - 128×128でフレーム数が多いプロジェクトは、特にGIF生成時に端末メモリを多く使用する場合があります。
 
 ## 使用ライブラリ
 
-Pixel Animation Studio v1.0.0は、`dependencies.json` に**実行時の第三者依存ライブラリを持ちません**。
+Pixel Animation Studio v1.0.4は、`dependencies.json` に**実行時の第三者依存ライブラリを持ちません**。
 
 Animated GIF Encoderもアプリ内実装です。詳細は [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md) を確認してください。
 

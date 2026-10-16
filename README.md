@@ -49,7 +49,14 @@ Just [open the demo](https://ttomohisa.github.io/htmlapps-pixel-animation-studio
 3. Use the generated `dist/index.html` as the readable standalone build.
 4. `dist/index.self-extract.html` is also generated as the smaller self-extracting single-HTML variant.
 
-The v1.0.0 application has no runtime third-party package dependency, so the build does not need to fetch an editor or GIF library. The repository build scripts still use the standard Browser Kitty template verification flow.
+The v1.0.4 application has no runtime third-party package dependency, so the build does not need to fetch an editor or GIF library. The repository build scripts still use the standard Browser Kitty template verification flow.
+
+
+### Save an editable project
+
+In Export, edit the filename and choose **Save project** to download `.pixel-project.json`. Use **Open project** on the start screen or in Export to resume on this or another device. This is separate from IndexedDB autosave. All frames, exact RGBA pixels, timing, current/recent colors, and editing/export settings are preserved. Files are limited to 12 MiB. Opening replaces the current document after confirmation; invalid files leave it unchanged. Undo history, selections, and clipboard are not included; the view opens at Fit.
+
+Zoom stays within a bounded viewport. Scroll or use Space-drag to pan on desktop; use two fingers on touch devices. Selection controls appear only on the mobile Edit tab, while selections survive tab changes.
 
 ## Usage
 
@@ -103,7 +110,7 @@ Switching away from Selection clears the visible selection. Clipboard pixel data
 
 ## Import
 
-- PNG only in v1.0.0.
+- PNG only in v1.0.4.
 - A single PNG can start a project at its native dimensions up to 128×128.
 - Multiple PNG files become frames when they share the same dimensions.
 - Existing projects only accept PNGs matching the current canvas size.
@@ -153,7 +160,7 @@ Each deployment rebuilds the standalone HTML and runs the repository verificatio
 ├─ src/index.template.html       # Application source template
 ├─ assets/favicon.svg            # Canonical app / favicon artwork
 ├─ app.config.json               # App identity and build settings
-├─ dependencies.json             # Runtime dependency declaration (empty in v1.0.0)
+├─ dependencies.json             # Runtime dependency declaration (empty in v1.0.4)
 ├─ dependencies.lock.json        # Locked dependency metadata
 ├─ build-standalone.bat          # Windows build entry point
 ├─ build-standalone.ps1          # Readable standalone HTML builder
@@ -193,18 +200,18 @@ The GitHub Pages version naturally makes an initial request to download the page
 
 ## Limitations
 
-- Canvas dimensions are limited to 128×128 pixels in v1.0.0.
+- Canvas dimensions are limited to 128×128 pixels in v1.0.4.
 - A project can contain up to 128 frames.
-- Input is PNG only; GIF, WebP, JPEG, Aseprite, and sprite-sheet import are not supported in v1.0.0.
+- Input is PNG only; GIF, WebP, JPEG, Aseprite, and sprite-sheet import are not supported in v1.0.4.
 - GIF output is limited to 256 colors and cannot preserve partial alpha.
-- Layers, lasso selection, palette files, animation tags, project-file import/export, Animated WebP, and sprite metadata JSON are not included in v1.0.0.
+- Layers, lasso selection, palette files, animation tags, Animated WebP, and sprite metadata JSON are not included in v1.0.4.
 - Autosave depends on IndexedDB. Clearing browser site data can remove the locally saved project.
 - Undo / Redo history is not restored after a page reload.
 - Large 128×128 projects with many frames can use more memory, especially during GIF encoding.
 
 ## Dependencies
 
-Pixel Animation Studio v1.0.0 has **no runtime third-party dependencies** declared in `dependencies.json`.
+Pixel Animation Studio v1.0.4 has **no runtime third-party dependencies** declared in `dependencies.json`.
 
 Animated GIF encoding is implemented directly in the application. See [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md) for details.
 

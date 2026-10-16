@@ -24,7 +24,7 @@ class Element {
     this.parentElement = parentElement;
     this.isContentEditable = false;
     this.classes = new Set();
-    this.classList = { add: name => this.classes.add(name), remove: name => this.classes.delete(name) };
+    this.classList = { add: name => this.classes.add(name), remove: name => this.classes.delete(name), toggle: (name, enabled) => enabled ? this.classes.add(name) : this.classes.delete(name) };
     this.scrollLeft = 100;
     this.scrollTop = 100;
   }
