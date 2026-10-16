@@ -447,6 +447,7 @@
       .canvas-stage { height: clamp(280px, 52vh, 440px); }
     }
     @media (max-width: 640px) {
+      .build-details { display: none; }
       .main { padding: 16px 12px 36px; }
       .page-intro { display: block; }
       .local-badge { margin-top: 12px; }
@@ -945,7 +946,7 @@
         <ol>
           <li data-i18n="helpStep1">16×16〜128×128、またはCustomからキャンバスサイズを選びます。</li>
           <li data-i18n="helpStep2">鉛筆 / 消しゴム / 塗りつぶし / スポイト / 選択を使い分けます。</li>
-          <li data-i18n="helpStep3">選択ツールの「すべて選択」でキャンバス全体を選べます。選択範囲は別のツールへ切り替えると解除されます。貼り付けは貼り付け先を選択してから行います。</li>
+          <li data-i18n="helpStep3">「すべて選択」は絵全体のコピー・切り取り・削除に使えます。選択範囲をドラッグすると、元の位置から切り取って移動します。選択範囲は別のツールへ切り替えると解除されます。貼り付けは貼り付け先を選択してから行います。</li>
           <li data-i18n="helpStep4">フレームを追加・複製し、サムネイルから切り替えます。</li>
           <li data-i18n="helpKeyboard">Tabで操作先を選び、ボタンはSpaceまたはEnterで実行できます。キャンバスにフォーカスがあるときはSpace + ドラッグで表示を移動できます。</li>
         </ol>
@@ -970,7 +971,7 @@
       'use strict';
 
       const APP_CONFIG = {"$schema":"./schemas/app-config.schema.json","name":"Pixel Animation Studio","nameJa":"Pixel Animation Studio","slug":"pixel-animation-studio","version":"1.0.4","description":"Create small pixel-art animations locally in your browser and export them as PNG, GIF, and sprite sheets.","descriptionJa":"小さなドット絵アニメーションをブラウザー内で作成し、PNG・GIF・スプライトシートとして保存するツールです。","defaultLanguage":"auto","repository":{"owner":"ttomohisa","name":"htmlapps-pixel-animation-studio"},"build":{"output":"dist/index.html","blockRuntimeNetwork":true,"selfExtract":{"enabled":true,"output":"dist/index.self-extract.html"},"sizeBudget":{"readableWarningMb":25,"selfExtractWarningMb":12}}};
-      const BUILD_MANIFEST = {"schemaVersion":2,"builder":"single-html-app-template/1.3","generatedAtUtc":"2026-10-16T01:51:34.3639947Z","app":{"name":"Pixel Animation Studio","slug":"pixel-animation-studio","version":"1.0.4"},"dependencies":[]};
+      const BUILD_MANIFEST = {"schemaVersion":2,"builder":"single-html-app-template/1.3","generatedAtUtc":"2026-10-16T03:40:16.5090939Z","app":{"name":"Pixel Animation Studio","slug":"pixel-animation-studio","version":"1.0.4"},"dependencies":[]};
       // Asset payloads are Base64 exactly once. The JSON bundle itself is embedded directly.
       const assetBundle = {"schemaVersion":2,"dependencies":{}};
       const blobUrls = new Set();
@@ -1040,7 +1041,7 @@
           desktopTip: 'ドラッグして描画。Space + DragでPan、ホイールでZoomできます。', colorTitle: '描画色', colorPickerTitle: 'カラーピッカー', currentToolTitle: '現在の設定', displayScale: '表示倍率', canvasLabel: 'ドット絵キャンバス', framesTitle: 'フレーム', mobileEditTab: '編集', mobileFramesTab: 'フレーム', addFrame: '追加', duplicateFrame: '複製', deleteFrame: '削除', moveFrameLeft: '前へ移動', moveFrameRight: '後ろへ移動', frameLabel: 'フレーム', frameAdded: 'フレームを追加しました', frameDuplicated: 'フレームを複製しました', frameDeleted: 'フレームを削除しました', frameRestored: 'フレームを元に戻しました', frameMoved: 'フレームを並べ替えました', frameLimit: 'フレームは最大128個です', keepOneFrame: '少なくとも1フレーム必要です', restore: '元に戻す', mobilePreviewTab: 'プレビュー', frameDuration: '表示時間', applyDurationAll: 'すべてに適用', durationAppliedAll: 'すべてのフレームに表示時間を適用しました', invalidDuration: '表示時間は20〜5000msを10ms単位で指定してください', previewTitle: 'プレビュー', playPreview: '再生', pausePreview: '一時停止', restartPreview: '最初から', loopPreview: 'ループ', previewNote: '各フレームの表示時間を使って再生します。', previewStarted: 'プレビューを再生しました', previewPaused: 'プレビューを一時停止しました', previewRestarted: '最初のフレームへ戻しました', loopOn: 'ループを有効にしました', loopOff: 'ループを無効にしました', animationAssistTitle: 'アニメ補助', onionSkin: 'Onion Skin', onionOn: 'ON', onionOff: 'OFF', onionEnabled: 'Onion Skinを表示しました', onionDisabled: 'Onion Skinを非表示にしました', autosaveReady: '自動保存', autosaveSaving: '保存中…', autosaveSaved: '自動保存済み', autosaveUnavailable: '自動保存を利用できません。このタブを閉じると作業内容が失われます。', autosaveUnavailableShort: '自動保存不可', restoreTitle: '前回の作業があります', restoreContinue: '続きから', restoreNew: '新しく作る', restoreSummary: '{size} · {frames}フレーム', restoredProject: '前回の作業を復元しました',
           buildInfo: 'ビルド情報', appVersion: 'アプリバージョン', builtAt: '生成日時', dependencies: '内包依存数', footer: 'ブラウザー内で処理',
 
-          helpTitle: '使い方と注意事項', helpStartTitle: '基本操作', helpStep1: '16×16〜128×128、またはCustomからキャンバスサイズを選びます。', helpStep2: '鉛筆 / 消しゴム / 塗りつぶし / スポイト / 選択を使い分けます。', helpStep3: '選択ツールの「すべて選択」でキャンバス全体を選べます。選択範囲は別のツールへ切り替えると解除されます。貼り付けは貼り付け先を選択してから行います。元に戻す / やり直す、Zoom / Pan / GridはCanvas上部から操作できます。', helpStep4: 'フレームを追加・複製し、表示時間を設定してPreviewで動きを確認します。',
+          helpTitle: '使い方と注意事項', helpStartTitle: '基本操作', helpStep1: '16×16〜128×128、またはCustomからキャンバスサイズを選びます。', helpStep2: '鉛筆 / 消しゴム / 塗りつぶし / スポイト / 選択を使い分けます。', helpStep3: '「すべて選択」は絵全体のコピー・切り取り・削除に使えます。選択範囲をドラッグすると、元の位置から切り取って移動します。選択範囲は別のツールへ切り替えると解除されます。貼り付けは貼り付け先を選択してから行います。元に戻す / やり直す、Zoom / Pan / GridはCanvas上部から操作できます。', helpStep4: 'フレームを追加・複製し、表示時間を設定してPreviewで動きを確認します。',
           helpKeyboard: 'Tabで操作先を選び、ボタンはSpaceまたはEnterで実行できます。キャンバスにフォーカスがあるときはSpace + ドラッグで表示を移動できます。',
           helpPrivacyTitle: 'プライバシー', helpPrivacyBody: '描画データはこのブラウザー内で処理され、このアプリから外部サーバーへ送信されません。実行時の外部通信も行いません。',
           helpProjectFile:'編集を続けるには「書き出し」の「プロジェクトを保存」を使い、.pixel-project.jsonを保管します。「プロジェクトを開く」で復元できます（最大12 MiB）。端末内自動保存とは別です。Undo履歴・選択範囲・クリップボードは含みません。表示倍率はFitで開きます。拡大しても作業領域の高さは変わりません。スクロール、Space＋ドラッグ、2本指で表示を移動できます。',
@@ -1063,7 +1064,7 @@
           desktopTip: 'Drag to draw. Use Space + Drag to pan and the wheel to zoom.', colorTitle: 'Drawing color', colorPickerTitle: 'Color picker', currentToolTitle: 'Current settings', displayScale: 'Display scale', canvasLabel: 'Pixel art canvas', framesTitle: 'Frames', mobileEditTab: 'Edit', mobileFramesTab: 'Frames', addFrame: 'Add', duplicateFrame: 'Duplicate', deleteFrame: 'Delete', moveFrameLeft: 'Move earlier', moveFrameRight: 'Move later', frameLabel: 'Frame', frameAdded: 'Frame added', frameDuplicated: 'Frame duplicated', frameDeleted: 'Frame deleted', frameRestored: 'Frame restored', frameMoved: 'Frame reordered', frameLimit: 'Up to 128 frames are supported', keepOneFrame: 'At least one frame is required', restore: 'Undo', mobilePreviewTab: 'Preview', frameDuration: 'Frame delay', applyDurationAll: 'Apply to all', durationAppliedAll: 'Frame delay applied to all frames', invalidDuration: 'Use a frame delay from 20 to 5000 ms in 10 ms steps', previewTitle: 'Preview', playPreview: 'Play', pausePreview: 'Pause', restartPreview: 'Restart', loopPreview: 'Loop', previewNote: 'Playback uses each frame’s individual delay.', previewStarted: 'Preview started', previewPaused: 'Preview paused', previewRestarted: 'Returned to the first frame', loopOn: 'Loop enabled', loopOff: 'Loop disabled', animationAssistTitle: 'Animation assist', onionSkin: 'Onion Skin', onionOn: 'ON', onionOff: 'OFF', onionEnabled: 'Onion skin shown', onionDisabled: 'Onion skin hidden', autosaveReady: 'Autosave', autosaveSaving: 'Saving…', autosaveSaved: 'Autosaved', autosaveUnavailable: 'Autosave is unavailable. Closing this tab will discard your work.', autosaveUnavailableShort: 'Autosave unavailable', restoreTitle: 'Previous work found', restoreContinue: 'Continue', restoreNew: 'Start new', restoreSummary: '{size} · {frames} frames', restoredProject: 'Previous work restored',
           buildInfo: 'Build information', appVersion: 'App version', builtAt: 'Built at', dependencies: 'Embedded dependencies', footer: 'Processed in your browser',
 
-          helpTitle: 'How to use & notes', helpStartTitle: 'Basics', helpStep1: 'Choose 16×16 through 128×128, or enter a Custom canvas size.', helpStep2: 'Choose Pencil, Eraser, Fill, Eyedropper, or Selection.', helpStep3: 'In Selection, use Select all to select the entire canvas. Selection clears when you switch tools. Choose a destination before pasting. Undo / Redo, Zoom / Pan, and Grid stay above the canvas.', helpStep4: 'Add or duplicate frames, set their delays, and check the motion in Preview.',
+          helpTitle: 'How to use & notes', helpStartTitle: 'Basics', helpStep1: 'Choose 16×16 through 128×128, or enter a Custom canvas size.', helpStep2: 'Choose Pencil, Eraser, Fill, Eyedropper, or Selection.', helpStep3: 'Use Select all to copy, cut, or delete the whole image. Drag a selection to cut it from its original position and move it. Selection clears when you switch tools. Choose a destination before pasting. Undo / Redo, Zoom / Pan, and Grid stay above the canvas.', helpStep4: 'Add or duplicate frames, set their delays, and check the motion in Preview.',
           helpKeyboard: 'Use Tab to focus controls and Space or Enter to activate buttons. With the canvas focused, hold Space and drag to pan.',
           helpPrivacyTitle: 'Privacy', helpPrivacyBody: 'Pixel data is processed in this browser and is not sent to an external server by this app. The app also makes no runtime network requests.',
           helpProjectFile:'To resume editing, use Save project in Export and keep the .pixel-project.json file. Open project restores it (12 MiB maximum), independently of local autosave. Undo history, selections, and clipboard are not included; the view opens at Fit. Zoom does not enlarge the viewport. Scroll, Space-drag, or use two fingers to pan.',
@@ -1321,7 +1322,7 @@
         updateToolSummary(); if (announceChange) announce(t('brushChanged'));
       }
 
-      function captureCanvas() { return ctx.getImageData(0, 0, canvas.width, canvas.height); }
+      function captureCanvas() { return state.selectionDrag?.before ? cloneImageData(state.selectionDrag.before) : ctx.getImageData(0, 0, canvas.width, canvas.height); }
       function imageDataEquals(a, b) {
         if (!a || !b || a.width !== b.width || a.height !== b.height || a.data.length !== b.data.length) return false;
         for (let index = 0; index < a.data.length; index += 1) if (a.data[index] !== b.data[index]) return false; return true;
@@ -1335,16 +1336,16 @@
         if (!before) return false; const after = captureCanvas(); if (imageDataEquals(before, after)) return false;
         state.undoStack.push(before); if (state.undoStack.length > MAX_HISTORY) state.undoStack.shift(); state.redoStack = []; state.dirty = true; updateHistoryButtons(); if(state.frames.length) renderFrames(); updateOnionSkin(); scheduleAutosave(); return true;
       }
-      function undo() {
+      function undo() { cancelSelectionMove();
         if (!state.undoStack.length) { announce(t('noUndo')); return; }
         const current = captureCanvas(); const previous = state.undoStack.pop(); state.redoStack.push(current); ctx.putImageData(previous,0,0); state.dirty = true; updateHistoryButtons(); renderFrames(); updateOnionSkin(); scheduleAutosave(); announce(t('undone'));
       }
-      function redo() {
+      function redo() { cancelSelectionMove();
         if (!state.redoStack.length) { announce(t('noRedo')); return; }
         const current = captureCanvas(); const next = state.redoStack.pop(); state.undoStack.push(current); if (state.undoStack.length > MAX_HISTORY) state.undoStack.shift(); ctx.putImageData(next,0,0); state.dirty = true; updateHistoryButtons(); renderFrames(); updateOnionSkin(); scheduleAutosave(); announce(t('redone'));
       }
 
-      function setMobilePage(page) { const next = ['frames','preview','export'].includes(page) ? page : 'edit'; document.body.dataset.mobilePage = next; $$('[data-mobile-page-button]').forEach(button => button.setAttribute('aria-pressed', String(button.dataset.mobilePageButton === next))); }
+      function setMobilePage(page) { cancelSelectionMove(); updateSelectionOverlay(); const next = ['frames','preview','export'].includes(page) ? page : 'edit'; document.body.dataset.mobilePage = next; $$('[data-mobile-page-button]').forEach(button => button.setAttribute('aria-pressed', String(button.dataset.mobilePageButton === next))); }
       function cloneImageData(image) { return image ? new ImageData(new Uint8ClampedArray(image.data), image.width, image.height) : new ImageData(state.width, state.height); }
       function makeFrame(imageData = null, duration = DEFAULT_FRAME_DURATION) { return { imageData: imageData ? cloneImageData(imageData) : new ImageData(state.width, state.height), undoStack: [], redoStack: [], duration: normalizeFrameDuration(duration) || DEFAULT_FRAME_DURATION }; }
       function saveCurrentFrame() {
@@ -1360,7 +1361,7 @@
       function toggleOnionSkin() { state.onionSkin=!state.onionSkin; updateOnionSkin(); scheduleAutosave(); announce(t(state.onionSkin?'onionEnabled':'onionDisabled')); }
       function loadFrame(index, { focus = true } = {}) {
         if (index < 0 || index >= state.frames.length || index === state.currentFrameIndex && !state.frames[index]) return;
-        saveCurrentFrame(); clearSelection(); state.currentFrameIndex = index; const frame = state.frames[index]; ctx.putImageData(cloneImageData(frame.imageData), 0, 0);
+        clearSelection(); saveCurrentFrame(); state.currentFrameIndex = index; const frame = state.frames[index]; ctx.putImageData(cloneImageData(frame.imageData), 0, 0);
         state.undoStack = frame.undoStack || []; state.redoStack = frame.redoStack || []; updateHistoryButtons(); renderFrames(); updateOnionSkin(); scheduleAutosave(); if (focus) canvas.focus({preventScroll:true});
       }
       function normalizeFrameDuration(value) {
@@ -1470,7 +1471,7 @@
         canvas.width=width; canvas.height=height; onionCanvas.width=width; onionCanvas.height=height; ctx.imageSmoothingEnabled=false; onionCtx.imageSmoothingEnabled=false; ctx.putImageData(cloneImageData(state.frames[0].imageData),0,0); $('#projectSize').textContent=`${width} × ${height}`; $('#setupView').hidden=true; $('#editorView').hidden=false; document.body.dataset.projectState='editing'; clearSelection(); updateHistoryButtons(); renderFrames(); updateOnionSkin(); updatePreviewControls(); setMobilePage('edit'); requestAnimationFrame(()=>fitCanvas()); scheduleAutosave();
       }
       async function importPngFiles(fileList) {
-        const files=[...fileList]; if(!files.length||state.importBusy||state.projectFileBusy)return; state.importBusy=true; $('#setupImportButton').disabled=true; $('#editorImportButton').disabled=true; AppToast.show({message:t('importingPng'),duration:0});
+        const files=[...fileList]; if(!files.length||state.importBusy||state.projectFileBusy)return; clearSelection(); state.importBusy=true; $('#setupImportButton').disabled=true; $('#editorImportButton').disabled=true; AppToast.show({message:t('importingPng'),duration:0});
         const failures=[],items=[]; let expectedWidth=state.width||0,expectedHeight=state.height||0; let remaining=state.width ? MAX_FRAMES-state.frames.length : MAX_FRAMES;
         for(const file of files){
           if(remaining<=0){failures.push({name:file.name,code:'frameLimit'});continue;}
@@ -1478,7 +1479,7 @@
           catch(error){failures.push({name:file.name||'file',code:error.code||'decode',width:error.width,height:error.height});}
           await new Promise(resolve=>setTimeout(resolve,0));
         }
-        if(items.length){ if(!state.width) activateImportedProject(expectedWidth,expectedHeight,items); else { saveCurrentFrame(); const start=state.frames.length; items.forEach(item=>state.frames.push(makeFrame(item.imageData,DEFAULT_FRAME_DURATION))); state.currentFrameIndex=start; ctx.putImageData(cloneImageData(state.frames[start].imageData),0,0); state.undoStack=[];state.redoStack=[];state.dirty=true;clearSelection();updateHistoryButtons();renderFrames();updateOnionSkin();scheduleAutosave(); } }
+        if(items.length){ clearSelection(); if(!state.width) activateImportedProject(expectedWidth,expectedHeight,items); else { saveCurrentFrame(); const start=state.frames.length; items.forEach(item=>state.frames.push(makeFrame(item.imageData,DEFAULT_FRAME_DURATION))); state.currentFrameIndex=start; ctx.putImageData(cloneImageData(state.frames[start].imageData),0,0); state.undoStack=[];state.redoStack=[];state.dirty=true;clearSelection();updateHistoryButtons();renderFrames();updateOnionSkin();scheduleAutosave(); } }
         state.importReport={added:items.length,failures}; renderImportReport(); AppToast.dismiss(); if(!items.length)AppToast.show({message:t('importAllFailed'),tone:'warning'}); else AppToast.show({message:`${items.length} ${t('importAdded')}${failures.length?` · ${failures.length} ${t('importFailed')}`:''}`,tone:failures.length?'warning':'success'}); state.importBusy=false; $('#setupImportButton').disabled=false; $('#editorImportButton').disabled=false; $('#pngFileInput').value='';
       }
       function installPngDropTarget(target) {
@@ -1496,10 +1497,10 @@
         if (!state.previewPlaying) { state.previewIndex = state.currentFrameIndex; renderPreviewFrame(state.previewIndex); }
         updateExportPanel();
       }
-      function addFrame() { if(state.frames.length>=MAX_FRAMES){AppToast.show({message:t('frameLimit')});return;} saveCurrentFrame(); const insert=state.currentFrameIndex+1; state.frames.splice(insert,0,makeFrame()); state.currentFrameIndex=insert; ctx.clearRect(0,0,state.width,state.height); state.undoStack=[]; state.redoStack=[]; state.dirty=true; updateHistoryButtons(); renderFrames(); updateOnionSkin(); scheduleAutosave(); AppToast.show({message:t('frameAdded'),tone:'success'}); }
-      function duplicateFrame() { if(state.frames.length>=MAX_FRAMES){AppToast.show({message:t('frameLimit')});return;} saveCurrentFrame(); const source=state.frames[state.currentFrameIndex]; const insert=state.currentFrameIndex+1; state.frames.splice(insert,0,makeFrame(source.imageData, source.duration)); state.currentFrameIndex=insert; ctx.putImageData(cloneImageData(source.imageData),0,0); state.undoStack=[]; state.redoStack=[]; state.dirty=true; updateHistoryButtons(); renderFrames(); updateOnionSkin(); scheduleAutosave(); AppToast.show({message:t('frameDuplicated'),tone:'success'}); }
-      function deleteFrame() { if(state.frames.length<=1){AppToast.show({message:t('keepOneFrame')});return;} saveCurrentFrame(); const index=state.currentFrameIndex; const removed=state.frames.splice(index,1)[0]; state.currentFrameIndex=Math.min(index,state.frames.length-1); const target=state.frames[state.currentFrameIndex]; ctx.putImageData(cloneImageData(target.imageData),0,0); state.undoStack=target.undoStack||[]; state.redoStack=target.redoStack||[]; state.dirty=true; updateHistoryButtons(); renderFrames(); updateOnionSkin(); scheduleAutosave(); AppToast.show({message:t('frameDeleted'),actionLabel:t('restore'),duration:5000,onAction:()=>{state.frames.splice(index,0,removed);state.currentFrameIndex=index;ctx.putImageData(cloneImageData(removed.imageData),0,0);state.undoStack=removed.undoStack||[];state.redoStack=removed.redoStack||[];updateHistoryButtons();renderFrames();updateOnionSkin();scheduleAutosave();AppToast.show({message:t('frameRestored'),tone:'success'});}}); }
-      function moveFrame(direction) { saveCurrentFrame(); const from=state.currentFrameIndex; const to=from+direction; if(to<0||to>=state.frames.length)return; const [frame]=state.frames.splice(from,1); state.frames.splice(to,0,frame); state.currentFrameIndex=to; state.dirty=true; renderFrames(); updateOnionSkin(); scheduleAutosave(); announce(t('frameMoved')); }
+      function addFrame() { clearSelection(); if(state.frames.length>=MAX_FRAMES){AppToast.show({message:t('frameLimit')});return;} saveCurrentFrame(); const insert=state.currentFrameIndex+1; state.frames.splice(insert,0,makeFrame()); state.currentFrameIndex=insert; ctx.clearRect(0,0,state.width,state.height); state.undoStack=[]; state.redoStack=[]; state.dirty=true; updateHistoryButtons(); renderFrames(); updateOnionSkin(); scheduleAutosave(); AppToast.show({message:t('frameAdded'),tone:'success'}); }
+      function duplicateFrame() { clearSelection(); if(state.frames.length>=MAX_FRAMES){AppToast.show({message:t('frameLimit')});return;} saveCurrentFrame(); const source=state.frames[state.currentFrameIndex]; const insert=state.currentFrameIndex+1; state.frames.splice(insert,0,makeFrame(source.imageData, source.duration)); state.currentFrameIndex=insert; ctx.putImageData(cloneImageData(source.imageData),0,0); state.undoStack=[]; state.redoStack=[]; state.dirty=true; updateHistoryButtons(); renderFrames(); updateOnionSkin(); scheduleAutosave(); AppToast.show({message:t('frameDuplicated'),tone:'success'}); }
+      function deleteFrame() { clearSelection(); if(state.frames.length<=1){AppToast.show({message:t('keepOneFrame')});return;} saveCurrentFrame(); const index=state.currentFrameIndex; const removed=state.frames.splice(index,1)[0]; state.currentFrameIndex=Math.min(index,state.frames.length-1); const target=state.frames[state.currentFrameIndex]; ctx.putImageData(cloneImageData(target.imageData),0,0); state.undoStack=target.undoStack||[]; state.redoStack=target.redoStack||[]; state.dirty=true; updateHistoryButtons(); renderFrames(); updateOnionSkin(); scheduleAutosave(); AppToast.show({message:t('frameDeleted'),actionLabel:t('restore'),duration:5000,onAction:()=>{state.frames.splice(index,0,removed);state.currentFrameIndex=index;ctx.putImageData(cloneImageData(removed.imageData),0,0);state.undoStack=removed.undoStack||[];state.redoStack=removed.redoStack||[];updateHistoryButtons();renderFrames();updateOnionSkin();scheduleAutosave();AppToast.show({message:t('frameRestored'),tone:'success'});}}); }
+      function moveFrame(direction) { clearSelection(); saveCurrentFrame(); const from=state.currentFrameIndex; const to=from+direction; if(to<0||to>=state.frames.length)return; const [frame]=state.frames.splice(from,1); state.frames.splice(to,0,frame); state.currentFrameIndex=to; state.dirty=true; renderFrames(); updateOnionSkin(); scheduleAutosave(); announce(t('frameMoved')); }
       function setFrameDuration(value, { applyAll = false, announceChange = true } = {}) {
         const duration = normalizeFrameDuration(value);
         if (!duration) { $('#frameDurationInput').value = String(currentFrameDuration()); if (announceChange) AppToast.show({message:t('invalidDuration')}); return false; }
@@ -1681,16 +1682,36 @@
         canvas.classList.toggle('is-selecting', state.tool==='selection' && !active); canvas.classList.toggle('has-selection', active); canvas.classList.toggle('is-selection-moving', Boolean(active && state.selectionDrag?.mode==='move')); if(!active) canvas.classList.remove('is-selection-hover');
         ['copySelectionButton','cutSelectionButton','deleteSelectionButton'].forEach(id=>$('#'+id).disabled=!active); $('#pasteSelectionButton').disabled=!(active && state.clipboard); $('#clearSelectionButton').disabled=!active;
       }
-      function clearSelection({announceChange=false}={}){ state.selection=null; state.selectionDrag=null; updateSelectionOverlay(); if(announceChange) announce(t('clearSelection')); }
+      function clearSelection({announceChange=false}={}){ cancelSelectionMove(); state.selection=null; state.selectionDrag=null; updateSelectionOverlay(); if(announceChange) announce(t('clearSelection')); }
       function selectionImage(){ const r=state.selection; return r ? ctx.getImageData(r.x,r.y,r.w,r.h) : null; }
-      function copySelection(){ if(!state.selection){AppToast.show({message:t('noSelection')});return false;} state.clipboard=cloneImageData(selectionImage()); updateSelectionOverlay(); AppToast.show({message:t('selectionCopied'),tone:'success'}); return true; }
-      function deleteSelection(){ if(!state.selection){AppToast.show({message:t('noSelection')});return false;} const r=state.selection,before=captureCanvas(); ctx.clearRect(r.x,r.y,r.w,r.h); commitHistory(before); AppToast.show({message:t('selectionDeleted')}); return true; }
-      function cutSelection(){ if(!copySelection())return; const r=state.selection,before=captureCanvas(); ctx.clearRect(r.x,r.y,r.w,r.h); commitHistory(before); AppToast.show({message:t('selectionCut'),tone:'success'}); }
-      function pasteSelection(){ if(!state.selection){AppToast.show({message:t('selectPasteTarget')});return;} if(!state.clipboard){AppToast.show({message:t('clipboardEmpty')});return;} const before=captureCanvas(); const x=state.selection.x, y=state.selection.y; ctx.putImageData(state.clipboard,x,y); state.selection={x,y,w:Math.min(state.clipboard.width,state.width-x),h:Math.min(state.clipboard.height,state.height-y)}; commitHistory(before); updateSelectionOverlay(); AppToast.show({message:t('selectionPasted'),tone:'success'}); }
-      function applySelectionMove(dx,dy){ const r=state.selection;if(!r||(dx===0&&dy===0))return false; const nx=Math.max(0,Math.min(state.width-r.w,r.x+dx)); const ny=Math.max(0,Math.min(state.height-r.h,r.y+dy)); if(nx===r.x&&ny===r.y)return false; const before=captureCanvas(); const image=ctx.getImageData(r.x,r.y,r.w,r.h); ctx.clearRect(r.x,r.y,r.w,r.h); ctx.putImageData(image,nx,ny); state.selection={x:nx,y:ny,w:r.w,h:r.h}; commitHistory(before); updateSelectionOverlay(); return true; }
-      function beginSelection(event){ const point=eventToPixel(event); if(state.selection && pointInSelection(point)){ state.selectionDrag={mode:'move',pointerId:event.pointerId,start:point,origin:{...state.selection}}; } else { state.selection={x:point.x,y:point.y,w:1,h:1}; state.selectionDrag={mode:'select',pointerId:event.pointerId,start:point}; } try{canvas.setPointerCapture?.(event.pointerId);}catch{} updateSelectionOverlay(); }
-      function continueSelection(event){ const d=state.selectionDrag;if(!d||d.pointerId!==event.pointerId)return; const point=eventToPixel(event); if(d.mode==='select') state.selection=normalizeSelection(d.start,point); else { const dx=point.x-d.start.x,dy=point.y-d.start.y; state.selection={...d.origin,x:Math.max(0,Math.min(state.width-d.origin.w,d.origin.x+dx)),y:Math.max(0,Math.min(state.height-d.origin.h,d.origin.y+dy))}; } updateSelectionOverlay(); }
-      function finishSelection(event){ const d=state.selectionDrag;if(!d||d.pointerId!==event.pointerId)return; if(d.mode==='move'){ const target={...state.selection}; state.selection={...d.origin}; applySelectionMove(target.x-d.origin.x,target.y-d.origin.y); } state.selectionDrag=null; updateSelectionOverlay(); }
+      function copySelection(){ if(state.selectionDrag)return false; if(!state.selection){AppToast.show({message:t('noSelection')});return false;} state.clipboard=cloneImageData(selectionImage()); updateSelectionOverlay(); AppToast.show({message:t('selectionCopied'),tone:'success'}); return true; }
+      function deleteSelection(){ if(state.selectionDrag)return false; if(!state.selection){AppToast.show({message:t('noSelection')});return false;} const r=state.selection,before=captureCanvas(); ctx.clearRect(r.x,r.y,r.w,r.h); commitHistory(before); AppToast.show({message:t('selectionDeleted')}); return true; }
+      function cutSelection(){ if(state.selectionDrag)return false; if(!copySelection())return; const r=state.selection,before=captureCanvas(); ctx.clearRect(r.x,r.y,r.w,r.h); commitHistory(before); AppToast.show({message:t('selectionCut'),tone:'success'}); }
+      function pasteSelection(){ if(state.selectionDrag)return false; if(!state.selection){AppToast.show({message:t('selectPasteTarget')});return;} if(!state.clipboard){AppToast.show({message:t('clipboardEmpty')});return;} const before=captureCanvas(); const x=state.selection.x, y=state.selection.y; ctx.putImageData(state.clipboard,x,y); state.selection={x,y,w:Math.min(state.clipboard.width,state.width-x),h:Math.min(state.clipboard.height,state.height-y)}; commitHistory(before); updateSelectionOverlay(); AppToast.show({message:t('selectionPasted'),tone:'success'}); }
+      function applySelectionMove(dx,dy){ if(state.selectionDrag)return false; const r=state.selection;if(!r||(dx===0&&dy===0))return false; const nx=Math.max(0,Math.min(state.width-r.w,r.x+dx)); const ny=Math.max(0,Math.min(state.height-r.h,r.y+dy)); if(nx===r.x&&ny===r.y)return false; const before=captureCanvas(); const image=ctx.getImageData(r.x,r.y,r.w,r.h); ctx.clearRect(r.x,r.y,r.w,r.h); ctx.putImageData(image,nx,ny); state.selection={x:nx,y:ny,w:r.w,h:r.h}; commitHistory(before); updateSelectionOverlay(); return true; }
+      // Keep the committed canvas separate from the reversible cut preview.
+      function cancelSelectionMove(){ const d=state.selectionDrag; if(d?.mode==='move'){ ctx.putImageData(d.before,0,0); state.selection={...d.origin}; } state.selectionDrag=null; canvas.classList.remove('is-selection-moving','is-selection-hover'); updateSelectionOverlay(); }
+      function beginSelection(event){ const point=eventToPixel(event); if(state.selection && pointInSelection(point)){ state.selectionDrag={mode:'move',pointerId:event.pointerId,start:point,origin:{...state.selection},before:captureCanvas(),image:selectionImage()}; } else { state.selection={x:point.x,y:point.y,w:1,h:1}; state.selectionDrag={mode:'select',pointerId:event.pointerId,start:point}; } try{canvas.setPointerCapture?.(event.pointerId);}catch{} updateSelectionOverlay(); }
+      function continueSelection(event){
+        const d=state.selectionDrag;if(!d||d.pointerId!==event.pointerId)return; const point=eventToPixel(event);
+        if(d.mode==='select') state.selection=normalizeSelection(d.start,point);
+        else {
+          const dx=point.x-d.start.x,dy=point.y-d.start.y;
+          state.selection={...d.origin,x:Math.max(0,Math.min(state.width-d.origin.w,d.origin.x+dx)),y:Math.max(0,Math.min(state.height-d.origin.h,d.origin.y+dy))};
+          ctx.putImageData(d.before,0,0);
+          ctx.clearRect(d.origin.x,d.origin.y,d.origin.w,d.origin.h);
+          ctx.putImageData(d.image,state.selection.x,state.selection.y);
+        }
+        updateSelectionOverlay();
+      }
+      function finishSelection(event){
+        const d=state.selectionDrag;if(!d||d.pointerId!==event.pointerId)return;
+        if(d.mode==='move'){
+          const target={...state.selection}; cancelSelectionMove();
+          if(event.type!=='pointercancel') applySelectionMove(target.x-d.origin.x,target.y-d.origin.y);
+        }
+        state.selectionDrag=null; canvas.classList.remove('is-selection-hover'); updateSelectionOverlay();
+      }
 
       function startPan(event) {
         state.pan = { pointerId:event.pointerId, x:event.clientX, y:event.clientY, scrollLeft:stage.scrollLeft, scrollTop:stage.scrollTop }; stage.classList.add('is-panning'); canvas.classList.add('is-panning');
@@ -1703,7 +1724,7 @@
         const points=[...state.touchPointers.values()].slice(0,2); if(points.length<2) return null; const dx=points[1].x-points[0].x; const dy=points[1].y-points[0].y; return { x:(points[0].x+points[1].x)/2, y:(points[0].y+points[1].y)/2, distance:Math.max(1,Math.hypot(dx,dy)) };
       }
       function startTouchGesture() {
-        cancelStrokeForGesture(); state.deferredTouchAction=null; if(state.selectionDrag?.mode==='move') state.selection={...state.selectionDrag.origin}; state.selectionDrag=null; canvas.classList.remove('is-selection-hover','is-selection-moving'); updateSelectionOverlay(); const geometry=touchCenterAndDistance(); if(!geometry) return;
+        cancelStrokeForGesture(); state.deferredTouchAction=null; cancelSelectionMove(); canvas.classList.remove('is-selection-hover','is-selection-moving'); updateSelectionOverlay(); const geometry=touchCenterAndDistance(); if(!geometry) return;
         const rect=canvas.getBoundingClientRect(); state.touchGestureBlocked=true; state.touchGesture={ startDistance:geometry.distance, startScale:state.scale, logicalX:(geometry.x-rect.left)/state.scale, logicalY:(geometry.y-rect.top)/state.scale }; updateSelectAllButton();
       }
       function continueTouchGesture() {

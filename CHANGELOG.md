@@ -7,6 +7,8 @@
 - Project-file regression tests for maximum dimensions/frame count, malformed input, size limits, cancellation, and unchanged work on failed imports.
 
 ### Fixed
+- Preview selection moves as a cut from the original position while dragging; cancel safely and commit one undo step.
+- Hide build information on smartphone layouts; clarify practical whole-image uses for Select all.
 - Keep zoom inside a fixed-height scrollable viewport on desktop and mobile.
 - Show grab/grabbing cursors for selection moves; release uncommitted moves when touch navigation takes over.
 - Restrict mobile selection controls to Edit without clearing selections on tab switches.

@@ -23,7 +23,7 @@ class Element {
   constructor(id = '') {
     this.id = id; this.disabled = false; this.hidden = false; this.style = { setProperty() {} };
     this.classes = new Set(); this.listeners = {}; this.value = ''; this.scrollLeft = 0; this.scrollTop = 0;
-    this.classList = { add: x => this.classes.add(x), remove: x => this.classes.delete(x),
+    this.classList = { add: x => this.classes.add(x), remove: (...names) => names.forEach(x => this.classes.delete(x)),
       toggle: (x, enabled) => enabled ? this.classes.add(x) : this.classes.delete(x) };
   }
   addEventListener(type, fn) { (this.listeners[type] ||= []).push(fn); }
@@ -82,10 +82,10 @@ function harness(html, width = 3, height = 5) {
     pngScale: 1, spriteLayout: 'horizontal', spriteColumns: 2, outputBase: 'pixel-animation' };
   const saved = [], announcements = [], downloads = [], encodedCanvases = [];
   const $ = selector => { const result = elements.get(selector.slice(1)); assert.ok(result, `Missing DOM element ${selector}`); return result; };
-  const names = ['captureCanvas','imageDataEquals','commitHistory','undo','redo','saveCurrentFrame','cloneImageData',
+  const names = ['loadFrame','setMobilePage','captureCanvas','imageDataEquals','commitHistory','undo','redo','saveCurrentFrame','cloneImageData',
     'hexToRgba','normalizeHex','rgbaToHex','rememberColor','applyColor','sampleColor','floodFill','runInstantTool',
     'normalizeSelection','pointInSelection','updateSelectionOverlay','clearSelection','selectionImage','copySelection','cutSelection','deleteSelection','pasteSelection','applySelectionMove',
-    'canSelectAll','updateSelectAllButton','selectAll','beginSelection','continueSelection','finishSelection',
+    'cancelSelectionMove','canSelectAll','updateSelectAllButton','selectAll','beginSelection','continueSelection','finishSelection',
     'eventToPixel','paintPoint','drawInterpolated','beginStroke','continueStroke','finishStroke','cancelStrokeForGesture',
     'startPan','continuePan','endPan','touchCenterAndDistance','startTouchGesture','continueTouchGesture',
     'handleCanvasPointerDown','handleCanvasPointerMove','handleCanvasPointerEnd','setTool',
@@ -93,7 +93,7 @@ function harness(html, width = 3, height = 5) {
     'gifLe16','gifNextPow2','gifPaletteAndIndices','gifLiteralLzw','encodeAnimatedGif','saveAnimatedGif'];
   const context = { $, $$: () => [], state, canvas, ctx, stage, selectionOverlay: $('#selectionOverlay'), outputFilename: $('#outputFilename'),
     ImageData, Uint8ClampedArray, Uint8Array, Blob, console, MAX_HISTORY: 30, MAX_SCALE: 64, DEFAULT_FRAME_DURATION: 100,
-    document: { documentElement: new Element(), createElement: tag => { assert.equal(tag, 'canvas'); return new Canvas(); } },
+    document: { body: {dataset:{}}, documentElement: new Element(), createElement: tag => { assert.equal(tag, 'canvas'); return new Canvas(); } },
     t: key => key, formatText: text => text, setTimeout: fn => { fn(); }, AppToast: { show() {} },
     announce: text => announcements.push(text), scheduleAutosave: () => saved.push(true),
     renderFrames: () => context.saveCurrentFrame(), updateHistoryButtons() {}, updateOnionSkin() {}, renderRecentColors() {}, updateToolSummary() {}, hideBrushPreview() {}, updateBrushPreview() {}, updateCanvasPresentation() {}, updateExportPanel() {},
@@ -259,3 +259,60 @@ for (const [label, html] of variants) {
     await h.context.saveAnimatedGif(); assert.equal(h.downloads.at(-1).filename,'my-sprite.gif'); assert.deepEqual(Buffer.from(await h.downloads.at(-1).blob.arrayBuffer()),gifBefore);
   });
 }
+
+for (const [label, html] of variants) {
+  test(`${label}: moving selection previews cut pixels and commits one undo`, () => {
+    const h=harness(html); h.seed(); const before=pixels(h); h.state.selection={x:0,y:1,w:2,h:2};
+    h.send('pointerdown',1,{pointerType:'mouse',clientX:0,clientY:1});
+    h.send('pointermove',1,{pointerType:'mouse',clientX:1,clientY:2});
+    assert.deepEqual(pixels(h).slice(12,16),[0,0,0,0]);
+    assert.deepEqual(pixels(h).slice(28,36),before.slice(12,20));
+    assert.equal(h.state.undoStack.length,0); h.context.saveCurrentFrame();
+    assert.deepEqual(Array.from(h.state.frames[0].imageData.data),before,'autosave excludes live preview');
+    h.send('pointerup',1,{pointerType:'mouse',clientX:1,clientY:2});
+    assert.equal(h.state.undoStack.length,1); const after=pixels(h); h.context.undo(); assert.deepEqual(pixels(h),before); h.context.redo(); assert.deepEqual(pixels(h),after);
+  });
+  for(const cancel of ['pointercancel','gesture','clear','tool']) test(`${label}: ${cancel} restores uncommitted cut preview`,()=>{
+    const h=harness(html); h.seed(); const before=pixels(h); h.state.selection={x:0,y:1,w:1,h:2};
+    h.send('pointerdown',1,{clientY:1});h.send('pointermove',1,{clientX:1,clientY:2});
+    if(cancel==='gesture')h.send('pointerdown',2,{clientX:2});
+    else if(cancel==='clear')h.context.clearSelection();
+    else if(cancel==='tool')h.context.setTool('pencil');
+    else h.send('pointercancel',1);
+    assert.deepEqual(pixels(h),before);assert.equal(h.state.undoStack.length,0); assert.equal(h.state.selectionDrag,null);
+  });
+  test(`${label}: preview follows original pixels across overlap, clamp and repeated moves`,()=>{
+    const h=harness(html); h.seed();const before=pixels(h);h.state.selection={x:0,y:0,w:2,h:2};
+    h.send('pointerdown');h.send('pointermove',1,{clientX:2,clientY:4});
+    assert.deepEqual(plain(h.state.selection),{x:1,y:3,w:2,h:2});
+    h.send('pointermove',1,{clientX:0,clientY:0});assert.deepEqual(pixels(h),before);
+    h.send('pointerup');assert.equal(h.state.undoStack.length,0);
+    h.send('pointerdown');h.send('pointermove',1,{clientX:1,clientY:1});h.send('pointerup');
+    const first=pixels(h);h.send('pointerdown',1,{clientX:1,clientY:1});h.send('pointermove',1,{clientX:1,clientY:2});h.send('pointerup');
+    assert.equal(h.state.undoStack.length,2);h.context.undo();assert.deepEqual(pixels(h),first);h.context.undo();assert.deepEqual(pixels(h),before);
+  });
+}
+
+for (const [label, html] of variants) {
+  test(`${label}: frame switching cancels preview without polluting either frame`,()=>{
+    const h=harness(html);h.seed();const before=pixels(h);const other=new ImageData(3,5);other.data.fill(75);
+    h.state.frames.push({imageData:other,undoStack:[],redoStack:[],duration:230});h.state.selection={x:0,y:1,w:1,h:2};
+    h.send('pointerdown',1,{clientY:1});h.send('pointermove',1,{clientX:1,clientY:2});h.context.loadFrame(1,{focus:false});
+    assert.deepEqual(Array.from(h.state.frames[0].imageData.data),before);assert.deepEqual(pixels(h),Array.from(other.data));assert.equal(h.state.selectionDrag,null);assert.equal(h.state.selection,null);
+    h.context.loadFrame(0,{focus:false});assert.deepEqual(pixels(h),before);assert.equal(h.state.undoStack.length,0);
+  });
+  test(`${label}: switching mobile tabs cancels preview but retains original selection`,()=>{
+    const h=harness(html);h.seed();const before=pixels(h);h.state.selection={x:0,y:1,w:1,h:2};
+    h.send('pointerdown',1,{clientY:1});h.send('pointermove',1,{clientX:1,clientY:2});h.context.setMobilePage('frames');
+    assert.deepEqual(pixels(h),before);assert.deepEqual(plain(h.state.selection),{x:0,y:1,w:1,h:2});assert.equal(h.state.selectionDrag,null);
+  });
+  test(`${label}: build disclosure is hidden within smartphone media query`,()=>{
+    assert.match(html,/@media \(max-width: 640px\) \{\s*\.build-details \{ display: none; \}/);
+  });
+}
+
+for(const [label,html] of variants) test(`${label}: undo during preview cancels transient pixels even without history`,()=>{
+  const h=harness(html);h.seed();const before=pixels(h);h.state.selection={x:0,y:1,w:1,h:1};
+  h.send('pointerdown',1,{clientY:1});h.send('pointermove',1,{clientX:1,clientY:2});h.context.undo();
+  assert.deepEqual(pixels(h),before);assert.equal(h.state.selectionDrag,null);assert.equal(h.canvas.classes.has('is-selection-moving'),false);
+});

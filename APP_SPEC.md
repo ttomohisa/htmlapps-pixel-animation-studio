@@ -282,3 +282,5 @@ Help must be updated whenever user-facing behavior changes and remain fully scro
 - Smartphone selection controls appear only on Edit. Switching tabs preserves selection data.
 - PNG scale 1×/2×/4×/8× remains one group. Export actions align in compact desktop cards; sheet preview remains available through a disclosure. Mobile cards stack naturally.
 - Help and metadata use v1.0.4; obsolete language-switch boilerplate is removed in both languages.
+
+Selection moves show a reversible cut preview during dragging. Cancellation, gesture navigation and frame/tool changes discard the preview; committing creates one undo step. Autosave captures only committed pixels. Build information is hidden at smartphone widths (640px and below).
