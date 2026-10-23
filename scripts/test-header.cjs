@@ -32,9 +32,9 @@ function harness(html, language, storage = new Map()) {
     const element = { attrs, dataset: {}, listeners: {}, open: false,
       setAttribute(name, value) { this.attrs[name] = value; },
       addEventListener(type, callback) { this.listeners[type] = callback; },
-      click(event = {}) { this.listeners.click?.({ clientX: 10, clientY: 10, ...event }); },
+      click(event = {}) { this.listeners.click?.({ target: this, clientX: 10, clientY: 10, ...event }); },
       showModal() { this.open = true; }, close() { this.open = false; },
-      getBoundingClientRect() { return { left: 0, top: 0, right: 100, bottom: 100 }; }
+      getBoundingClientRect() { return { left: 10, top: 10, right: 110, bottom: 110 }; }
     };
     for (const [name, value] of Object.entries(attrs)) if (name.startsWith('data-')) element.dataset[name.slice(5).replace(/-([a-z])/g, (_, c) => c.toUpperCase())] = value;
     elements.set(match[3], element);
@@ -95,7 +95,10 @@ for (const [label, html] of variants) {
         }
         h.$('#helpButton').click(); assert.equal(h.$('#helpDialog').open, true);
         h.$('#closeHelpButton').click(); assert.equal(h.$('#helpDialog').open, false);
-        h.$('#helpButton').click(); h.$('#helpDialog').click({ clientX: -1, clientY: -1 });
+        h.$('#helpButton').click();
+        h.$('#helpDialog').click({ target: { tagName: 'SUMMARY' }, clientX: 0, clientY: 0 });
+        assert.equal(h.$('#helpDialog').open, true, 'Native disclosure activation stays inside Help');
+        h.$('#helpDialog').click({ clientX: -1, clientY: -1 });
         assert.equal(h.$('#helpDialog').open, false);
         h.$('#languageButton').click();
       }
