@@ -284,3 +284,11 @@ Help must be updated whenever user-facing behavior changes and remain fully scro
 - Help and metadata use v1.0.4; obsolete language-switch boilerplate is removed in both languages.
 
 Selection moves show a reversible cut preview during dragging. Cancellation, gesture navigation and frame/tool changes discard the preview; committing creates one undo step. Autosave captures only committed pixels. Build information is hidden at smartphone widths (640px and below).
+
+
+## Mobile informational layout
+
+- Hide only the informational page footer at the existing 640px phone breakpoint, including the empty/landing state; keep functional mobile controls and their reserved space unchanged.
+- Keep the existing build disclosure, IDs, values and localization as the quiet final item in Help. Header versions and the already canonical local-processing badge are unchanged.
+- Preserve the existing hidden build-information behavior at 640px and below, including inside Help.
+- Native disclosure keyboard activation must not dismiss Help; close button, Escape, genuine backdrop dismissal and internal scrolling remain available.

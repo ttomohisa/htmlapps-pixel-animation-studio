@@ -1,5 +1,9 @@
 # Changelog
 
+## Unreleased
+
+- Hide the informational footer at 640px and below without hiding functional mobile controls; move existing build information to the quiet end of Help and preserve keyboard disclosure activation and existing phone metadata hiding.
+
 ## [1.0.4] - 2026-10-16
 
 ### Added
