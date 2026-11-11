@@ -2,6 +2,14 @@
 
 ## Unreleased
 
+### Fixed
+- Stop an in-flight PNG import from writing frames into a canvas that was replaced or reset while decoding.
+- Export GIF from an immutable frame/timing/dimension snapshot, even if the document changes during encoding.
+- Retain 256 exact opaque GIF colors, reserve a transparent index only when necessary, and use weighted median-cut instead of coarse color buckets for larger palettes.
+- Capture the PNG, sprite-sheet, and GIF filenames at export start so asynchronous encoding cannot rename an earlier frame.
+- Flush pending IndexedDB autosave when a page becomes hidden or is being unloaded (best effort; browser termination can still interrupt writes).
+- Cover palette boundary cases and asynchronous export/import/save behavior with regression tests.
+
 - Hide the informational footer at 640px and below without hiding functional mobile controls; move existing build information to the quiet end of Help and preserve keyboard disclosure activation and existing phone metadata hiding.
 
 ## [1.0.4] - 2026-10-16
