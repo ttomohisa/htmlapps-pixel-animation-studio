@@ -67,7 +67,7 @@ function harness(html) {
     $: selector => { assert.equal(selector, '#editorView'); return editor; },
     hideBrushPreview: () => calls.push('hideBrushPreview'),
     updateBrushPreview: () => {}, beginStroke: () => calls.push('beginStroke'),
-    finishStroke: () => calls.push('finishStroke'), updateSelectAllButton() {},
+    finishStroke: () => calls.push('finishStroke'), updateSelectAllButton() {}, flushPendingAutosave() {},
   };
   for (const name of ['undo', 'redo', 'copySelection', 'cutSelection', 'pasteSelection', 'deleteSelection', 'clearSelection', 'applySelectionMove']) {
     context[name] = (...args) => calls.push([name, ...args]);
