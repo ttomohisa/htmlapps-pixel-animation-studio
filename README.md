@@ -205,7 +205,7 @@ The GitHub Pages version naturally makes an initial request to download the page
 - Input is PNG only; GIF, WebP, JPEG, Aseprite, and sprite-sheet import are not supported in v1.0.4.
 - GIF output is limited to 256 colors and cannot preserve partial alpha.
 - Layers, lasso selection, palette files, animation tags, Animated WebP, and sprite metadata JSON are not included in v1.0.4.
-- Autosave depends on IndexedDB. Clearing browser site data can remove the locally saved project.
+- Autosave depends on IndexedDB. Clearing browser site data can remove the locally saved project. Pending changes are also saved when the page becomes hidden where the browser allows it, but abrupt termination may still interrupt the write; use **Save project** for work you need to keep.
 - Undo / Redo history is not restored after a page reload.
 - Large 128×128 projects with many frames can use more memory, especially during GIF encoding.
 
