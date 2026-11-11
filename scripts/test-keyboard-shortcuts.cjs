@@ -62,7 +62,7 @@ function harness(html) {
   const calls = [];
   const context = {
     Element, HTMLInputElement: Input, HTMLTextAreaElement: TextArea, HTMLSelectElement: Select,
-    canvas, stage, state, document: { querySelector: () => context.dialogOpen ? {} : null },
+    canvas, stage, state, document: { querySelector: () => context.dialogOpen ? {} : null, addEventListener: (name, callback) => { handlers['document:' + name] = callback; } },
     window: { addEventListener: (name, callback) => { handlers[name] = callback; } },
     $: selector => { assert.equal(selector, '#editorView'); return editor; },
     hideBrushPreview: () => calls.push('hideBrushPreview'),
