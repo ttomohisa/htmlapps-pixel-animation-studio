@@ -593,7 +593,7 @@
           <img id="appBrandIcon" src="__APP_ICON_DATA_URI__" alt="">
         </div>
         <div class="brand-copy">
-          <p class="brand-name"><span id="brandName">Pixel Animation Studio</span><span class="version-badge" id="versionBadge">v1.0.4</span></p>
+          <p class="brand-name"><span id="brandName">Pixel Animation Studio</span><span class="version-badge" id="versionBadge">v1.0.5</span></p>
           <p class="brand-meta" data-i18n="brandMeta">ドット絵アニメ・PNG読み込み・GIF書き出し</p>
         </div>
       </div>
@@ -947,10 +947,10 @@
           <li data-i18n="helpStep4">フレームを追加・複製し、サムネイルから切り替えます。</li>
           <li data-i18n="helpKeyboard">Tabで操作先を選び、ボタンはSpaceまたはEnterで実行できます。キャンバスにフォーカスがあるときはSpace + ドラッグで表示を移動できます。</li>
         </ol>
-        <p data-i18n="helpProjectFile">編集を続けるには「書き出し」の「プロジェクトを保存」を使い、.pixel-project.jsonを保管します。「プロジェクトを開く」で復元できます（最大12 MiB）。端末内自動保存とは別です。Undo履歴・選択範囲・クリップボードは含みません。表示倍率はFitで開きます。</p>
+        <p data-i18n="helpProjectFile">編集を続けるには「書き出し」の「プロジェクトを保存」を使い、.pixel-project.jsonを保管します。「プロジェクトを開く」で復元できます（最大12 MiB）。端末内自動保存とは別です。アプリを閉じる直前の変更は保存されないことがあるため、大切な作品はプロジェクトファイルでも保存してください。Undo履歴・選択範囲・クリップボードは含みません。表示倍率はFitで開きます。</p>
         <h3 data-i18n="helpPrivacyTitle">プライバシー</h3>
         <p data-i18n="helpPrivacyBody">描画データはこのブラウザー内で処理され、このアプリから外部サーバーへ送信されません。実行時の外部通信も行いません。</p>
-        <h3 data-i18n="helpLimitsTitle">v1.0.4の範囲</h3>
+        <h3 data-i18n="helpLimitsTitle">v1.0.5の範囲</h3>
         <ul>
           <li data-i18n="helpLimit1">前のフレームを約30%で重ねるOnion SkinをON/OFFできます。</li>
           <li data-i18n="helpLimit2">作業内容はIndexedDBへ端末内自動保存し、再読み込み後に復元できます。</li>
@@ -962,7 +962,7 @@
     <details class="build-details help-build">
       <summary data-i18n="buildInfo">ビルド情報</summary>
       <div class="build-grid">
-        <div class="build-item"><span data-i18n="appVersion">アプリバージョン</span><strong id="buildVersion">1.0.4</strong></div>
+        <div class="build-item"><span data-i18n="appVersion">アプリバージョン</span><strong id="buildVersion">1.0.5</strong></div>
         <div class="build-item"><span data-i18n="builtAt">生成日時</span><strong id="builtAt">—</strong></div>
         <div class="build-item"><span data-i18n="dependencies">内包依存数</span><strong id="dependencyCount">0</strong></div>
       </div>
@@ -1049,8 +1049,8 @@
           helpTitle: '使い方と注意事項', helpStartTitle: '基本操作', helpStep1: '16×16〜128×128、またはCustomからキャンバスサイズを選びます。', helpStep2: '鉛筆 / 消しゴム / 塗りつぶし / スポイト / 選択を使い分けます。', helpStep3: '「すべて選択」は絵全体のコピー・切り取り・削除に使えます。選択範囲をドラッグすると、元の位置から切り取って移動します。選択範囲は別のツールへ切り替えると解除されます。貼り付けは貼り付け先を選択してから行います。元に戻す / やり直す、Zoom / Pan / GridはCanvas上部から操作できます。', helpStep4: 'フレームを追加・複製し、表示時間を設定してPreviewで動きを確認します。',
           helpKeyboard: 'Tabで操作先を選び、ボタンはSpaceまたはEnterで実行できます。キャンバスにフォーカスがあるときはSpace + ドラッグで表示を移動できます。',
           helpPrivacyTitle: 'プライバシー', helpPrivacyBody: '描画データはこのブラウザー内で処理され、このアプリから外部サーバーへ送信されません。実行時の外部通信も行いません。',
-          helpProjectFile:'編集を続けるには「書き出し」の「プロジェクトを保存」を使い、.pixel-project.jsonを保管します。「プロジェクトを開く」で復元できます（最大12 MiB）。端末内自動保存とは別です。Undo履歴・選択範囲・クリップボードは含みません。表示倍率はFitで開きます。拡大しても作業領域の高さは変わりません。スクロール、Space＋ドラッグ、2本指で表示を移動できます。',
-          helpLimitsTitle: 'v1.0.4の範囲', helpLimit1: '前のフレームを約30%で重ねるOnion SkinをON/OFFできます。', helpLimit2: '作業内容はIndexedDBへ端末内自動保存し、再読み込み後に復元できます。', helpLimit3: 'PNGを1枚または複数読み込み、PNG・Animated GIF・Sprite Sheetを書き出せます。GIFは256色制約があり、半透明は透明/不透明へ変換されます。',
+          helpProjectFile:'編集を続けるには「書き出し」の「プロジェクトを保存」を使い、.pixel-project.jsonを保管します。「プロジェクトを開く」で復元できます（最大12 MiB）。端末内自動保存とは別です。アプリを閉じる直前の変更は保存されないことがあるため、大切な作品はプロジェクトファイルでも保存してください。Undo履歴・選択範囲・クリップボードは含みません。表示倍率はFitで開きます。拡大しても作業領域の高さは変わりません。スクロール、Space＋ドラッグ、2本指で表示を移動できます。',
+          helpLimitsTitle: 'v1.0.5の範囲', helpLimit1: '前のフレームを約30%で重ねるOnion SkinをON/OFFできます。', helpLimit2: '作業内容はIndexedDBへ端末内自動保存し、再読み込み後に復元できます。', helpLimit3: 'PNGを1枚または複数読み込み、PNG・Animated GIF・Sprite Sheetを書き出せます。GIFは256色制約があり、半透明は透明/不透明へ変換されます。',
           helpTouchTitle: 'スマートフォン', helpTouchBody: '1本指で描画します。2本指でPan / Pinch Zoomできます。2本指操作へ移った場合は、誤って始まった描画を取り消して表示操作へ切り替えます。塗りつぶしとスポイトは指を離すと実行され、タッチ操作がキャンセルされた場合は実行されません。',
           confirmTitle: '確認', cancel: 'キャンセル', confirmNew: '新しく作る', newConfirmMessage: '現在の自動保存データを置き換えて、新しいキャンバスを作成しますか？',
           created: 'キャンバスを作成しました', toolChangedPencil: '鉛筆に切り替えました', toolChangedEraser: '消しゴムに切り替えました', toolChangedFill: '塗りつぶしに切り替えました', toolChangedEyedropper: 'スポイトに切り替えました', brushChanged: 'ブラシサイズを変更しました', colorChanged: '描画色を変更しました',
@@ -1072,8 +1072,8 @@
           helpTitle: 'How to use & notes', helpStartTitle: 'Basics', helpStep1: 'Choose 16×16 through 128×128, or enter a Custom canvas size.', helpStep2: 'Choose Pencil, Eraser, Fill, Eyedropper, or Selection.', helpStep3: 'Use Select all to copy, cut, or delete the whole image. Drag a selection to cut it from its original position and move it. Selection clears when you switch tools. Choose a destination before pasting. Undo / Redo, Zoom / Pan, and Grid stay above the canvas.', helpStep4: 'Add or duplicate frames, set their delays, and check the motion in Preview.',
           helpKeyboard: 'Use Tab to focus controls and Space or Enter to activate buttons. With the canvas focused, hold Space and drag to pan.',
           helpPrivacyTitle: 'Privacy', helpPrivacyBody: 'Pixel data is processed in this browser and is not sent to an external server by this app. The app also makes no runtime network requests.',
-          helpProjectFile:'To resume editing, use Save project in Export and keep the .pixel-project.json file. Open project restores it (12 MiB maximum), independently of local autosave. Undo history, selections, and clipboard are not included; the view opens at Fit. Zoom does not enlarge the viewport. Scroll, Space-drag, or use two fingers to pan.',
-          helpLimitsTitle: 'v1.0.4 scope', helpLimit1: 'Onion Skin can show the previous frame at about 30% opacity while editing.', helpLimit2: 'Your project is autosaved locally to IndexedDB and can be restored after reload.', helpLimit3: 'Import one or more PNG files and export PNG, animated GIF, or sprite-sheet output. GIF is limited to 256 colors and converts partial alpha to transparent or opaque pixels.',
+          helpProjectFile:'To resume editing, use Save project in Export and keep the .pixel-project.json file. Open project restores it (12 MiB maximum), independently of local autosave. Very recent edits may not be saved when you close the app; keep a project file for important work. Undo history, selections, and clipboard are not included; the view opens at Fit. Zoom does not enlarge the viewport. Scroll, Space-drag, or use two fingers to pan.',
+          helpLimitsTitle: 'v1.0.5 scope', helpLimit1: 'Onion Skin can show the previous frame at about 30% opacity while editing.', helpLimit2: 'Your project is autosaved locally to IndexedDB and can be restored after reload.', helpLimit3: 'Import one or more PNG files and export PNG, animated GIF, or sprite-sheet output. GIF is limited to 256 colors and converts partial alpha to transparent or opaque pixels.',
           helpTouchTitle: 'Smartphones', helpTouchBody: 'Draw with one finger. Use two fingers to pan or pinch zoom. When a second finger arrives, any accidental stroke start is restored before the view gesture begins. Fill and Eyedropper run when you lift your finger; a cancelled touch does not apply them.',
           confirmTitle: 'Confirm', cancel: 'Cancel', confirmNew: 'Start new', newConfirmMessage: 'Replace the current autosaved project and create a new canvas?',
           created: 'Canvas created', toolChangedPencil: 'Switched to Pencil', toolChangedEraser: 'Switched to Eraser', toolChangedFill: 'Switched to Fill', toolChangedEyedropper: 'Switched to Eyedropper', brushChanged: 'Brush size changed', colorChanged: 'Drawing color changed',
@@ -1428,7 +1428,7 @@
         } catch(error){ console.error(error); AppToast.show({message:t('exportFailed'),tone:'warning'}); }
       }
       async function saveSpriteSheet() {
-        if(!state.frames.length)return; try { syncOutputBase(); const out=document.createElement('canvas'); renderSpriteSheet(out); const blob=await canvasToPngBlob(out); downloadBlob(blob,`${state.outputBase}-spritesheet.png`); AppToast.show({message:t('spriteSheetSaved'),tone:'success'}); } catch(error){ console.error(error); AppToast.show({message:t('exportFailed'),tone:'warning'}); }
+        if(!state.frames.length)return; try { syncOutputBase(); const filename=`${state.outputBase}-spritesheet.png`; const out=document.createElement('canvas'); renderSpriteSheet(out); const blob=await canvasToPngBlob(out); downloadBlob(blob,filename); AppToast.show({message:t('spriteSheetSaved'),tone:'success'}); } catch(error){ console.error(error); AppToast.show({message:t('exportFailed'),tone:'warning'}); }
       }
 
 
@@ -1515,7 +1515,7 @@
       }
       async function saveAnimatedGif() {
         if(!state.frames.length||state.gifBusy)return; state.gifBusy=true; const button=$('#saveGifButton'); button.disabled=true;
-        try { syncOutputBase(); const blob=await encodeAnimatedGif(); downloadBlob(blob,`${state.outputBase}.gif`); AppToast.show({message:t('gifSaved'),tone:'success'}); }
+        try { syncOutputBase(); const filename=`${state.outputBase}.gif`; const blob=await encodeAnimatedGif(); downloadBlob(blob,filename); AppToast.show({message:t('gifSaved'),tone:'success'}); }
         catch(error){ console.error(error); $('#gifProgress').hidden=true; AppToast.show({message:t('gifFailed'),tone:'warning'}); }
         finally { state.gifBusy=false; button.disabled=false; }
       }
@@ -1606,7 +1606,7 @@
       }
       function addFrame() { clearSelection(); if(state.frames.length>=MAX_FRAMES){AppToast.show({message:t('frameLimit')});return;} saveCurrentFrame(); const insert=state.currentFrameIndex+1; state.frames.splice(insert,0,makeFrame()); state.currentFrameIndex=insert; ctx.clearRect(0,0,state.width,state.height); state.undoStack=[]; state.redoStack=[]; state.dirty=true; updateHistoryButtons(); renderFrames(); updateOnionSkin(); scheduleAutosave(); AppToast.show({message:t('frameAdded'),tone:'success'}); }
       function duplicateFrame() { clearSelection(); if(state.frames.length>=MAX_FRAMES){AppToast.show({message:t('frameLimit')});return;} saveCurrentFrame(); const source=state.frames[state.currentFrameIndex]; const insert=state.currentFrameIndex+1; state.frames.splice(insert,0,makeFrame(source.imageData, source.duration)); state.currentFrameIndex=insert; ctx.putImageData(cloneImageData(source.imageData),0,0); state.undoStack=[]; state.redoStack=[]; state.dirty=true; updateHistoryButtons(); renderFrames(); updateOnionSkin(); scheduleAutosave(); AppToast.show({message:t('frameDuplicated'),tone:'success'}); }
-      function deleteFrame() { clearSelection(); if(state.frames.length<=1){AppToast.show({message:t('keepOneFrame')});return;} saveCurrentFrame(); const index=state.currentFrameIndex; const removed=state.frames.splice(index,1)[0]; state.currentFrameIndex=Math.min(index,state.frames.length-1); const target=state.frames[state.currentFrameIndex]; ctx.putImageData(cloneImageData(target.imageData),0,0); state.undoStack=target.undoStack||[]; state.redoStack=target.redoStack||[]; state.dirty=true; updateHistoryButtons(); renderFrames(); updateOnionSkin(); scheduleAutosave(); AppToast.show({message:t('frameDeleted'),actionLabel:t('restore'),duration:5000,onAction:()=>{state.frames.splice(index,0,removed);state.currentFrameIndex=index;ctx.putImageData(cloneImageData(removed.imageData),0,0);state.undoStack=removed.undoStack||[];state.redoStack=removed.redoStack||[];updateHistoryButtons();renderFrames();updateOnionSkin();scheduleAutosave();AppToast.show({message:t('frameRestored'),tone:'success'});}}); }
+      function deleteFrame() { clearSelection(); if(state.frames.length<=1){AppToast.show({message:t('keepOneFrame')});return;} saveCurrentFrame(); const index=state.currentFrameIndex; const removed=state.frames.splice(index,1)[0]; const generation=state.projectGeneration; state.currentFrameIndex=Math.min(index,state.frames.length-1); const target=state.frames[state.currentFrameIndex]; ctx.putImageData(cloneImageData(target.imageData),0,0); state.undoStack=target.undoStack||[]; state.redoStack=target.redoStack||[]; state.dirty=true; updateHistoryButtons(); renderFrames(); updateOnionSkin(); scheduleAutosave(); AppToast.show({message:t('frameDeleted'),actionLabel:t('restore'),duration:5000,onAction:()=>{if(generation!==state.projectGeneration)return; if(state.frames.length>=MAX_FRAMES){AppToast.show({message:t('frameLimit'),tone:'warning'});return;}state.frames.splice(index,0,removed);state.currentFrameIndex=index;ctx.putImageData(cloneImageData(removed.imageData),0,0);state.undoStack=removed.undoStack||[];state.redoStack=removed.redoStack||[];updateHistoryButtons();renderFrames();updateOnionSkin();scheduleAutosave();AppToast.show({message:t('frameRestored'),tone:'success'});}}); }
       function moveFrame(direction) { clearSelection(); saveCurrentFrame(); const from=state.currentFrameIndex; const to=from+direction; if(to<0||to>=state.frames.length)return; const [frame]=state.frames.splice(from,1); state.frames.splice(to,0,frame); state.currentFrameIndex=to; state.dirty=true; renderFrames(); updateOnionSkin(); scheduleAutosave(); announce(t('frameMoved')); }
       function setFrameDuration(value, { applyAll = false, announceChange = true } = {}) {
         const duration = normalizeFrameDuration(value);
