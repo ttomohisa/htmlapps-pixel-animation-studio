@@ -4,6 +4,15 @@
 
 - Hide the informational footer at 640px and below without hiding functional mobile controls; move existing build information to the quiet end of Help and preserve keyboard disclosure activation and existing phone metadata hiding.
 
+## [1.0.5] - 2026-11-11
+
+### Fixed
+- Cancel PNG imports started in an earlier project so late decoding cannot add wrong-size frames to a replacement canvas.
+- Snapshot pixels, timing, and frame order before asynchronous GIF encoding; keep PNG, GIF, and sprite-sheet filenames stable during export.
+- Preserve all 256 opaque colors when GIF transparency is not required; reserve a transparent index only for frames that need one.
+- Flush pending autosave on page hide where the browser permits, and advise manual project files for important work.
+- Prevent deleted-frame Undo from restoring into a different project or exceeding the 128-frame limit.
+
 ## [1.0.4] - 2026-10-16
 
 ### Added
