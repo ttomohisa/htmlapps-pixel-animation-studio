@@ -92,6 +92,9 @@ test('post-merge release workflow requires a successful verified build and versi
   assert.match(workflow,/if: github\.event\.pull_request\.merged == true/);
   assert.match(workflow,/needs: verify/);
   assert.match(workflow,/app\.config\.json/);
+  assert.match(workflow,/old_version=/);
+  assert.match(workflow,/new_version=/);
+  assert.match(workflow,/pull-requests: read/);
   assert.match(workflow,/CHANGELOG\.md/);
   assert.match(workflow,/--verify-tag/);
   assert.match(workflow,/--generate-notes/);
