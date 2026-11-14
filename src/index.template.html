@@ -1435,45 +1435,52 @@
       function gifLe16(value) { return [value & 255, (value >> 8) & 255]; }
       function gifNextPow2(value) { let size=2; while(size<value && size<256) size*=2; return size; }
       function gifPaletteAndIndices(imageData) {
-        const data=imageData.data, counts=new Map();
-        let hasTransparency=false;
+        const data=imageData.data, counts=new Map(); let hasTransparency=false;
         for(let i=0;i<data.length;i+=4){
           if(data[i+3]<128){hasTransparency=true;continue;}
           const key=(data[i]<<16)|(data[i+1]<<8)|data[i+2];
           counts.set(key,(counts.get(key)||0)+1);
         }
-        const limit=hasTransparency?255:256,opaqueColors=[...counts.keys()];
-        let palette=[],bucketIndex=null;
-        if(opaqueColors.length<=limit) palette=opaqueColors.map(key=>[(key>>16)&255,(key>>8)&255,key&255]);
+        const limit=hasTransparency?255:256;
+        const colors=[...counts].map(([key,count])=>({key,count,r:(key>>16)&255,g:(key>>8)&255,b:key&255}));
+        const makeBox=entries=>{
+          const low=[255,255,255], high=[0,0,0]; let weight=0;
+          for(const c of entries){ const rgb=[c.r,c.g,c.b];for(let i=0;i<3;i++){low[i]=Math.min(low[i],rgb[i]);high[i]=Math.max(high[i],rgb[i]);} weight+=c.count; }
+          const ranges=high.map((value,i)=>value-low[i]);
+          const channel=ranges.indexOf(Math.max(...ranges));
+          return {entries,weight,channel,score:ranges[channel]*Math.sqrt(entries.length)};
+        };
+        let groups;
+        if(colors.length<=limit) groups=colors.map(color=>[color]);
         else {
-          // 6 × 7 × 6 buckets stay below the GIF palette limit.
-          const buckets=new Map();
-          for(const [key,count] of counts){
-            const r=(key>>16)&255,g=(key>>8)&255,b=key&255;
-            const bucketKey=(Math.round(r*5/255)<<16)|(Math.round(g*6/255)<<8)|Math.round(b*5/255);
-            let value=buckets.get(bucketKey);
-            if(!value){value={count:0,r:0,g:0,b:0};buckets.set(bucketKey,value);}
-            value.count+=count;value.r+=r*count;value.g+=g*count;value.b+=b*count;
+          const boxes=[makeBox(colors)];
+          while(boxes.length<limit){
+            let best=-1;
+            for(let i=0;i<boxes.length;i++) if(boxes[i].entries.length>1 && (best<0||boxes[i].score>boxes[best].score))best=i;
+            if(best<0)break;
+            const box=boxes.splice(best,1)[0];
+            box.entries.sort((a,b)=>[a.r,a.g,a.b][box.channel]-[b.r,b.g,b.b][box.channel]||a.key-b.key);
+            let cumulative=0,split=1;
+            for(;split<box.entries.length;split++){cumulative+=box.entries[split-1].count;if(cumulative>=box.weight/2)break;}
+            split=Math.min(box.entries.length-1,Math.max(1,split));
+            boxes.push(makeBox(box.entries.slice(0,split)),makeBox(box.entries.slice(split)));
           }
-          palette=[...buckets.values()].map(value=>[Math.round(value.r/value.count),Math.round(value.g/value.count),Math.round(value.b/value.count)]);
-          bucketIndex=new Map();let index=hasTransparency?1:0;
-          for(const key of buckets.keys())bucketIndex.set(key,index++);
+          groups=boxes.map(box=>box.entries);
         }
-        // Index 0 is reserved for transparency only when transparent pixels exist.
-        const fullPalette=hasTransparency?[[0,0,0],...palette]:palette;
-        if(!fullPalette.length)fullPalette.push([0,0,0]);
-        const exact=new Map();
-        if(!bucketIndex)palette.forEach((color,i)=>exact.set((color[0]<<16)|(color[1]<<8)|color[2],i+(hasTransparency?1:0)));
+        const palette=hasTransparency?[[0,0,0]]:[], lookup=new Map();
+        for(const group of groups){
+          let weight=0,r=0,g=0,b=0; const index=palette.length;
+          for(const item of group){weight+=item.count;r+=item.r*item.count;g+=item.g*item.count;b+=item.b*item.count;lookup.set(item.key,index);}
+          palette.push([Math.round(r/weight),Math.round(g/weight),Math.round(b/weight)]);
+        }
+        if(!palette.length)palette.push([0,0,0]);
         const indices=new Uint8Array(imageData.width*imageData.height);
         for(let pixel=0,offset=0;offset<data.length;offset+=4,pixel++){
           if(data[offset+3]<128){indices[pixel]=0;continue;}
           const key=(data[offset]<<16)|(data[offset+1]<<8)|data[offset+2];
-          if(bucketIndex){
-            const bucketKey=(Math.round(data[offset]*5/255)<<16)|(Math.round(data[offset+1]*6/255)<<8)|Math.round(data[offset+2]*5/255);
-            indices[pixel]=bucketIndex.get(bucketKey);
-          }else indices[pixel]=exact.get(key);
+          indices[pixel]=lookup.get(key);
         }
-        return {palette:fullPalette,indices,hasTransparency};
+        return {palette,indices,hasTransparency};
       }
       function gifLiteralLzw(indices,minCodeSize) {
         const clear=1<<minCodeSize,end=clear+1,codeSize=minCodeSize+1; const bytes=[]; let current=0,bits=0;
