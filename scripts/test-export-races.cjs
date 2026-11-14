@@ -162,6 +162,20 @@ for(const [label,html] of variants) {
     await pending;
     assert.equal(filename,'original-spritesheet.png');
   });
+  test(label+': new frames added during PNG decoding cannot overflow the 128-frame limit',async()=>{
+    const h=importHarness(html);
+    h.state.width=64;h.state.height=64;
+    h.state.frames=Array.from({length:127},()=>frame(64,64,1));
+    const pending=h.context.importPngFiles([{name:'late.png',type:'image/png'}]);
+    // The user adds a frame while image decoding is still pending.
+    h.state.frames.push(frame(64,64,2));
+    h.complete();
+    await pending;
+    assert.equal(h.state.frames.length,128);
+    assert.equal(h.state.importReport.added,0);
+    assert.equal(h.state.importReport.failures.length,1);
+    assert.equal(h.state.importReport.failures[0].code,'frameLimit');
+  });
   test(label+': late PNG decoding cannot modify a replaced project',async()=>{
     const h=importHarness(html);
     const pending=h.context.importPngFiles([{name:'original.png',type:'image/png'}]);
