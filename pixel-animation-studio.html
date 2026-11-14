@@ -1230,14 +1230,46 @@
       async function clearAutosave() { if(!state.persistenceAvailable)return; try { await idbDeleteProject(); } catch { disablePersistence(); } }
       function validateSavedProject(project) { return project && project.schemaVersion===PROJECT_SCHEMA_VERSION && validateDimension(project.width) && validateDimension(project.height) && Array.isArray(project.frames) && project.frames.length>=1 && project.frames.length<=MAX_FRAMES; }
       function restoreProject(project, preparedFrames = null) {
+        // Validate and allocate every frame before changing live dimensions, canvas, or frame ownership.
+        const frames=preparedFrames || project.frames.map(item=>{
+          const data=item?.data instanceof Uint8ClampedArray?item.data:new Uint8ClampedArray(item?.data||[]);
+          if(data.length!==project.width*project.height*4) throw new Error('Invalid saved frame');
+          return makeFrame(new ImageData(new Uint8ClampedArray(data),project.width,project.height),item.duration);
+        });
+        if(frames.length!==project.frames.length || frames.some(frame=>!frame?.imageData || frame.imageData.width!==project.width || frame.imageData.height!==project.height)) throw new Error('Invalid saved frame');
         state.projectGeneration++;
-        pausePreview({announceChange:false}); state.width=project.width; state.height=project.height; state.frames=preparedFrames || project.frames.map(item=>{ const data=item?.data instanceof Uint8ClampedArray?item.data:new Uint8ClampedArray(item?.data||[]); if(data.length!==project.width*project.height*4) throw new Error('Invalid saved frame'); return makeFrame(new ImageData(new Uint8ClampedArray(data),project.width,project.height),item.duration); });
+        pausePreview({announceChange:false}); state.width=project.width; state.height=project.height; state.frames=frames;
         state.currentFrameIndex=Math.max(0,Math.min(Number(project.currentFrameIndex)||0,state.frames.length-1)); state.selection=null; state.selectionDrag=null; state.clipboard=null; state.color=normalizeHex(project.color)||'#16624F'; state.previousValidColor=state.color; state.recentColors=Array.isArray(project.recentColors)?project.recentColors.map(normalizeHex).filter(Boolean).slice(0,12):[]; state.grid=project.grid!==false; state.onionSkin=project.onionSkin!==false; state.outputBase=sanitizeFilenameBase(project.outputBase||'pixel-animation'); state.undoStack=[]; state.redoStack=[]; state.dirty=false; state.previewIndex=state.currentFrameIndex;
         canvas.width=state.width; canvas.height=state.height; onionCanvas.width=state.width; onionCanvas.height=state.height; ctx.imageSmoothingEnabled=false; onionCtx.imageSmoothingEnabled=false; ctx.putImageData(cloneImageData(state.frames[state.currentFrameIndex].imageData),0,0);
         $('#projectSize').textContent=`${state.width} × ${state.height}`; $('#setupView').hidden=true; $('#editorView').hidden=false; document.body.dataset.projectState='editing'; $('#storageWarning').hidden=state.persistenceAvailable; applyColor(state.color); outputFilename.value=state.outputBase; renderRecentColors(); updateHistoryButtons(); renderFrames(); updateOnionSkin(); updatePreviewControls(); setMobilePage('edit'); requestAnimationFrame(()=>fitCanvas()); updateAutosaveStatus(state.persistenceAvailable?'saved':'error'); announce(t('restoredProject')); AppToast.show({message:t('restoredProject'),tone:'success'});
       }
       async function initializePersistence() {
-        try { const saved=await idbGetProject(); state.persistenceReady=true; if(!saved){ if(state.width) scheduleAutosave(); return; } if(!validateSavedProject(saved)){ await clearAutosave(); return; } const summary=formatText(t('restoreSummary'),{size:`${saved.width} × ${saved.height}`,frames:saved.frames.length}); const useSaved=await AppConfirm.ask({title:t('restoreTitle'),message:summary,confirmLabel:t('restoreContinue'),cancelLabel:t('restoreNew')}); if(useSaved){ try { restoreProject(saved); } catch { await clearAutosave(); } } else { await clearAutosave(); } } catch { disablePersistence(); }
+        const generation=state.projectGeneration;
+        try {
+          const saved=await idbGetProject();
+          state.persistenceReady=true;
+          // A canvas created while IndexedDB was opening must not be overwritten by old recovery data.
+          if(generation!==state.projectGeneration){ if(state.width) scheduleAutosave(); return; }
+          if(!saved){ if(state.width) scheduleAutosave(); return; }
+          if(!validateSavedProject(saved)){
+            await clearAutosave();
+            if(generation!==state.projectGeneration && state.width) scheduleAutosave();
+            return;
+          }
+          const summary=formatText(t('restoreSummary'),{size:`${saved.width} × ${saved.height}`,frames:saved.frames.length});
+          const useSaved=await AppConfirm.ask({title:t('restoreTitle'),message:summary,confirmLabel:t('restoreContinue'),cancelLabel:t('restoreNew')});
+          if(generation!==state.projectGeneration){ if(state.width) scheduleAutosave(); return; }
+          if(useSaved){
+            try { restoreProject(saved); }
+            catch {
+              await clearAutosave();
+              if(generation!==state.projectGeneration && state.width) scheduleAutosave();
+            }
+          }else{
+            await clearAutosave();
+            if(generation!==state.projectGeneration && state.width) scheduleAutosave();
+          }
+        } catch { disablePersistence(); }
       }
 
       const AppToast = (() => {
