@@ -185,6 +185,10 @@ The repository check also runs the keyboard regression suite with Node.js 18 or 
 
 The repository check validates the template contract, standalone output, CSP/network policy, dependency metadata, favicon embedding, self-extracting output, and unresolved build placeholders.
 
+### Tags and GitHub Releases after merging
+
+When a pull request that updates the version in `app.config.json` is merged into `main`, `.github/workflows/release-on-merge.yml` rebuilds and tests the exact merged commit. Only after successful verification does it create a tag such as `v1.0.5` and a GitHub Release containing both readable and self-extracting standalone HTML files. Existing releases are not duplicated; merges without a version change or with failed checks do not publish a release. The maintainer remains responsible for merging the pull request.
+
 ## Privacy and runtime network protection
 
 Pixel Animation Studio processes imported images and editing data in the browser.
