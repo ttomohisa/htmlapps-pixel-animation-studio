@@ -19,6 +19,11 @@ if(!process.env.PIXEL_SOURCE_ONLY){
 function getFunction(html,name){
   const m=new RegExp('^      (?:async )?function '+name+'\\(','m').exec(html);
   assert.ok(m, 'expected function '+name);
+  if(name==='initializePersistence'){
+    const boundary=html.indexOf('\n      const AppToast =',m.index);
+    assert.ok(boundary>m.index,'recovery function boundary');
+    return html.slice(m.index,boundary);
+  }
   const rest=html.slice(m.index+m[0].length);
   const next=/\n      (?:async )?function [A-Za-z_$][\w$]*\(/.exec(rest);
   assert.ok(next, 'function boundary '+name);
