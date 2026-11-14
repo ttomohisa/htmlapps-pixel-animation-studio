@@ -273,3 +273,6 @@ if ($LASTEXITCODE -ne 0) { throw "User-facing help copy regression failed." }
 
 & $node.Source --test (Join-Path $Root "scripts\test-project-files.cjs")
 if ($LASTEXITCODE -ne 0) { throw "Project file regression tests failed." }
+
+& $node.Source --test (Join-Path $Root "scripts\test-recovery-release.cjs")
+if ($LASTEXITCODE -ne 0) { throw "Recovery and post-merge release regression tests failed." }
