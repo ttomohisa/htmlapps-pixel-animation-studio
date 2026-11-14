@@ -9,7 +9,7 @@
 ### Fixed
 - Cancel PNG imports started in an earlier project so late decoding cannot add wrong-size frames to a replacement canvas.
 - Snapshot pixels, timing, and frame order before asynchronous GIF encoding; keep PNG, GIF, and sprite-sheet filenames stable during export.
-- Preserve all 256 opaque colors when GIF transparency is not required; reserve a transparent index only for frames that need one.
+- Preserve all 256 opaque colors when GIF transparency is not required; reserve a transparent index only for frames that need one. Use weighted median-cut reduction when more colors are present, avoiding severe gradient banding from coarse RGB buckets.
 - Flush pending autosave on page hide where the browser permits, and advise manual project files for important work.
 - Prevent deleted-frame Undo from restoring into a different project or exceeding the 128-frame limit.
 
