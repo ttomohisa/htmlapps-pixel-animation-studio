@@ -105,7 +105,7 @@
       border-radius: 999px;
       color: var(--muted);
       background: var(--surface-muted);
-      font-size: 10px;
+      font-size: 11px;
       font-weight: 650;
       vertical-align: 2px;
     }
@@ -166,8 +166,8 @@
     .page-intro p { margin: 6px 0 0; max-width: 720px; color: var(--muted); font-size: 13px; }
     .local-badge {
       display: inline-flex; align-items: center; gap: 7px; flex: 0 0 auto; margin-top: 3px;
-      padding: 7px 10px; border: 1px solid color-mix(in srgb, var(--accent) 25%, var(--line));
-      border-radius: 999px; color: var(--accent); background: var(--accent-soft); font-size: 12px; font-weight: 760; white-space: nowrap;
+      padding: 7px 0; border: 0;
+      border-radius: 0; color: var(--accent); background: transparent; font-size: 12px; font-weight: 500; white-space: nowrap;
     }
     .local-badge svg { width: 15px; height: 15px; }
     .panel {
@@ -423,7 +423,7 @@
     .dialog-shell { display: flex; flex-direction: column; max-height: min(82vh,700px); }
     .dialog-head { display: flex; align-items: center; gap: 12px; padding: 15px 16px; border-bottom: 1px solid var(--line); }
     .dialog-head h2 { margin: 0; font-size: 17px; }
-    .dialog-close { margin-left: auto; width: 38px; height: 38px; display: grid; place-items: center; border: 0; border-radius: 9px; background: transparent; cursor: pointer; }
+    .dialog-close { margin-left: auto; width: 34px; height: 34px; display: grid; place-items: center; border: 0; border-radius: 9px; background: transparent; cursor: pointer; }.file-fallback-button{display:none;width:100%;margin-top:10px;padding:11px 14px;border:1px solid var(--line);border-radius:10px;background:var(--surface);color:var(--text);font:inherit;font-size:13px;font-weight:600;cursor:pointer}@media (max-width:767px),(pointer:coarse) and (max-height:600px){.file-fallback-button{display:block}}
     .dialog-close:hover { background: var(--surface-hover); }
     .dialog-close svg { width: 18px; height: 18px; }
     .dialog-body { overflow: auto; padding: 16px; overscroll-behavior: contain; }
@@ -613,7 +613,7 @@
         <p data-i18n="introLead">前のフレームを重ねて動きを描きやすくし、作業内容はこの端末内へ自動保存します。</p>
       </div>
       <span class="local-badge">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 3 5 6v5c0 4.8 2.9 8.3 7 10 4.1-1.7 7-5.2 7-10V6l-7-3Z"/><path d="m9 12 2 2 4-4"/></svg>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3 5 6v5c0 4.6 2.8 8 7 10 4.2-2 7-5.4 7-10V6z"/><path d="m9 12 2 2 4-5"/></svg>
         <span data-i18n="localBadge">完全ローカル処理</span>
       </span>
     </section>
@@ -648,7 +648,7 @@
         </div>
         <div class="import-result" id="setupImportResult" role="status" hidden></div>
       </div>
-      <input id="pngFileInput" type="file" accept="image/png,.png" multiple hidden>
+      <input id="pngFileInput" type="file" accept="image/png,.png" multiple hidden><button class="file-fallback-button" id="fileFallbackButton" type="button" data-i18n="fileFallback">ファイルから選択</button><input id="fileFallbackInput" type="file" multiple hidden>
     </section>
 
     <section class="panel editor-panel drop-target" id="editorView" hidden aria-label="Pixel editor">
@@ -919,7 +919,7 @@
   </main>
 
   <input id="projectFileInput" type="file" accept=".json,.pixel-project.json,application/json" hidden>
-  <footer><span id="footerName">Pixel Animation Studio</span> · <span data-i18n="footer">ブラウザー内で処理</span></footer>
+  <footer><span id="footerName">Pixel Animation Studio</span> · MIT License · <span data-i18n="footer">ブラウザー内で処理</span></footer>
 
   <div class="app-toast" id="appToast" role="status" aria-live="polite" data-tone="default">
     <span class="toast-message" id="appToastMessage"></span>
@@ -928,7 +928,7 @@
 
   <dialog id="appConfirmDialog">
     <div class="dialog-shell">
-      <div class="dialog-head"><h2 id="appConfirmTitle">確認</h2><button class="dialog-close" id="appConfirmClose" type="button" data-i18n-aria-label="close" aria-label="閉じる"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18"/></svg></button></div>
+      <div class="dialog-head"><h2 id="appConfirmTitle">確認</h2><button class="dialog-close" id="appConfirmClose" type="button" data-i18n-aria-label="close" aria-label="閉じる"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="m6 6 12 12"/><path d="M18 6 6 18"/></svg></button></div>
       <div class="dialog-body"><p class="confirm-message" id="appConfirmMessage"></p></div>
       <div class="dialog-actions"><button class="button" id="appConfirmCancel" type="button">キャンセル</button><button class="button primary" id="appConfirmOk" type="button">実行する</button></div>
     </div>
@@ -936,7 +936,7 @@
 
   <dialog id="helpDialog">
     <div class="dialog-shell">
-      <div class="dialog-head"><h2 data-i18n="helpTitle">使い方と注意事項</h2><button class="dialog-close" id="closeHelpButton" type="button" data-i18n-title="close" data-i18n-aria-label="close" title="閉じる" aria-label="閉じる"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18"/></svg></button></div>
+      <div class="dialog-head"><h2 data-i18n="helpTitle">使い方と注意事項</h2><button class="dialog-close" id="closeHelpButton" type="button" data-i18n-title="close" data-i18n-aria-label="close" title="閉じる" aria-label="閉じる"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="m6 6 12 12"/><path d="M18 6 6 18"/></svg></button></div>
       <div class="dialog-body">
         <!-- APP:HELP:BEGIN -->
         <h3 data-i18n="helpStartTitle">基本操作</h3>
@@ -976,7 +976,7 @@
       'use strict';
 
       const APP_CONFIG = {"$schema":"./schemas/app-config.schema.json","name":"Pixel Animation Studio","nameJa":"Pixel Animation Studio","slug":"pixel-animation-studio","version":"1.0.5","description":"Create small pixel-art animations locally in your browser and export them as PNG, GIF, and sprite sheets.","descriptionJa":"小さなドット絵アニメーションをブラウザー内で作成し、PNG・GIF・スプライトシートとして保存するツールです。","defaultLanguage":"auto","repository":{"owner":"ttomohisa","name":"htmlapps-pixel-animation-studio"},"build":{"output":"dist/index.html","blockRuntimeNetwork":true,"selfExtract":{"enabled":true,"output":"dist/index.self-extract.html"},"sizeBudget":{"readableWarningMb":25,"selfExtractWarningMb":12}}};
-      const BUILD_MANIFEST = {"schemaVersion":2,"builder":"single-html-app-template/1.3","generatedAtUtc":"2026-10-23T12:00:18.8508058Z","app":{"name":"Pixel Animation Studio","slug":"pixel-animation-studio","version":"1.0.5"},"dependencies":[]};
+      const BUILD_MANIFEST = {"schemaVersion":2,"builder":"single-html-app-template/1.3","generatedAtUtc":"2026-11-14T18:34:09.2237092Z","app":{"name":"Pixel Animation Studio","slug":"pixel-animation-studio","version":"1.0.5"},"dependencies":[]};
       // Asset payloads are Base64 exactly once. The JSON bundle itself is embedded directly.
       const assetBundle = {"schemaVersion":2,"dependencies":{}};
       const blobUrls = new Set();
@@ -1036,7 +1036,7 @@
         ja: {
           projectFileTitle:'編集用プロジェクト', projectFileNote:'全フレーム・色・表示時間・編集設定をファイルに保存し、別の端末でも編集を再開できます。', openProject:'プロジェクトを開く', saveProject:'プロジェクトを保存', projectSaved:'編集用プロジェクトを保存しました。', replaceProjectMessage:'現在の作業を読み込んだプロジェクトに置き換えます。必要ならキャンセルして先にプロジェクトを保存してください。元に戻す履歴は引き継がれません。', projectFileError:'読み込めないプロジェクトです。形式・バージョン・内容と12 MiB以下であることを確認してください。現在の作業は変更していません。',
           brandMeta: 'ドット絵アニメ・PNG読み込み・GIF書き出し', helpButtonLabel: '使い方', close: '閉じる',
-          introTitle: '小さなドット絵をすぐ描く', introLead: 'PNGを読み込むかフレームごとに描いて、動きを確認し、PNG・GIF・Sprite Sheetとして保存できます。', localBadge: '完全ローカル処理',
+          introTitle: '小さなドット絵をすぐ描く', introLead: 'PNGを読み込むかフレームごとに描いて、動きを確認し、PNG・GIF・Sprite Sheetとして保存できます。', localBadge: '完全ローカル処理', fileFallback: 'ファイルから選択',
           setupTitle: '新しいキャンバス', setupBody: 'サイズを選ぶかPNGを読み込むと、透明なドット絵キャンバスをすぐに編集できます。',
           importPngTitle:'PNGから始める', importPngSetupHint:'1枚または同じサイズの複数PNGを選択・ドロップできます。', choosePng:'PNGを選択', addPng:'PNGを追加', importingPng:'PNGを読み込み中…', importCancelled:'キャンバスが変更されたため、PNGの読み込みを中止しました。', importAdded:'追加しました', importFailed:'追加できませんでした', importAllFailed:'PNGを読み込めませんでした', importReasonNotPng:'PNGファイルではありません', importReasonDecode:'画像を読み込めません', importReasonTooLarge:'最大128×128を超えています（{size}）', importReasonMismatch:'サイズが異なります（{actual} / 必要: {expected}）', importReasonFrameLimit:'最大128フレームを超えます', importMore:'ほか{count}件',
           presetTiny: '小さなアイコン向け', presetSmall: '基本サイズ', presetMedium: '少し細かく描く', presetLarge: 'v1.0の最大サイズ',
@@ -1059,7 +1059,7 @@
         en: {
           projectFileTitle:'Editable project', projectFileNote:'Save all frames, colors, timing, and editing settings to resume editing on another device.', openProject:'Open project', saveProject:'Save project', projectSaved:'Editable project saved.', replaceProjectMessage:'Replace your current work with this project? Cancel and save a project file first if needed. Undo history is not carried over.', projectFileError:'Unable to read this project. Check its format, version, contents, and 12 MiB size limit. Your current work has not changed.',
           brandMeta: 'Pixel animation · PNG import · GIF export', helpButtonLabel: 'Help', close: 'Close',
-          introTitle: 'Draw small pixel art, right away.', introLead: 'Import PNG files or draw frame by frame, preview the motion, then save PNG, GIF, or sprite-sheet output to your device.', localBadge: 'Fully local processing',
+          introTitle: 'Draw small pixel art, right away.', introLead: 'Import PNG files or draw frame by frame, preview the motion, then save PNG, GIF, or sprite-sheet output to your device.', localBadge: 'Fully local processing', fileFallback: 'Choose from files',
           setupTitle: 'New canvas', setupBody: 'Choose a size or import PNG files to start editing a transparent pixel canvas.',
           importPngTitle:'Start from PNG', importPngSetupHint:'Choose or drop one PNG, or multiple PNGs with matching dimensions.', choosePng:'Choose PNG', addPng:'Add PNG', importingPng:'Importing PNG…', importCancelled:'PNG import stopped because the canvas changed.', importAdded:'Added', importFailed:'Could not add', importAllFailed:'Could not import PNG files', importReasonNotPng:'Not a PNG file', importReasonDecode:'Could not decode the image', importReasonTooLarge:'Exceeds the 128×128 maximum ({size})', importReasonMismatch:'Dimensions differ ({actual} / expected: {expected})', importReasonFrameLimit:'Would exceed the 128-frame limit', importMore:'{count} more',
           presetTiny: 'For tiny icons', presetSmall: 'A practical default', presetMedium: 'More room for detail', presetLarge: 'v1.0 maximum size',
@@ -1952,7 +1952,7 @@
       ['setupOpenProjectButton','openProjectButton'].forEach(id=>$('#'+id).addEventListener('click',()=>$('#projectFileInput').click()));
       $('#projectFileInput').addEventListener('change',event=>loadProjectFile(event.target.files[0]));
       $('#savePngButton').addEventListener('click',saveCurrentFramePng); $('#saveGifButton').addEventListener('click',saveAnimatedGif); $('#saveSpriteSheetButton').addEventListener('click',saveSpriteSheet);
-      ['setupImportButton','editorImportButton'].forEach(id=>$('#'+id).addEventListener('click',()=>$('#pngFileInput').click())); $('#pngFileInput').addEventListener('change',event=>importPngFiles(event.target.files)); installPngDropTarget($('#setupImportZone')); installPngDropTarget($('#editorView'));
+      ['setupImportButton','editorImportButton'].forEach(id=>$('#'+id).addEventListener('click',()=>$('#pngFileInput').click())); $('#pngFileInput').addEventListener('change',event=>importPngFiles(event.target.files));$('#fileFallbackButton').addEventListener('click',()=>$('#fileFallbackInput').click());$('#fileFallbackInput').addEventListener('change',event=>{importPngFiles(event.target.files);event.target.value='';}); installPngDropTarget($('#setupImportZone')); installPngDropTarget($('#editorView'));
       $('#zoomOutButton').addEventListener('click', () => setScale(state.scale-1)); $('#zoomInButton').addEventListener('click', () => setScale(state.scale+1)); $('#fitButton').addEventListener('click', () => fitCanvas({announceChange:true})); $('#gridButton').addEventListener('click',toggleGrid);
       $('#newCanvasButton').addEventListener('click', returnToSetup);
       canvas.addEventListener('pointerdown', handleCanvasPointerDown); canvas.addEventListener('pointermove', handleCanvasPointerMove); canvas.addEventListener('pointerup', handleCanvasPointerEnd); canvas.addEventListener('pointercancel', handleCanvasPointerEnd); canvas.addEventListener('pointerenter', event => updateBrushPreview(event)); canvas.addEventListener('pointerleave', () => { hideBrushPreview(); canvas.classList.remove('is-selection-hover'); }); canvas.addEventListener('contextmenu', event => event.preventDefault());
