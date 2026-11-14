@@ -1606,6 +1606,14 @@
           if(generation!==state.projectGeneration){
             AppToast.show({message:t('importCancelled'),tone:'warning'});return;
           }
+          // Frame buttons remain available while PNGs decode. Recheck capacity at commit time.
+          if(items.length && state.width){
+            const capacity=Math.max(0,MAX_FRAMES-state.frames.length);
+            if(items.length>capacity){
+              const rejected=items.splice(capacity);
+              rejected.forEach(item=>failures.push({name:item.file.name,code:'frameLimit'}));
+            }
+          }
           if(items.length){
             clearSelection();
             if(!state.width)activateImportedProject(expectedWidth,expectedHeight,items);
