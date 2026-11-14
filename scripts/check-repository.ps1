@@ -241,6 +241,9 @@ if ($LASTEXITCODE -ne 0) { throw "Keyboard regression tests failed." }
 & $node.Source --test (Join-Path $Root "scripts\test-selection-touch.cjs")
 if ($LASTEXITCODE -ne 0) { throw "Selection and touch regression tests failed." }
 
+& $node.Source --test (Join-Path $Root "scripts\test-export-races.cjs")
+if ($LASTEXITCODE -ne 0) { throw "Import/export race regression tests failed." }
+
 & $node.Source --test (Join-Path $Root "scripts\test-header.cjs")
 if ($LASTEXITCODE -ne 0) { throw "Header regression tests failed." }
 
@@ -270,3 +273,6 @@ if ($LASTEXITCODE -ne 0) { throw "User-facing help copy regression failed." }
 
 & $node.Source --test (Join-Path $Root "scripts\test-project-files.cjs")
 if ($LASTEXITCODE -ne 0) { throw "Project file regression tests failed." }
+
+& $node.Source --test (Join-Path $Root "scripts\test-recovery-release.cjs")
+if ($LASTEXITCODE -ne 0) { throw "Recovery and post-merge release regression tests failed." }

@@ -593,7 +593,7 @@
           <img id="appBrandIcon" src="__APP_ICON_DATA_URI__" alt="">
         </div>
         <div class="brand-copy">
-          <p class="brand-name"><span id="brandName">Pixel Animation Studio</span><span class="version-badge" id="versionBadge">v1.0.4</span></p>
+          <p class="brand-name"><span id="brandName">Pixel Animation Studio</span><span class="version-badge" id="versionBadge">v1.0.5</span></p>
           <p class="brand-meta" data-i18n="brandMeta">ドット絵アニメ・PNG読み込み・GIF書き出し</p>
         </div>
       </div>
@@ -947,10 +947,10 @@
           <li data-i18n="helpStep4">フレームを追加・複製し、サムネイルから切り替えます。</li>
           <li data-i18n="helpKeyboard">Tabで操作先を選び、ボタンはSpaceまたはEnterで実行できます。キャンバスにフォーカスがあるときはSpace + ドラッグで表示を移動できます。</li>
         </ol>
-        <p data-i18n="helpProjectFile">編集を続けるには「書き出し」の「プロジェクトを保存」を使い、.pixel-project.jsonを保管します。「プロジェクトを開く」で復元できます（最大12 MiB）。端末内自動保存とは別です。Undo履歴・選択範囲・クリップボードは含みません。表示倍率はFitで開きます。</p>
+        <p data-i18n="helpProjectFile">編集を続けるには「書き出し」の「プロジェクトを保存」を使い、.pixel-project.jsonを保管します。「プロジェクトを開く」で復元できます（最大12 MiB）。端末内自動保存とは別です。アプリを閉じる直前の変更は保存されないことがあるため、大切な作品はプロジェクトファイルでも保存してください。Undo履歴・選択範囲・クリップボードは含みません。表示倍率はFitで開きます。</p>
         <h3 data-i18n="helpPrivacyTitle">プライバシー</h3>
         <p data-i18n="helpPrivacyBody">描画データはこのブラウザー内で処理され、このアプリから外部サーバーへ送信されません。実行時の外部通信も行いません。</p>
-        <h3 data-i18n="helpLimitsTitle">v1.0.4の範囲</h3>
+        <h3 data-i18n="helpLimitsTitle">機能と注意事項</h3>
         <ul>
           <li data-i18n="helpLimit1">前のフレームを約30%で重ねるOnion SkinをON/OFFできます。</li>
           <li data-i18n="helpLimit2">作業内容はIndexedDBへ端末内自動保存し、再読み込み後に復元できます。</li>
@@ -962,7 +962,7 @@
     <details class="build-details help-build">
       <summary data-i18n="buildInfo">ビルド情報</summary>
       <div class="build-grid">
-        <div class="build-item"><span data-i18n="appVersion">アプリバージョン</span><strong id="buildVersion">1.0.4</strong></div>
+        <div class="build-item"><span data-i18n="appVersion">アプリバージョン</span><strong id="buildVersion">1.0.5</strong></div>
         <div class="build-item"><span data-i18n="builtAt">生成日時</span><strong id="builtAt">—</strong></div>
         <div class="build-item"><span data-i18n="dependencies">内包依存数</span><strong id="dependencyCount">0</strong></div>
       </div>
@@ -1038,7 +1038,7 @@
           brandMeta: 'ドット絵アニメ・PNG読み込み・GIF書き出し', helpButtonLabel: '使い方', close: '閉じる',
           introTitle: '小さなドット絵をすぐ描く', introLead: 'PNGを読み込むかフレームごとに描いて、動きを確認し、PNG・GIF・Sprite Sheetとして保存できます。', localBadge: '完全ローカル処理',
           setupTitle: '新しいキャンバス', setupBody: 'サイズを選ぶかPNGを読み込むと、透明なドット絵キャンバスをすぐに編集できます。',
-          importPngTitle:'PNGから始める', importPngSetupHint:'1枚または同じサイズの複数PNGを選択・ドロップできます。', choosePng:'PNGを選択', addPng:'PNGを追加', importingPng:'PNGを読み込み中…', importAdded:'追加しました', importFailed:'追加できませんでした', importAllFailed:'PNGを読み込めませんでした', importReasonNotPng:'PNGファイルではありません', importReasonDecode:'画像を読み込めません', importReasonTooLarge:'最大128×128を超えています（{size}）', importReasonMismatch:'サイズが異なります（{actual} / 必要: {expected}）', importReasonFrameLimit:'最大128フレームを超えます', importMore:'ほか{count}件',
+          importPngTitle:'PNGから始める', importPngSetupHint:'1枚または同じサイズの複数PNGを選択・ドロップできます。', choosePng:'PNGを選択', addPng:'PNGを追加', importingPng:'PNGを読み込み中…', importCancelled:'キャンバスが変更されたため、PNGの読み込みを中止しました。', importAdded:'追加しました', importFailed:'追加できませんでした', importAllFailed:'PNGを読み込めませんでした', importReasonNotPng:'PNGファイルではありません', importReasonDecode:'画像を読み込めません', importReasonTooLarge:'最大128×128を超えています（{size}）', importReasonMismatch:'サイズが異なります（{actual} / 必要: {expected}）', importReasonFrameLimit:'最大128フレームを超えます', importMore:'ほか{count}件',
           presetTiny: '小さなアイコン向け', presetSmall: '基本サイズ', presetMedium: '少し細かく描く', presetLarge: 'v1.0の最大サイズ',
           customTitle: 'Custom', customHint: '幅・高さはそれぞれ1〜128 px', widthLabel: '幅', heightLabel: '高さ', createCanvas: '作成', invalidCustom: '幅と高さは1〜128の整数で指定してください。',
           projectNote: '透明キャンバス', newCanvas: '新しいキャンバス', toolsTitle: 'ツール', pencil: '鉛筆', eraser: '消しゴム', fill: '塗りつぶし', eyedropper: 'スポイト', selection: '選択', brushTitle: 'ブラシサイズ',
@@ -1049,8 +1049,8 @@
           helpTitle: '使い方と注意事項', helpStartTitle: '基本操作', helpStep1: '16×16〜128×128、またはCustomからキャンバスサイズを選びます。', helpStep2: '鉛筆 / 消しゴム / 塗りつぶし / スポイト / 選択を使い分けます。', helpStep3: '「すべて選択」は絵全体のコピー・切り取り・削除に使えます。選択範囲をドラッグすると、元の位置から切り取って移動します。選択範囲は別のツールへ切り替えると解除されます。貼り付けは貼り付け先を選択してから行います。元に戻す / やり直す、Zoom / Pan / GridはCanvas上部から操作できます。', helpStep4: 'フレームを追加・複製し、表示時間を設定してPreviewで動きを確認します。',
           helpKeyboard: 'Tabで操作先を選び、ボタンはSpaceまたはEnterで実行できます。キャンバスにフォーカスがあるときはSpace + ドラッグで表示を移動できます。',
           helpPrivacyTitle: 'プライバシー', helpPrivacyBody: '描画データはこのブラウザー内で処理され、このアプリから外部サーバーへ送信されません。実行時の外部通信も行いません。',
-          helpProjectFile:'編集を続けるには「書き出し」の「プロジェクトを保存」を使い、.pixel-project.jsonを保管します。「プロジェクトを開く」で復元できます（最大12 MiB）。端末内自動保存とは別です。Undo履歴・選択範囲・クリップボードは含みません。表示倍率はFitで開きます。拡大しても作業領域の高さは変わりません。スクロール、Space＋ドラッグ、2本指で表示を移動できます。',
-          helpLimitsTitle: 'v1.0.4の範囲', helpLimit1: '前のフレームを約30%で重ねるOnion SkinをON/OFFできます。', helpLimit2: '作業内容はIndexedDBへ端末内自動保存し、再読み込み後に復元できます。', helpLimit3: 'PNGを1枚または複数読み込み、PNG・Animated GIF・Sprite Sheetを書き出せます。GIFは256色制約があり、半透明は透明/不透明へ変換されます。',
+          helpProjectFile:'編集を続けるには「書き出し」の「プロジェクトを保存」を使い、.pixel-project.jsonを保管します。「プロジェクトを開く」で復元できます（最大12 MiB）。端末内自動保存とは別です。アプリを閉じる直前の変更は保存されないことがあるため、大切な作品はプロジェクトファイルでも保存してください。Undo履歴・選択範囲・クリップボードは含みません。表示倍率はFitで開きます。拡大しても作業領域の高さは変わりません。スクロール、Space＋ドラッグ、2本指で表示を移動できます。',
+          helpLimitsTitle: '機能と注意事項', helpLimit1: '前のフレームを約30%で重ねるOnion SkinをON/OFFできます。', helpLimit2: '作業内容はIndexedDBへ端末内自動保存し、再読み込み後に復元できます。', helpLimit3: 'PNGを1枚または複数読み込み、PNG・Animated GIF・Sprite Sheetを書き出せます。GIFは256色制約があり、半透明は透明/不透明へ変換されます。',
           helpTouchTitle: 'スマートフォン', helpTouchBody: '1本指で描画します。2本指でPan / Pinch Zoomできます。2本指操作へ移った場合は、誤って始まった描画を取り消して表示操作へ切り替えます。塗りつぶしとスポイトは指を離すと実行され、タッチ操作がキャンセルされた場合は実行されません。',
           confirmTitle: '確認', cancel: 'キャンセル', confirmNew: '新しく作る', newConfirmMessage: '現在の自動保存データを置き換えて、新しいキャンバスを作成しますか？',
           created: 'キャンバスを作成しました', toolChangedPencil: '鉛筆に切り替えました', toolChangedEraser: '消しゴムに切り替えました', toolChangedFill: '塗りつぶしに切り替えました', toolChangedEyedropper: 'スポイトに切り替えました', brushChanged: 'ブラシサイズを変更しました', colorChanged: '描画色を変更しました',
@@ -1061,7 +1061,7 @@
           brandMeta: 'Pixel animation · PNG import · GIF export', helpButtonLabel: 'Help', close: 'Close',
           introTitle: 'Draw small pixel art, right away.', introLead: 'Import PNG files or draw frame by frame, preview the motion, then save PNG, GIF, or sprite-sheet output to your device.', localBadge: 'Fully local processing',
           setupTitle: 'New canvas', setupBody: 'Choose a size or import PNG files to start editing a transparent pixel canvas.',
-          importPngTitle:'Start from PNG', importPngSetupHint:'Choose or drop one PNG, or multiple PNGs with matching dimensions.', choosePng:'Choose PNG', addPng:'Add PNG', importingPng:'Importing PNG…', importAdded:'Added', importFailed:'Could not add', importAllFailed:'Could not import PNG files', importReasonNotPng:'Not a PNG file', importReasonDecode:'Could not decode the image', importReasonTooLarge:'Exceeds the 128×128 maximum ({size})', importReasonMismatch:'Dimensions differ ({actual} / expected: {expected})', importReasonFrameLimit:'Would exceed the 128-frame limit', importMore:'{count} more',
+          importPngTitle:'Start from PNG', importPngSetupHint:'Choose or drop one PNG, or multiple PNGs with matching dimensions.', choosePng:'Choose PNG', addPng:'Add PNG', importingPng:'Importing PNG…', importCancelled:'PNG import stopped because the canvas changed.', importAdded:'Added', importFailed:'Could not add', importAllFailed:'Could not import PNG files', importReasonNotPng:'Not a PNG file', importReasonDecode:'Could not decode the image', importReasonTooLarge:'Exceeds the 128×128 maximum ({size})', importReasonMismatch:'Dimensions differ ({actual} / expected: {expected})', importReasonFrameLimit:'Would exceed the 128-frame limit', importMore:'{count} more',
           presetTiny: 'For tiny icons', presetSmall: 'A practical default', presetMedium: 'More room for detail', presetLarge: 'v1.0 maximum size',
           customTitle: 'Custom', customHint: 'Width and height: 1–128 px', widthLabel: 'Width', heightLabel: 'Height', createCanvas: 'Create', invalidCustom: 'Enter whole-number width and height values from 1 to 128.',
           projectNote: 'Transparent canvas', newCanvas: 'New canvas', toolsTitle: 'Tools', pencil: 'Pencil', eraser: 'Eraser', fill: 'Fill', eyedropper: 'Eyedropper', selection: 'Selection', brushTitle: 'Brush size',
@@ -1072,8 +1072,8 @@
           helpTitle: 'How to use & notes', helpStartTitle: 'Basics', helpStep1: 'Choose 16×16 through 128×128, or enter a Custom canvas size.', helpStep2: 'Choose Pencil, Eraser, Fill, Eyedropper, or Selection.', helpStep3: 'Use Select all to copy, cut, or delete the whole image. Drag a selection to cut it from its original position and move it. Selection clears when you switch tools. Choose a destination before pasting. Undo / Redo, Zoom / Pan, and Grid stay above the canvas.', helpStep4: 'Add or duplicate frames, set their delays, and check the motion in Preview.',
           helpKeyboard: 'Use Tab to focus controls and Space or Enter to activate buttons. With the canvas focused, hold Space and drag to pan.',
           helpPrivacyTitle: 'Privacy', helpPrivacyBody: 'Pixel data is processed in this browser and is not sent to an external server by this app. The app also makes no runtime network requests.',
-          helpProjectFile:'To resume editing, use Save project in Export and keep the .pixel-project.json file. Open project restores it (12 MiB maximum), independently of local autosave. Undo history, selections, and clipboard are not included; the view opens at Fit. Zoom does not enlarge the viewport. Scroll, Space-drag, or use two fingers to pan.',
-          helpLimitsTitle: 'v1.0.4 scope', helpLimit1: 'Onion Skin can show the previous frame at about 30% opacity while editing.', helpLimit2: 'Your project is autosaved locally to IndexedDB and can be restored after reload.', helpLimit3: 'Import one or more PNG files and export PNG, animated GIF, or sprite-sheet output. GIF is limited to 256 colors and converts partial alpha to transparent or opaque pixels.',
+          helpProjectFile:'To resume editing, use Save project in Export and keep the .pixel-project.json file. Open project restores it (12 MiB maximum), independently of local autosave. Very recent edits may not be saved when you close the app; keep a project file for important work. Undo history, selections, and clipboard are not included; the view opens at Fit. Zoom does not enlarge the viewport. Scroll, Space-drag, or use two fingers to pan.',
+          helpLimitsTitle: 'Features and limitations', helpLimit1: 'Onion Skin can show the previous frame at about 30% opacity while editing.', helpLimit2: 'Your project is autosaved locally to IndexedDB and can be restored after reload.', helpLimit3: 'Import one or more PNG files and export PNG, animated GIF, or sprite-sheet output. GIF is limited to 256 colors and converts partial alpha to transparent or opaque pixels.',
           helpTouchTitle: 'Smartphones', helpTouchBody: 'Draw with one finger. Use two fingers to pan or pinch zoom. When a second finger arrives, any accidental stroke start is restored before the view gesture begins. Fill and Eyedropper run when you lift your finger; a cancelled touch does not apply them.',
           confirmTitle: 'Confirm', cancel: 'Cancel', confirmNew: 'Start new', newConfirmMessage: 'Replace the current autosaved project and create a new canvas?',
           created: 'Canvas created', toolChangedPencil: 'Switched to Pencil', toolChangedEraser: 'Switched to Eraser', toolChangedFill: 'Switched to Fill', toolChangedEyedropper: 'Switched to Eyedropper', brushChanged: 'Brush size changed', colorChanged: 'Drawing color changed',
@@ -1104,7 +1104,7 @@
         touchPointers: new Map(), touchGesture: null, touchGestureBlocked: false, deferredTouchAction: null,
         recentColors: [], frames: [], currentFrameIndex: 0,
         previewPlaying: false, previewIndex: 0, previewTimer: 0, previewLoop: true, onionSkin: true,
-        persistenceAvailable: true, persistenceReady: false, autosaveTimer: 0, autosaveInFlight: false, autosaveQueued: false, selection:null, selectionDrag:null, clipboard:null, pngScale:1, spriteLayout:'horizontal', spriteColumns:4, outputBase:'pixel-animation', importBusy:false, importReport:null, gifBusy:false, projectFileBusy:false
+        persistenceAvailable: true, persistenceReady: false, autosaveTimer: 0, autosaveInFlight: false, autosaveQueued: false, selection:null, selectionDrag:null, clipboard:null, pngScale:1, spriteLayout:'horizontal', spriteColumns:4, outputBase:'pixel-animation', projectGeneration:0, importBusy:false, importReport:null, gifBusy:false, projectFileBusy:false
       };
       const canvas = $('#pixelCanvas');
       const ctx = canvas.getContext('2d', { alpha: true });
@@ -1215,17 +1215,61 @@
         try { await idbPutProject(project); updateAutosaveStatus('saved'); } catch { disablePersistence(); } finally { state.autosaveInFlight=false; if(state.autosaveQueued && state.persistenceAvailable){ state.autosaveQueued=false; scheduleAutosave(); } }
       }
       async function waitForAutosaveIdle() { while(state.autosaveInFlight) await new Promise(resolve=>setTimeout(resolve,20)); }
-      function scheduleAutosave() { if(!state.persistenceAvailable || !state.persistenceReady || !state.width)return; clearTimeout(state.autosaveTimer); state.autosaveTimer=window.setTimeout(performAutosave,AUTOSAVE_DELAY); updateAutosaveStatus('saving'); }
+      function scheduleAutosave() {
+        if(!state.persistenceAvailable||!state.persistenceReady||!state.width)return;
+        clearTimeout(state.autosaveTimer);state.autosaveTimer=0;
+        updateAutosaveStatus('saving');
+        if(document.visibilityState==='hidden'){void performAutosave();return;}
+        state.autosaveTimer=window.setTimeout(performAutosave,AUTOSAVE_DELAY);
+      }
+      function flushPendingAutosave() {
+        if(!state.autosaveTimer&&!state.autosaveQueued)return;
+        clearTimeout(state.autosaveTimer);state.autosaveTimer=0;
+        void performAutosave();
+      }
       async function clearAutosave() { if(!state.persistenceAvailable)return; try { await idbDeleteProject(); } catch { disablePersistence(); } }
       function validateSavedProject(project) { return project && project.schemaVersion===PROJECT_SCHEMA_VERSION && validateDimension(project.width) && validateDimension(project.height) && Array.isArray(project.frames) && project.frames.length>=1 && project.frames.length<=MAX_FRAMES; }
       function restoreProject(project, preparedFrames = null) {
-        pausePreview({announceChange:false}); state.width=project.width; state.height=project.height; state.frames=preparedFrames || project.frames.map(item=>{ const data=item?.data instanceof Uint8ClampedArray?item.data:new Uint8ClampedArray(item?.data||[]); if(data.length!==project.width*project.height*4) throw new Error('Invalid saved frame'); return makeFrame(new ImageData(new Uint8ClampedArray(data),project.width,project.height),item.duration); });
+        // Validate and allocate every frame before changing live dimensions, canvas, or frame ownership.
+        const frames=preparedFrames || project.frames.map(item=>{
+          const data=item?.data instanceof Uint8ClampedArray?item.data:new Uint8ClampedArray(item?.data||[]);
+          if(data.length!==project.width*project.height*4) throw new Error('Invalid saved frame');
+          return makeFrame(new ImageData(new Uint8ClampedArray(data),project.width,project.height),item.duration);
+        });
+        if(frames.length!==project.frames.length || frames.some(frame=>!frame?.imageData || frame.imageData.width!==project.width || frame.imageData.height!==project.height)) throw new Error('Invalid saved frame');
+        state.projectGeneration++;
+        pausePreview({announceChange:false}); state.width=project.width; state.height=project.height; state.frames=frames;
         state.currentFrameIndex=Math.max(0,Math.min(Number(project.currentFrameIndex)||0,state.frames.length-1)); state.selection=null; state.selectionDrag=null; state.clipboard=null; state.color=normalizeHex(project.color)||'#16624F'; state.previousValidColor=state.color; state.recentColors=Array.isArray(project.recentColors)?project.recentColors.map(normalizeHex).filter(Boolean).slice(0,12):[]; state.grid=project.grid!==false; state.onionSkin=project.onionSkin!==false; state.outputBase=sanitizeFilenameBase(project.outputBase||'pixel-animation'); state.undoStack=[]; state.redoStack=[]; state.dirty=false; state.previewIndex=state.currentFrameIndex;
         canvas.width=state.width; canvas.height=state.height; onionCanvas.width=state.width; onionCanvas.height=state.height; ctx.imageSmoothingEnabled=false; onionCtx.imageSmoothingEnabled=false; ctx.putImageData(cloneImageData(state.frames[state.currentFrameIndex].imageData),0,0);
         $('#projectSize').textContent=`${state.width} × ${state.height}`; $('#setupView').hidden=true; $('#editorView').hidden=false; document.body.dataset.projectState='editing'; $('#storageWarning').hidden=state.persistenceAvailable; applyColor(state.color); outputFilename.value=state.outputBase; renderRecentColors(); updateHistoryButtons(); renderFrames(); updateOnionSkin(); updatePreviewControls(); setMobilePage('edit'); requestAnimationFrame(()=>fitCanvas()); updateAutosaveStatus(state.persistenceAvailable?'saved':'error'); announce(t('restoredProject')); AppToast.show({message:t('restoredProject'),tone:'success'});
       }
       async function initializePersistence() {
-        try { const saved=await idbGetProject(); state.persistenceReady=true; if(!saved){ if(state.width) scheduleAutosave(); return; } if(!validateSavedProject(saved)){ await clearAutosave(); return; } const summary=formatText(t('restoreSummary'),{size:`${saved.width} × ${saved.height}`,frames:saved.frames.length}); const useSaved=await AppConfirm.ask({title:t('restoreTitle'),message:summary,confirmLabel:t('restoreContinue'),cancelLabel:t('restoreNew')}); if(useSaved){ try { restoreProject(saved); } catch { await clearAutosave(); } } else { await clearAutosave(); } } catch { disablePersistence(); }
+        const generation=state.projectGeneration;
+        try {
+          const saved=await idbGetProject();
+          state.persistenceReady=true;
+          // A canvas created while IndexedDB was opening must not be overwritten by old recovery data.
+          if(generation!==state.projectGeneration){ if(state.width) scheduleAutosave(); return; }
+          if(!saved){ if(state.width) scheduleAutosave(); return; }
+          if(!validateSavedProject(saved)){
+            await clearAutosave();
+            if(generation!==state.projectGeneration && state.width) scheduleAutosave();
+            return;
+          }
+          const summary=formatText(t('restoreSummary'),{size:`${saved.width} × ${saved.height}`,frames:saved.frames.length});
+          const useSaved=await AppConfirm.ask({title:t('restoreTitle'),message:summary,confirmLabel:t('restoreContinue'),cancelLabel:t('restoreNew')});
+          if(generation!==state.projectGeneration){ if(state.width) scheduleAutosave(); return; }
+          if(useSaved){
+            try { restoreProject(saved); }
+            catch {
+              await clearAutosave();
+              if(generation!==state.projectGeneration && state.width) scheduleAutosave();
+            }
+          }else{
+            await clearAutosave();
+            if(generation!==state.projectGeneration && state.width) scheduleAutosave();
+          }
+        } catch { disablePersistence(); }
       }
 
       const AppToast = (() => {
@@ -1403,35 +1447,72 @@
         const totalDuration=state.frames.reduce((sum,frame)=>sum+(frame.duration||DEFAULT_FRAME_DURATION),0); $('#gifOutputSize').textContent=`${state.width} × ${state.height} px`; $('#gifOutputDetails').textContent=formatText(t('gifDetails'),{frames:state.frames.length,duration:totalDuration}); $('#gifOutputName').textContent=`${base}.gif`;
       }
       async function saveCurrentFramePng() {
-        if(!state.frames.length)return; try { saveCurrentFrame(); syncOutputBase(); const frame=state.frames[state.currentFrameIndex]; const out=makeFrameCanvas(frame.imageData,state.pngScale); const blob=await canvasToPngBlob(out); const filename=`${state.outputBase}-frame-${String(state.currentFrameIndex+1).padStart(2,'0')}.png`; downloadBlob(blob,filename); AppToast.show({message:t('pngSaved'),tone:'success'}); } catch(error){ console.error(error); AppToast.show({message:t('exportFailed'),tone:'warning'}); }
+        if(!state.frames.length)return;
+        try {
+          saveCurrentFrame(); syncOutputBase();
+          const index=state.currentFrameIndex;
+          const frame=state.frames[index];
+          const filename=`${state.outputBase}-frame-${String(index+1).padStart(2,'0')}.png`;
+          const out=makeFrameCanvas(frame.imageData,state.pngScale);
+          const blob=await canvasToPngBlob(out);
+          downloadBlob(blob,filename);
+          AppToast.show({message:t('pngSaved'),tone:'success'});
+        } catch(error){ console.error(error); AppToast.show({message:t('exportFailed'),tone:'warning'}); }
       }
       async function saveSpriteSheet() {
-        if(!state.frames.length)return; try { syncOutputBase(); const out=document.createElement('canvas'); renderSpriteSheet(out); const blob=await canvasToPngBlob(out); downloadBlob(blob,`${state.outputBase}-spritesheet.png`); AppToast.show({message:t('spriteSheetSaved'),tone:'success'}); } catch(error){ console.error(error); AppToast.show({message:t('exportFailed'),tone:'warning'}); }
+        if(!state.frames.length)return; try { syncOutputBase(); const filename=`${state.outputBase}-spritesheet.png`; const out=document.createElement('canvas'); renderSpriteSheet(out); const blob=await canvasToPngBlob(out); downloadBlob(blob,filename); AppToast.show({message:t('spriteSheetSaved'),tone:'success'}); } catch(error){ console.error(error); AppToast.show({message:t('exportFailed'),tone:'warning'}); }
       }
 
 
       function gifLe16(value) { return [value & 255, (value >> 8) & 255]; }
       function gifNextPow2(value) { let size=2; while(size<value && size<256) size*=2; return size; }
       function gifPaletteAndIndices(imageData) {
-        const data=imageData.data; const counts=new Map();
-        for(let i=0;i<data.length;i+=4){ if(data[i+3]<128) continue; const key=(data[i]<<16)|(data[i+1]<<8)|data[i+2]; counts.set(key,(counts.get(key)||0)+1); }
-        const opaqueColors=[...counts.keys()]; let palette=[]; let bucketIndex=null;
-        if(opaqueColors.length<=255){ palette=opaqueColors.map(key=>[(key>>16)&255,(key>>8)&255,key&255]); }
+        const data=imageData.data, counts=new Map(); let hasTransparency=false;
+        for(let i=0;i<data.length;i+=4){
+          if(data[i+3]<128){hasTransparency=true;continue;}
+          const key=(data[i]<<16)|(data[i+1]<<8)|data[i+2];
+          counts.set(key,(counts.get(key)||0)+1);
+        }
+        const limit=hasTransparency?255:256;
+        const colors=[...counts].map(([key,count])=>({key,count,r:(key>>16)&255,g:(key>>8)&255,b:key&255}));
+        const makeBox=entries=>{
+          const low=[255,255,255], high=[0,0,0]; let weight=0;
+          for(const c of entries){ const rgb=[c.r,c.g,c.b];for(let i=0;i<3;i++){low[i]=Math.min(low[i],rgb[i]);high[i]=Math.max(high[i],rgb[i]);} weight+=c.count; }
+          const ranges=high.map((value,i)=>value-low[i]);
+          const channel=ranges.indexOf(Math.max(...ranges));
+          return {entries,weight,channel,score:ranges[channel]*Math.sqrt(entries.length)};
+        };
+        let groups;
+        if(colors.length<=limit) groups=colors.map(color=>[color]);
         else {
-          const buckets=new Map();
-          for(const [key,count] of counts){ const r=(key>>16)&255,g=(key>>8)&255,b=key&255; const ri=Math.round(r*5/255),gi=Math.round(g*6/255),bi=Math.round(b*5/255); const bucketKey=(ri<<16)|(gi<<8)|bi; let value=buckets.get(bucketKey); if(!value)value={count:0,r:0,g:0,b:0}; value.count+=count; value.r+=r*count; value.g+=g*count; value.b+=b*count; buckets.set(bucketKey,value); }
-          palette=[...buckets.values()].map(value=>[Math.round(value.r/value.count),Math.round(value.g/value.count),Math.round(value.b/value.count)]).slice(0,255);
-          bucketIndex=new Map(); let index=1; for(const key of buckets.keys()){ if(index>palette.length) break; bucketIndex.set(key,index++); }
+          const boxes=[makeBox(colors)];
+          while(boxes.length<limit){
+            let best=-1;
+            for(let i=0;i<boxes.length;i++) if(boxes[i].entries.length>1 && (best<0||boxes[i].score>boxes[best].score))best=i;
+            if(best<0)break;
+            const box=boxes.splice(best,1)[0];
+            box.entries.sort((a,b)=>[a.r,a.g,a.b][box.channel]-[b.r,b.g,b.b][box.channel]||a.key-b.key);
+            let cumulative=0,split=1;
+            for(;split<box.entries.length;split++){cumulative+=box.entries[split-1].count;if(cumulative>=box.weight/2)break;}
+            split=Math.min(box.entries.length-1,Math.max(1,split));
+            boxes.push(makeBox(box.entries.slice(0,split)),makeBox(box.entries.slice(split)));
+          }
+          groups=boxes.map(box=>box.entries);
         }
-        if(!palette.length) palette=[[0,0,0]];
-        const fullPalette=[[0,0,0],...palette]; const exact=new Map(); if(!bucketIndex) fullPalette.forEach((color,index)=>{ if(index) exact.set((color[0]<<16)|(color[1]<<8)|color[2],index); });
-        const indices=new Uint8Array(state.width*state.height);
+        const palette=hasTransparency?[[0,0,0]]:[], lookup=new Map();
+        for(const group of groups){
+          let weight=0,r=0,g=0,b=0; const index=palette.length;
+          for(const item of group){weight+=item.count;r+=item.r*item.count;g+=item.g*item.count;b+=item.b*item.count;lookup.set(item.key,index);}
+          palette.push([Math.round(r/weight),Math.round(g/weight),Math.round(b/weight)]);
+        }
+        if(!palette.length)palette.push([0,0,0]);
+        const indices=new Uint8Array(imageData.width*imageData.height);
         for(let pixel=0,offset=0;offset<data.length;offset+=4,pixel++){
-          if(data[offset+3]<128){ indices[pixel]=0; continue; }
-          if(bucketIndex){ const ri=Math.round(data[offset]*5/255),gi=Math.round(data[offset+1]*6/255),bi=Math.round(data[offset+2]*5/255); indices[pixel]=bucketIndex.get((ri<<16)|(gi<<8)|bi)||1; }
-          else indices[pixel]=exact.get((data[offset]<<16)|(data[offset+1]<<8)|data[offset+2])||1;
+          if(data[offset+3]<128){indices[pixel]=0;continue;}
+          const key=(data[offset]<<16)|(data[offset+1]<<8)|data[offset+2];
+          indices[pixel]=lookup.get(key);
         }
-        return { palette:fullPalette, indices };
+        return {palette,indices,hasTransparency};
       }
       function gifLiteralLzw(indices,minCodeSize) {
         const clear=1<<minCodeSize,end=clear+1,codeSize=minCodeSize+1; const bytes=[]; let current=0,bits=0;
@@ -1439,20 +1520,41 @@
         emit(clear); for(let i=0;i<indices.length;i++){ emit(indices[i]); if(i!==indices.length-1) emit(clear); } emit(end); if(bits) bytes.push(current&255); return Uint8Array.from(bytes);
       }
       async function encodeAnimatedGif() {
-        saveCurrentFrame(); const bytes=[]; const push=(...values)=>bytes.push(...values); const ascii=text=>{for(const char of text)bytes.push(char.charCodeAt(0));};
-        ascii('GIF89a'); push(...gifLe16(state.width),...gifLe16(state.height),0xF0,0,0,0,0,0,255,255,255); push(0x21,0xFF,0x0B); ascii('NETSCAPE2.0'); push(3,1,0,0,0);
-        const progress=$('#gifProgress'),bar=$('#gifProgressBar'),label=$('#gifProgressText'); progress.hidden=false; bar.max=state.frames.length; bar.value=0;
-        for(let frameIndex=0;frameIndex<state.frames.length;frameIndex++){
-          const frame=state.frames[frameIndex]; const {palette,indices}=gifPaletteAndIndices(frame.imageData); const tableSize=gifNextPow2(palette.length); const sizeCode=Math.max(0,Math.log2(tableSize)-1); const local=[...palette]; while(local.length<tableSize)local.push([0,0,0]); const delay=Math.max(2,Math.min(65535,Math.round((frame.duration||DEFAULT_FRAME_DURATION)/10)));
-          push(0x21,0xF9,4,0x09,...gifLe16(delay),0,0); push(0x2C,...gifLe16(0),...gifLe16(0),...gifLe16(state.width),...gifLe16(state.height),0x80|sizeCode); for(const color of local) push(color[0],color[1],color[2]);
-          const minCodeSize=Math.max(2,Math.ceil(Math.log2(tableSize))); const compressed=gifLiteralLzw(indices,minCodeSize); push(minCodeSize); for(let offset=0;offset<compressed.length;offset+=255){ const length=Math.min(255,compressed.length-offset); push(length); for(let i=0;i<length;i++)bytes.push(compressed[offset+i]); } push(0);
-          bar.value=frameIndex+1; label.textContent=formatText(t('gifEncoding'),{current:frameIndex+1,total:state.frames.length}); await new Promise(resolve=>setTimeout(resolve,0));
+        saveCurrentFrame();
+        // Freeze pixels, frame order and delays before the first asynchronous yield.
+        const width=state.width,height=state.height;
+        const frames=state.frames.map(frame=>({imageData:cloneImageData(frame.imageData),duration:frame.duration||DEFAULT_FRAME_DURATION}));
+        const bytes=[];const push=(...values)=>bytes.push(...values);
+        const ascii=text=>{for(const char of text)bytes.push(char.charCodeAt(0));};
+        ascii('GIF89a');push(...gifLe16(width),...gifLe16(height),0xF0,0,0,0,0,0,255,255,255);
+        push(0x21,0xFF,0x0B);ascii('NETSCAPE2.0');push(3,1,0,0,0);
+        const progress=$('#gifProgress'),bar=$('#gifProgressBar'),label=$('#gifProgressText');
+        progress.hidden=false;bar.max=frames.length;bar.value=0;
+        for(let frameIndex=0;frameIndex<frames.length;frameIndex++){
+          const frame=frames[frameIndex];
+          const {palette,indices,hasTransparency}=gifPaletteAndIndices(frame.imageData);
+          const tableSize=gifNextPow2(palette.length),sizeCode=Math.max(0,Math.log2(tableSize)-1);
+          const local=[...palette];while(local.length<tableSize)local.push([0,0,0]);
+          const delay=Math.max(2,Math.min(65535,Math.round(frame.duration/10)));
+          push(0x21,0xF9,4,hasTransparency?0x09:0x08,...gifLe16(delay),0,0);
+          push(0x2C,...gifLe16(0),...gifLe16(0),...gifLe16(width),...gifLe16(height),0x80|sizeCode);
+          for(const color of local)push(color[0],color[1],color[2]);
+          const minCodeSize=Math.max(2,Math.ceil(Math.log2(tableSize)));
+          const compressed=gifLiteralLzw(indices,minCodeSize);push(minCodeSize);
+          for(let offset=0;offset<compressed.length;offset+=255){
+            const length=Math.min(255,compressed.length-offset);push(length);
+            for(let i=0;i<length;i++)bytes.push(compressed[offset+i]);
+          }
+          push(0);bar.value=frameIndex+1;
+          label.textContent=formatText(t('gifEncoding'),{current:frameIndex+1,total:frames.length});
+          await new Promise(resolve=>setTimeout(resolve,0));
         }
-        push(0x3B); progress.hidden=true; return new Blob([Uint8Array.from(bytes)],{type:'image/gif'});
+        push(0x3B);progress.hidden=true;
+        return new Blob([Uint8Array.from(bytes)],{type:'image/gif'});
       }
       async function saveAnimatedGif() {
         if(!state.frames.length||state.gifBusy)return; state.gifBusy=true; const button=$('#saveGifButton'); button.disabled=true;
-        try { syncOutputBase(); const blob=await encodeAnimatedGif(); downloadBlob(blob,`${state.outputBase}.gif`); AppToast.show({message:t('gifSaved'),tone:'success'}); }
+        try { syncOutputBase(); const filename=`${state.outputBase}.gif`; const blob=await encodeAnimatedGif(); downloadBlob(blob,filename); AppToast.show({message:t('gifSaved'),tone:'success'}); }
         catch(error){ console.error(error); $('#gifProgress').hidden=true; AppToast.show({message:t('gifFailed'),tone:'warning'}); }
         finally { state.gifBusy=false; button.disabled=false; }
       }
@@ -1472,20 +1574,67 @@
         const report=state.importReport; for(const id of ['setupImportResult','editorImportResult']){ const root=$('#'+id); if(!root)continue; root.replaceChildren(); if(!report){root.hidden=true;continue;} const summary=document.createElement('div'); summary.className='import-summary'; if(report.added){const ok=document.createElement('span');const strong=document.createElement('strong');strong.textContent=String(report.added);ok.append(strong,document.createTextNode(` ${t('importAdded')}`));summary.append(ok);} if(report.failures.length){const bad=document.createElement('span');const strong=document.createElement('strong');strong.textContent=String(report.failures.length);bad.append(strong,document.createTextNode(` ${t('importFailed')}`));summary.append(bad);} root.append(summary); if(report.failures.length){const list=document.createElement('ul');list.className='import-failures'; report.failures.slice(0,5).forEach(failure=>{const li=document.createElement('li');li.textContent=`${failure.name}: ${importFailureText(failure)}`;list.append(li);});root.append(list);if(report.failures.length>5){const more=document.createElement('p');more.className='import-more';more.textContent=formatText(t('importMore'),{count:report.failures.length-5});root.append(more);}} root.hidden=false; }
       }
       function activateImportedProject(width,height,items) {
+        state.projectGeneration++;
         pausePreview({announceChange:false}); state.width=width; state.height=height; state.frames=items.map(item=>makeFrame(item.imageData,DEFAULT_FRAME_DURATION)); state.currentFrameIndex=0; state.previewIndex=0; state.selection=null; state.selectionDrag=null; state.clipboard=null; state.undoStack=[]; state.redoStack=[]; state.dirty=true; state.outputBase='pixel-animation'; outputFilename.value=state.outputBase;
         canvas.width=width; canvas.height=height; onionCanvas.width=width; onionCanvas.height=height; ctx.imageSmoothingEnabled=false; onionCtx.imageSmoothingEnabled=false; ctx.putImageData(cloneImageData(state.frames[0].imageData),0,0); $('#projectSize').textContent=`${width} × ${height}`; $('#setupView').hidden=true; $('#editorView').hidden=false; document.body.dataset.projectState='editing'; clearSelection(); updateHistoryButtons(); renderFrames(); updateOnionSkin(); updatePreviewControls(); setMobilePage('edit'); requestAnimationFrame(()=>fitCanvas()); scheduleAutosave();
       }
       async function importPngFiles(fileList) {
-        const files=[...fileList]; if(!files.length||state.importBusy||state.projectFileBusy)return; clearSelection(); state.importBusy=true; $('#setupImportButton').disabled=true; $('#editorImportButton').disabled=true; AppToast.show({message:t('importingPng'),duration:0});
-        const failures=[],items=[]; let expectedWidth=state.width||0,expectedHeight=state.height||0; let remaining=state.width ? MAX_FRAMES-state.frames.length : MAX_FRAMES;
-        for(const file of files){
-          if(remaining<=0){failures.push({name:file.name,code:'frameLimit'});continue;}
-          try { const decoded=await decodePngFile(file); if(!expectedWidth){expectedWidth=decoded.width;expectedHeight=decoded.height;} if(decoded.width!==expectedWidth||decoded.height!==expectedHeight){failures.push({name:file.name,code:'mismatch',width:decoded.width,height:decoded.height,expectedWidth,expectedHeight});continue;} items.push({file,imageData:decoded.imageData}); remaining--; }
-          catch(error){failures.push({name:file.name||'file',code:error.code||'decode',width:error.width,height:error.height});}
-          await new Promise(resolve=>setTimeout(resolve,0));
+        const files=[...fileList];
+        if(!files.length||state.importBusy||state.projectFileBusy)return;
+        const generation=state.projectGeneration;
+        clearSelection();state.importBusy=true;
+        $('#setupImportButton').disabled=true;$('#editorImportButton').disabled=true;
+        AppToast.show({message:t('importingPng'),duration:0});
+        try {
+          const failures=[],items=[];
+          let expectedWidth=state.width||0,expectedHeight=state.height||0;
+          let remaining=state.width?MAX_FRAMES-state.frames.length:MAX_FRAMES;
+          for(const file of files){
+            if(generation!==state.projectGeneration)break;
+            if(remaining<=0){failures.push({name:file.name,code:'frameLimit'});continue;}
+            try{
+              const decoded=await decodePngFile(file);
+              if(generation!==state.projectGeneration)break;
+              if(!expectedWidth){expectedWidth=decoded.width;expectedHeight=decoded.height;}
+              if(decoded.width!==expectedWidth||decoded.height!==expectedHeight){
+                failures.push({name:file.name,code:'mismatch',width:decoded.width,height:decoded.height,expectedWidth,expectedHeight});continue;
+              }
+              items.push({file,imageData:decoded.imageData});remaining--;
+            }catch(error){failures.push({name:file.name||'file',code:error.code||'decode',width:error.width,height:error.height});}
+            await new Promise(resolve=>setTimeout(resolve,0));
+          }
+          if(generation!==state.projectGeneration){
+            AppToast.show({message:t('importCancelled'),tone:'warning'});return;
+          }
+          // Frame buttons remain available while PNGs decode. Recheck capacity at commit time.
+          if(items.length && state.width){
+            const capacity=Math.max(0,MAX_FRAMES-state.frames.length);
+            if(items.length>capacity){
+              const rejected=items.splice(capacity);
+              rejected.forEach(item=>failures.push({name:item.file.name,code:'frameLimit'}));
+            }
+          }
+          if(items.length){
+            clearSelection();
+            if(!state.width)activateImportedProject(expectedWidth,expectedHeight,items);
+            else{
+              saveCurrentFrame();const start=state.frames.length;
+              items.forEach(item=>state.frames.push(makeFrame(item.imageData,DEFAULT_FRAME_DURATION)));
+              state.currentFrameIndex=start;
+              ctx.putImageData(cloneImageData(state.frames[start].imageData),0,0);
+              state.undoStack=[];state.redoStack=[];state.dirty=true;
+              clearSelection();updateHistoryButtons();renderFrames();updateOnionSkin();scheduleAutosave();
+            }
+          }
+          state.importReport={added:items.length,failures};renderImportReport();AppToast.dismiss();
+          if(!items.length)AppToast.show({message:t('importAllFailed'),tone:'warning'});
+          else AppToast.show({message:`${items.length} ${t('importAdded')}${failures.length?` · ${failures.length} ${t('importFailed')}`:''}`,tone:failures.length?'warning':'success'});
+        }catch(error){console.error(error);AppToast.show({message:t('importAllFailed'),tone:'warning'});}
+        finally{
+          state.importBusy=false;
+          $('#setupImportButton').disabled=false;$('#editorImportButton').disabled=false;
+          $('#pngFileInput').value='';
         }
-        if(items.length){ clearSelection(); if(!state.width) activateImportedProject(expectedWidth,expectedHeight,items); else { saveCurrentFrame(); const start=state.frames.length; items.forEach(item=>state.frames.push(makeFrame(item.imageData,DEFAULT_FRAME_DURATION))); state.currentFrameIndex=start; ctx.putImageData(cloneImageData(state.frames[start].imageData),0,0); state.undoStack=[];state.redoStack=[];state.dirty=true;clearSelection();updateHistoryButtons();renderFrames();updateOnionSkin();scheduleAutosave(); } }
-        state.importReport={added:items.length,failures}; renderImportReport(); AppToast.dismiss(); if(!items.length)AppToast.show({message:t('importAllFailed'),tone:'warning'}); else AppToast.show({message:`${items.length} ${t('importAdded')}${failures.length?` · ${failures.length} ${t('importFailed')}`:''}`,tone:failures.length?'warning':'success'}); state.importBusy=false; $('#setupImportButton').disabled=false; $('#editorImportButton').disabled=false; $('#pngFileInput').value='';
       }
       function installPngDropTarget(target) {
         ['dragenter','dragover'].forEach(type=>target.addEventListener(type,event=>{ if(!event.dataTransfer?.types?.includes('Files'))return; event.preventDefault(); event.dataTransfer.dropEffect='copy'; target.classList.add('drag-over'); }));
@@ -1504,7 +1653,7 @@
       }
       function addFrame() { clearSelection(); if(state.frames.length>=MAX_FRAMES){AppToast.show({message:t('frameLimit')});return;} saveCurrentFrame(); const insert=state.currentFrameIndex+1; state.frames.splice(insert,0,makeFrame()); state.currentFrameIndex=insert; ctx.clearRect(0,0,state.width,state.height); state.undoStack=[]; state.redoStack=[]; state.dirty=true; updateHistoryButtons(); renderFrames(); updateOnionSkin(); scheduleAutosave(); AppToast.show({message:t('frameAdded'),tone:'success'}); }
       function duplicateFrame() { clearSelection(); if(state.frames.length>=MAX_FRAMES){AppToast.show({message:t('frameLimit')});return;} saveCurrentFrame(); const source=state.frames[state.currentFrameIndex]; const insert=state.currentFrameIndex+1; state.frames.splice(insert,0,makeFrame(source.imageData, source.duration)); state.currentFrameIndex=insert; ctx.putImageData(cloneImageData(source.imageData),0,0); state.undoStack=[]; state.redoStack=[]; state.dirty=true; updateHistoryButtons(); renderFrames(); updateOnionSkin(); scheduleAutosave(); AppToast.show({message:t('frameDuplicated'),tone:'success'}); }
-      function deleteFrame() { clearSelection(); if(state.frames.length<=1){AppToast.show({message:t('keepOneFrame')});return;} saveCurrentFrame(); const index=state.currentFrameIndex; const removed=state.frames.splice(index,1)[0]; state.currentFrameIndex=Math.min(index,state.frames.length-1); const target=state.frames[state.currentFrameIndex]; ctx.putImageData(cloneImageData(target.imageData),0,0); state.undoStack=target.undoStack||[]; state.redoStack=target.redoStack||[]; state.dirty=true; updateHistoryButtons(); renderFrames(); updateOnionSkin(); scheduleAutosave(); AppToast.show({message:t('frameDeleted'),actionLabel:t('restore'),duration:5000,onAction:()=>{state.frames.splice(index,0,removed);state.currentFrameIndex=index;ctx.putImageData(cloneImageData(removed.imageData),0,0);state.undoStack=removed.undoStack||[];state.redoStack=removed.redoStack||[];updateHistoryButtons();renderFrames();updateOnionSkin();scheduleAutosave();AppToast.show({message:t('frameRestored'),tone:'success'});}}); }
+      function deleteFrame() { clearSelection(); if(state.frames.length<=1){AppToast.show({message:t('keepOneFrame')});return;} saveCurrentFrame(); const index=state.currentFrameIndex; const removed=state.frames.splice(index,1)[0]; const generation=state.projectGeneration; state.currentFrameIndex=Math.min(index,state.frames.length-1); const target=state.frames[state.currentFrameIndex]; ctx.putImageData(cloneImageData(target.imageData),0,0); state.undoStack=target.undoStack||[]; state.redoStack=target.redoStack||[]; state.dirty=true; updateHistoryButtons(); renderFrames(); updateOnionSkin(); scheduleAutosave(); AppToast.show({message:t('frameDeleted'),actionLabel:t('restore'),duration:5000,onAction:()=>{if(generation!==state.projectGeneration)return; if(state.frames.length>=MAX_FRAMES){AppToast.show({message:t('frameLimit'),tone:'warning'});return;}state.frames.splice(index,0,removed);state.currentFrameIndex=index;ctx.putImageData(cloneImageData(removed.imageData),0,0);state.undoStack=removed.undoStack||[];state.redoStack=removed.redoStack||[];updateHistoryButtons();renderFrames();updateOnionSkin();scheduleAutosave();AppToast.show({message:t('frameRestored'),tone:'success'});}}); }
       function moveFrame(direction) { clearSelection(); saveCurrentFrame(); const from=state.currentFrameIndex; const to=from+direction; if(to<0||to>=state.frames.length)return; const [frame]=state.frames.splice(from,1); state.frames.splice(to,0,frame); state.currentFrameIndex=to; state.dirty=true; renderFrames(); updateOnionSkin(); scheduleAutosave(); announce(t('frameMoved')); }
       function setFrameDuration(value, { applyAll = false, announceChange = true } = {}) {
         const duration = normalizeFrameDuration(value);
@@ -1561,6 +1710,7 @@
 
       function validateDimension(value) { const numeric = Number(value); return Number.isInteger(numeric) && numeric >= 1 && numeric <= 128 ? numeric : null; }
       function createProject(width, height) {
+        state.projectGeneration++;
         pausePreview({announceChange:false}); clearSelection(); state.clipboard=null; state.importReport=null; renderImportReport(); state.width = width; state.height = height; state.dirty = false; state.drawing = false; state.lastPoint = null; state.undoStack = []; state.redoStack = []; state.touchPointers.clear(); state.touchGesture = null; state.touchGestureBlocked = false;
         canvas.width = width; canvas.height = height; onionCanvas.width=width; onionCanvas.height=height; ctx.imageSmoothingEnabled = false; onionCtx.imageSmoothingEnabled=false; ctx.clearRect(0, 0, width, height); onionCtx.clearRect(0,0,width,height); state.frames=[makeFrame(captureCanvas(), DEFAULT_FRAME_DURATION)]; state.currentFrameIndex=0; state.previewIndex=0; state.outputBase='pixel-animation'; outputFilename.value=state.outputBase; updateHistoryButtons(); renderFrames(); updatePreviewControls();
         $('#projectSize').textContent = `${width} × ${height}`; $('#setupView').hidden = true; $('#editorView').hidden = false; document.body.dataset.projectState='editing'; setMobilePage('edit');
@@ -1773,6 +1923,7 @@
       async function returnToSetup() {
         if(state.projectFileBusy) return;
         if (state.width) { const accepted = await AppConfirm.ask({ title:t('confirmTitle'), message:t('newConfirmMessage'), confirmLabel:t('confirmNew'), cancelLabel:t('cancel'), tone:'danger' }); if(!accepted)return; }
+        state.projectGeneration++; AppToast.dismiss();
         pausePreview({announceChange:false}); clearTimeout(state.autosaveTimer); state.autosaveQueued=false; await waitForAutosaveIdle(); await clearAutosave(); state.width=0; state.height=0; state.selection=null; state.selectionDrag=null; state.clipboard=null; state.importReport=null; renderImportReport(); state.dirty=false; state.undoStack=[]; state.redoStack=[]; state.frames=[]; state.currentFrameIndex=0; state.previewIndex=0; state.touchPointers.clear(); state.touchGesture=null; state.touchGestureBlocked=false; ctx.clearRect(0,0,canvas.width,canvas.height); onionCtx.clearRect(0,0,onionCanvas.width,onionCanvas.height); onionCanvas.hidden=true; updateHistoryButtons(); updatePreviewControls(); $('#editorView').hidden=true; $('#setupView').hidden=false; document.body.dataset.projectState='setup'; $('#customError').textContent=''; $('#setupTitle').focus?.(); window.scrollTo({top:0,behavior:'smooth'});
       }
 
@@ -1812,6 +1963,8 @@
       window.addEventListener('keydown', event => { const target=event.target; if(state.projectFileBusy) return; const typing=target instanceof HTMLInputElement||target instanceof HTMLTextAreaElement||target instanceof HTMLSelectElement||target?.isContentEditable; if(typing||document.querySelector('dialog[open]')) return; const modifier=event.ctrlKey||event.metaKey; if(modifier&&event.key.toLowerCase()==='z'){event.preventDefault(); if(event.shiftKey)redo();else undo();return;} if(modifier&&event.key.toLowerCase()==='y'){event.preventDefault();redo();return;} if(state.tool==='selection'&&modifier&&event.key.toLowerCase()==='c'){event.preventDefault();copySelection();return;} if(state.tool==='selection'&&modifier&&event.key.toLowerCase()==='x'){event.preventDefault();cutSelection();return;} if(state.tool==='selection'&&modifier&&event.key.toLowerCase()==='v'){event.preventDefault();pasteSelection();return;} if(state.tool==='selection'&&(event.key==='Delete'||event.key==='Backspace')){event.preventDefault();deleteSelection();return;} if(state.tool==='selection'&&state.selection&&['ArrowLeft','ArrowRight','ArrowUp','ArrowDown'].includes(event.key)){event.preventDefault();const step=event.shiftKey?5:1;applySelectionMove(event.key==='ArrowLeft'?-step:event.key==='ArrowRight'?step:0,event.key==='ArrowUp'?-step:event.key==='ArrowDown'?step:0);return;} if(event.code==='Escape'&&state.selection){event.preventDefault();clearSelection();return;} if(event.code==='Space'&&!$('#editorView').hidden&&!event.defaultPrevented&&!target?.closest?.('button, a[href], summary, [role="button"], [role="link"]')){event.preventDefault();state.spacePressed=true;hideBrushPreview();canvas.classList.add('is-pan-ready');} });
       window.addEventListener('keyup', event => { if(event.code==='Space'){state.spacePressed=false;canvas.classList.remove('is-pan-ready');} });
       window.addEventListener('blur', () => { state.spacePressed=false; hideBrushPreview(); canvas.classList.remove('is-pan-ready'); });
+      document.addEventListener('visibilitychange', () => { if(document.visibilityState==='hidden') flushPendingAutosave(); });
+      window.addEventListener('pagehide', flushPendingAutosave);
 
       $('#languageButton').addEventListener('click', () => { language=language==='ja'?'en':'ja'; writeStorage(storageKeyLanguage,language); applyLanguage(); });
       const helpDialog=$('#helpDialog'); $('#helpButton').addEventListener('click',()=>helpDialog.showModal()); $('#closeHelpButton').addEventListener('click',()=>helpDialog.close());

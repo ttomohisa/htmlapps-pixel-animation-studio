@@ -1,0 +1,122 @@
+# Verify merged application code without write credentials; publish only from the verified artifact.
+name: Release merged version
+'on':
+  pull_request:
+    types: [closed]
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: pixel-animation-studio-release
+  cancel-in-progress: false
+
+jobs:
+  verify:
+    if: github.event.pull_request.merged == true
+    runs-on: windows-latest
+    timeout-minutes: 25
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout exact merged commit
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
+        with:
+          ref: ${{ github.event.pull_request.merge_commit_sha }}
+          persist-credentials: false
+      - name: Setup Node.js
+        uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38
+        with:
+          node-version: 24
+      - name: Build and run repository regression checks
+        shell: pwsh
+        run: ./scripts/check-repository.ps1
+      - name: Upload verified standalone files
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9
+        with:
+          name: release-standalone-${{ github.run_id }}
+          path: |
+            dist/index.html
+            dist/index.self-extract.html
+          if-no-files-found: error
+          retention-days: 7
+
+  publish:
+    needs: verify
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: write
+      pull-requests: read
+    steps:
+      - name: Checkout merged metadata and tags
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
+        with:
+          ref: ${{ github.event.pull_request.merge_commit_sha }}
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Download verified standalone files
+        uses: actions/download-artifact@v4
+        with:
+          name: release-standalone-${{ github.run_id }}
+          path: release-dist
+      - name: Publish version tag and GitHub Release once
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPOSITORY: ${{ github.repository }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          MERGED_SHA: ${{ github.event.pull_request.merge_commit_sha }}
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$MERGED_SHA"
+          test -s release-dist/index.html
+          test -s release-dist/index.self-extract.html
+
+          # Require a real version change in this PR, not merely an edit to app.config.json.
+          version_patch="$(gh api "repos/$REPOSITORY/pulls/$PR_NUMBER/files" --paginate \
+            --jq '.[] | select(.filename == "app.config.json") | .patch')"
+          old_version="$(printf '%s\n' "$version_patch" | awk -F '"' '/^-[[:space:]]*"version"[[:space:]]*:/ {print $4; exit}')"
+          new_version="$(printf '%s\n' "$version_patch" | awk -F '"' '/^\+[[:space:]]*"version"[[:space:]]*:/ {print $4; exit}')"
+
+          version="$(python3 -c 'import json; print(json.load(open("app.config.json", encoding="utf-8"))["version"])')"
+          if [[ -z "$old_version" || -z "$new_version" || "$old_version" == "$new_version" || "$new_version" != "$version" ]]; then
+            echo "This PR did not change the canonical app version; no release needed."
+            exit 0
+          fi
+          if [[ ! "$version" =~ ^(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)$ ]]; then
+            echo "::error::Release version must be a stable semantic version (MAJOR.MINOR.PATCH)."
+            exit 1
+          fi
+          if ! grep -Fq "## [$version]" CHANGELOG.md; then
+            echo "::error::Missing CHANGELOG.md section for $version."
+            exit 1
+          fi
+          tag="v$version"
+
+          if gh release view "$tag" --repo "$REPOSITORY" >/dev/null 2>&1; then
+            echo "Release $tag already exists; skipping duplicate."
+            exit 0
+          fi
+
+          # A pre-existing tag from a partial run may be reused only at this exact commit.
+          if git show-ref --verify --quiet "refs/tags/$tag"; then
+            previous="$(git rev-list -n 1 "$tag")"
+            if [[ "$previous" != "$MERGED_SHA" ]]; then
+              echo "::error::Tag $tag already points to $previous, not $MERGED_SHA."
+              exit 1
+            fi
+          else
+            gh api --method POST "repos/$REPOSITORY/git/refs" \
+              -f "ref=refs/tags/$tag" -f "sha=$MERGED_SHA" >/dev/null
+          fi
+
+          mkdir -p release-assets
+          cp release-dist/index.html release-assets/pixel-animation-studio.html
+          cp release-dist/index.self-extract.html release-assets/pixel-animation-studio.self-extract.html
+          gh release create "$tag" release-assets/*.html \
+            --repo "$REPOSITORY" --verify-tag \
+            --title "Pixel Animation Studio $tag" --generate-notes
+
+          echo "Created GitHub Release $tag and uploaded both standalone HTML files."

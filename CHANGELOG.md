@@ -4,6 +4,21 @@
 
 - Hide the informational footer at 640px and below without hiding functional mobile controls; move existing build information to the quiet end of Help and preserve keyboard disclosure activation and existing phone metadata hiding.
 
+## [1.0.5] - 2026-11-11
+
+### Fixed
+- Cancel PNG imports started in an earlier project so late decoding cannot add wrong-size frames to a replacement canvas.
+- Snapshot pixels, timing, and frame order before asynchronous GIF encoding; keep PNG, GIF, and sprite-sheet filenames stable during export.
+- Preserve all 256 opaque colors when GIF transparency is not required; reserve a transparent index only for frames that need one. Use weighted median-cut reduction when more colors are present, avoiding severe gradient banding from coarse RGB buckets.
+- Flush pending autosave on page hide where the browser permits, and advise manual project files for important work.
+- Prevent deleted-frame Undo from restoring into a different project or exceeding the 128-frame limit.
+- Prevent delayed IndexedDB recovery prompts from replacing a newly created canvas, and reject corrupted saved frame data before changing the active project.
+- Recalculate remaining frame capacity when PNG decoding ends so edits during import cannot exceed 128 frames.
+
+### Changed
+- Replace version-specific Help section headings with stable Japanese and English wording.
+- Add a post-merge GitHub Actions workflow that creates a version tag and GitHub Release only after the merged source passes the standalone build and regression checks.
+
 ## [1.0.4] - 2026-10-16
 
 ### Added
