@@ -74,13 +74,17 @@ jobs:
           test -s release-dist/index.html
           test -s release-dist/index.self-extract.html
 
-          # Only a merged PR that changed the canonical version can trigger a new release.
-          if ! gh api "repos/$REPOSITORY/pulls/$PR_NUMBER/files" --paginate --jq '.[].filename' | grep -Fxq 'app.config.json'; then
-            echo "The merged PR did not change app.config.json; no release needed."
-            exit 0
-          fi
+          # Require a real version change in this PR, not merely an edit to app.config.json.
+          version_patch="$(gh api "repos/$REPOSITORY/pulls/$PR_NUMBER/files" --paginate \
+            --jq '.[] | select(.filename == "app.config.json") | .patch')"
+          old_version="$(printf '%s\n' "$version_patch" | awk -F '"' '/^-[[:space:]]*"version"[[:space:]]*:/ {print $4; exit}')"
+          new_version="$(printf '%s\n' "$version_patch" | awk -F '"' '/^\\+[[:space:]]*"version"[[:space:]]*:/ {print $4; exit}')"
 
           version="$(python3 -c 'import json; print(json.load(open("app.config.json", encoding="utf-8"))["version"])')"
+          if [[ -z "$old_version" || -z "$new_version" || "$old_version" == "$new_version" || "$new_version" != "$version" ]]; then
+            echo "This PR did not change the canonical app version; no release needed."
+            exit 0
+          fi
           if [[ ! "$version" =~ ^(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)$ ]]; then
             echo "::error::Release version must be a stable semantic version (MAJOR.MINOR.PATCH)."
             exit 1
