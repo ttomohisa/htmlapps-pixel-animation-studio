@@ -185,6 +185,10 @@ v1.0.5のアプリ本体には実行時の第三者パッケージ依存がな�
 
 キーボード操作の回帰テストにはNode.js 18以降を使います（npm依存はありません）。ソース変更後は、ビルドした`dist/index.html`を`Copy-Item dist/index.html pixel-animation-studio.html`でルートの配布用HTMLへコピーしてください。生成日時を除き、両者の内容が一致することも検査します。
 
+### マージ後のタグとGitHub Release
+
+`app.config.json` のバージョンを更新したPRを `main` にマージすると、`.github/workflows/release-on-merge.yml` がマージ済みコミットをビルド・検証します。検証に成功した場合のみ、`v1.0.5` のようなタグとGitHub Releaseを作成し、通常版と自己展開版の単一HTMLを添付します。タグやReleaseがすでに存在する場合は重複作成しません。バージョンの更新がないPRや検証に失敗した場合は公開しません。タグとReleaseを作成する前にPRをマージするかどうかはリポジトリ管理者が判断します。
+
 ## プライバシーと通信防止
 
 Pixel Animation Studioは読み込んだ画像と編集データをブラウザー内で処理します。
