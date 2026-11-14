@@ -99,6 +99,28 @@ for(const [label,html] of variants) {
     assert.equal(withAlpha.indices[0],0);
     assert.equal(new Set(withAlpha.indices).size,256);
   });
+  test(label+': 257 opaque gradient colors reduce without collapsing into coarse buckets',()=>{
+    const h=gifHarness(html),data=new Uint8ClampedArray(257*4);
+    for(let i=0;i<257;i++)data.set([i%256,Math.floor(i/256),0,255],i*4);
+    const result=h.context.gifPaletteAndIndices(new TestImageData(data,257,1));
+    assert.equal(result.hasTransparency,false);
+    assert.equal(result.palette.length,256);
+    assert.ok([...result.indices].every(index=>index<result.palette.length));
+    assert.ok(new Set(result.indices).size>=240,'a gradient must retain most of its distinct colors');
+  });
+  test(label+': transparency threshold and 256 opaque colors never overflow palette',()=>{
+    const h=gifHarness(html),data=new Uint8ClampedArray(258*4);
+    for(let i=0;i<256;i++)data.set([i,0,0,255],i*4);
+    data.set([0,0,0,127],256*4);
+    data.set([8,3,9,128],257*4);
+    const result=h.context.gifPaletteAndIndices(new TestImageData(data,258,1));
+    assert.equal(result.hasTransparency,true);
+    assert.equal(result.palette.length,256);
+    assert.equal(result.indices[256],0);
+    assert.notEqual(result.indices[257],0);
+    assert.ok([...result.indices].every(index=>index<256));
+    assert.ok(new Set(result.indices.slice(0,256)).size>=240);
+  });
   test(label+': GIF output is a consistent snapshot despite edits/deletion/replacement mid-encoding',async()=>{
     const baseline=gifHarness(html);
     const original=Buffer.from(await (await baseline.context.encodeAnimatedGif()).arrayBuffer());
@@ -125,6 +147,20 @@ for(const [label,html] of variants) {
     h.complete();await pending;
     assert.equal(h.downloads.length,1);
     assert.equal(h.downloads[0].filename,'before-frame-01.png');
+  });
+  test(label+': sprite-sheet filename is fixed before the asynchronous PNG write',async()=>{
+    let complete=null,filename='';
+    const context={state:{frames:[frame(2,1,1)],outputBase:'original'},
+      document:{createElement:()=>({})},console,AppToast:{show(){}},
+      syncOutputBase(){},renderSpriteSheet(){},t:key=>key,
+      canvasToPngBlob:()=>new Promise(resolve=>{complete=resolve;}),
+      downloadBlob:(blob,name)=>{filename=name;}};
+    contextFor(html,['saveSpriteSheet'],context);
+    const pending=context.saveSpriteSheet();
+    context.state.outputBase='changed';
+    complete(new Blob(['png']));
+    await pending;
+    assert.equal(filename,'original-spritesheet.png');
   });
   test(label+': late PNG decoding cannot modify a replaced project',async()=>{
     const h=importHarness(html);
