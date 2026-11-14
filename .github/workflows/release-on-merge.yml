@@ -78,7 +78,7 @@ jobs:
           version_patch="$(gh api "repos/$REPOSITORY/pulls/$PR_NUMBER/files" --paginate \
             --jq '.[] | select(.filename == "app.config.json") | .patch')"
           old_version="$(printf '%s\n' "$version_patch" | awk -F '"' '/^-[[:space:]]*"version"[[:space:]]*:/ {print $4; exit}')"
-          new_version="$(printf '%s\n' "$version_patch" | awk -F '"' '/^\\+[[:space:]]*"version"[[:space:]]*:/ {print $4; exit}')"
+          new_version="$(printf '%s\n' "$version_patch" | awk -F '"' '/^\+[[:space:]]*"version"[[:space:]]*:/ {print $4; exit}')"
 
           version="$(python3 -c 'import json; print(json.load(open("app.config.json", encoding="utf-8"))["version"])')"
           if [[ -z "$old_version" || -z "$new_version" || "$old_version" == "$new_version" || "$new_version" != "$version" ]]; then
