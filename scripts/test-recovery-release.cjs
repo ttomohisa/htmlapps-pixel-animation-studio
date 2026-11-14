@@ -73,7 +73,7 @@ for(const [label,html] of variants){
     vm.createContext(context);
     vm.runInContext(getFunction(html,'initializePersistence'),context);
     const pending=context.initializePersistence();
-    await Promise.resolve(); // Complete the initial IndexedDB read and open the prompt.
+    for(let attempt=0;attempt<5&&!respond;attempt++) await new Promise(resolve=>setImmediate(resolve));
     assert.equal(typeof respond,'function');
     state.projectGeneration++;state.width=64;state.height=64;
     respond(true);
