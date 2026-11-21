@@ -37,6 +37,16 @@ for(const [label,html] of variants){
   assert.match(html,/\.setup-panel \{ padding: 24px; \}/);
   assert.match(html,/\.export-grid \{[^\n]*gap:16px;/);
   assert.match(html,/\.button\.subtle \{ min-height:44px;/);
+  // Spacing declarations use the 8px scale; keep only the a11y-only -1px sr-only offset.
+  const css=html.slice(html.indexOf('<style>')+7,html.indexOf('</style>'));
+  const spacing=/\b((?:margin|padding)(?:-(?:top|bottom|right|left|inline|block))?|(?:row-|column-)?gap)\s*:\s*([^;{}]+);/g;
+  for(const rule of css.matchAll(spacing)){
+    for(const match of rule[2].matchAll(/(-?\d+(?:\.\d+)?)px\b/g)){
+      const amount=Number(match[1]);
+      if(amount===-1)continue;
+      assert.equal(amount%8,0,rule[1]+' uses non-8px spacing: '+rule[2]);
+    }
+  }
   assert.match(html,/connect-src 'none'/);
  });
 }
