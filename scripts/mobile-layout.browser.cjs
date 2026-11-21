@@ -56,6 +56,17 @@ async function main() {
         await page.waitForFunction(() => /^\d+\.\d+\.\d+$/.test(document.querySelector('#buildVersion').textContent));
         if (await page.locator('html').getAttribute('lang') !== language) await page.locator('#languageButton').click();
         assert.equal((await page.locator('[data-i18n="localBadge"]').textContent()).trim(), language === 'ja' ? '完全ローカル処理' : 'Fully local processing');
+        if (file==='dist/index.html' && language==='ja' && [320,1360].includes(width)) {
+          await page.screenshot({path:path.join(evidence,'ja-'+width+'-setup.png')});
+        }
+        const setupStyles=await page.evaluate(() => {
+          const computed = selector=>getComputedStyle(document.querySelector(selector));
+          return {customBorderLeft:computed('.custom-card').borderLeftWidth,
+                  customBorderTop:computed('.custom-card').borderTopWidth,
+                  importBorderLeft:computed('.setup-import-card').borderLeftWidth,
+                  importBorderTop:computed('.setup-import-card').borderTopWidth};
+        });
+        assert.deepEqual(setupStyles,{customBorderLeft:'0px',customBorderTop:'1px',importBorderLeft:'0px',importBorderTop:'1px'},label+': setup sections use dividers');
         assert.equal(await page.locator('.local-badge').isVisible(), width > cfg.bp, label + ': local badge hidden on phones');
         if (width > cfg.bp) await bounds(page.locator('.local-badge'), width, height, label, false);
         assert.equal(await page.locator('body > footer').isVisible(), width > cfg.bp, label + ': initial footer');
@@ -63,6 +74,22 @@ async function main() {
         await page.locator('[data-preset="16"]').click();
         await page.waitForFunction(()=>document.body.dataset.projectState==='editing');
         assert.equal(await page.locator('#editorView').isVisible(),true);
+        const editorStyles=await page.evaluate(() => {
+          const computed = selector=>getComputedStyle(document.querySelector(selector));
+          return {
+            exportCardBorderLeft:computed('.export-card:nth-child(2)').borderLeftWidth,
+            projectFileBorderLeft:computed('.project-file-card').borderLeftWidth,
+            projectFileBorderBottom:computed('.project-file-card').borderBottomWidth,
+            exportInfoBackground:computed('.export-info').backgroundColor,
+            exportButtonBackground:computed('#savePngButton').backgroundColor
+          };
+        });
+        assert.equal(editorStyles.projectFileBorderLeft,'0px',label+': no project-card box');
+        assert.equal(editorStyles.projectFileBorderBottom,'1px',label+': project separation');
+        assert.equal(editorStyles.exportCardBorderLeft,width<=cfg.bp?'0px':'1px',label+': export rows or columns');
+        assert.equal(editorStyles.exportInfoBackground,'rgba(0, 0, 0, 0)',label+': export metadata unboxed');
+        if(file==='dist/index.html' && language==='ja' && [320,1360].includes(width))
+          await page.screenshot({path:path.join(evidence,'ja-'+width+'-editor.png')});
         assert.equal(await page.locator('.page-intro').isVisible(),false,label + ': intro hidden in editor');
         assert.equal(await page.locator('#fileFallbackButton').count(),0,label + ': extra picker removed');
         for (const w of [cfg.bp+1, cfg.bp, width]) {
@@ -79,6 +106,15 @@ async function main() {
           await bounds(page.locator('#mobileImportButton'),width,height,label,false);
           await page.locator('[data-mobile-page-button="export"]').click();
           assert.equal(await page.locator('#mobileNewCanvasButton').isVisible(),true,label + ': new canvas available under Export');
+          const mobileStyles=await page.evaluate(()=>{
+            const computed=selector=>getComputedStyle(document.querySelector(selector));
+            return {settingsBorder:computed('.mobile-setting-card').borderLeftWidth,
+                    exportBorderLeft:computed('.export-card:nth-child(2)').borderLeftWidth,
+                    exportBorderTop:computed('.export-card:nth-child(2)').borderTopWidth};
+          });
+          assert.deepEqual(mobileStyles,{settingsBorder:'0px',exportBorderLeft:'0px',exportBorderTop:'1px'},label+': phone settings and exports are flat sections');
+          if(file==='dist/index.html' && language==='ja' && width===320)
+            await page.screenshot({path:path.join(evidence,'ja-320-export.png')});
           assert.equal(await page.locator('#newCanvasButton').isVisible(),false,label + ': top new canvas hidden');
           await bounds(page.locator('#mobileNewCanvasButton'),width,height,label,false);
           await page.locator('[data-mobile-page-button="edit"]').click();

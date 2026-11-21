@@ -47,6 +47,20 @@ for(const [label,html] of variants){
       assert.equal(amount%8,0,rule[1]+' uses non-8px spacing: '+rule[2]);
     }
   }
-  assert.match(html,/connect-src 'none'/);
+  assert.match(html,/\.custom-card \{ margin-top: 24px; padding: 24px 0 0; border: 0; border-top: 1px solid var\(--line\);/);
+  assert.match(html,/\.setup-import-card \{ margin-top: 24px; padding: 24px 0 0; border: 0; border-top: 1px solid var\(--line\);/);
+  assert.match(html,/\.export-card \{ min-width:0; padding:0 0 0 16px; border:0; border-left:1px solid var\(--line\);/);
+  assert.match(html,/\.export-card:first-child \{ padding-left:0; border-left:0; \}/);
+  assert.match(html,/\.export-info \{[^\n]*border-top:1px solid var\(--line\);[^\n]*background:transparent;/);
+  assert.match(html,/\.mobile-setting-card \{ min-width:0; padding:0; border:0; border-radius:0; background:transparent; \}/);
+  assert.match(html,/\.tool-button\[aria-pressed="true"\] \{[^\n]*box-shadow:inset 3px 0 0 var\(--accent\);/);
+  assert.match(html,/\.segment-button\[aria-pressed="true"\] \{ border-bottom-color:var\(--accent\);/);
+  for(const id of ['savePngButton','saveGifButton','saveSpriteSheetButton']){
+    assert.match(html,new RegExp('class="button export-action" id="'+id+'"'));
+    assert.doesNotMatch(html,new RegExp('class="button primary export-action" id="'+id+'"'));
+  }
+  assert.match(html,/id="saveProjectButton"[^>]*data-i18n="saveProject"/);
+  assert.match(html,/class="setup-import-actions"/);
+    assert.match(html,/connect-src 'none'/);
  });
 }
