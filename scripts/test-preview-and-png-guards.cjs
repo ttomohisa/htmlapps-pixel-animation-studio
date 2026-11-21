@@ -38,7 +38,7 @@ for(const [label,html] of variants){
    const $=id=>{if(!elements.has(id))elements.set(id,{value:'base',open:false,textContent:'',disabled:false,max:''});return elements.get(id);};
    const state={width:64,height:64,frames:Array.from({length:128},()=>({duration:100})),currentFrameIndex:0,pngScale:1,spriteLayout:'horizontal',spriteColumns:4,outputBase:'base',spritePreviewDirty:true,spritePreviewTimer:0};
    let draws=0;const c=context(html,['spriteGrid','queueSpritePreview','updateExportPanel'],{
-     state,$,$$:()=>[],outputFilename:$('#outputFilename'),renderSpriteSheet:()=>{draws++;return {columns:128,rows:1}},formatText:(x)=>x,t:x=>x,
+     state,$,$$:()=>[],outputFilename:$('#outputFilename'),renderSpriteSheet:()=>{draws++;return {columns:128,rows:1}},sanitizeFilenameBase:v=>v,formatText:(x)=>x,t:x=>x,
      window:{setTimeout:fn=>{timeouts.push(fn);return timeouts.length}},clearTimeout:()=>{},console,AppToast:{show(){}}
    });
    c.updateExportPanel();c.updateExportPanel();
