@@ -39,7 +39,7 @@ Just [open the demo](https://ttomohisa.github.io/htmlapps-pixel-animation-studio
 ### Use the standalone HTML
 
 1. Download or clone this repository.
-2. Open `dist/index.html` in a current Chromium-based browser, Firefox, or Safari.
+2. Open `pixel-animation-studio.html` from the repository root in a current Chromium-based browser, Firefox, or Safari. (The `dist/index.html` file is created by the build script, not included in a fresh clone.)
 3. The file can be opened directly with `file://`; no local server is required for normal use.
 
 ### Build it locally (advanced)
@@ -49,7 +49,7 @@ Just [open the demo](https://ttomohisa.github.io/htmlapps-pixel-animation-studio
 3. Use the generated `dist/index.html` as the readable standalone build.
 4. `dist/index.self-extract.html` is also generated as the smaller self-extracting single-HTML variant.
 
-The v1.0.5 application has no runtime third-party package dependency, so the build does not need to fetch an editor or GIF library. The repository build scripts still use the standard Browser Kitty template verification flow.
+The v1.0.6 application has no runtime third-party package dependency, so the build does not need to fetch an editor or GIF library. The repository build scripts still use the standard Browser Kitty template verification flow.
 
 
 ### Save an editable project
@@ -110,7 +110,7 @@ Switching away from Selection clears the visible selection. Clipboard pixel data
 
 ## Import
 
-- PNG only in v1.0.5.
+- PNG only in v1.0.6.
 - A single PNG can start a project at its native dimensions up to 128×128.
 - Multiple PNG files become frames when they share the same dimensions.
 - Existing projects only accept PNGs matching the current canvas size.
@@ -160,7 +160,7 @@ Each deployment rebuilds the standalone HTML and runs the repository verificatio
 ├─ src/index.template.html       # Application source template
 ├─ assets/favicon.svg            # Canonical app / favicon artwork
 ├─ app.config.json               # App identity and build settings
-├─ dependencies.json             # Runtime dependency declaration (empty in v1.0.5)
+├─ dependencies.json             # Runtime dependency declaration (empty in v1.0.6)
 ├─ dependencies.lock.json        # Locked dependency metadata
 ├─ build-standalone.bat          # Windows build entry point
 ├─ build-standalone.ps1          # Readable standalone HTML builder
@@ -187,7 +187,7 @@ The repository check validates the template contract, standalone output, CSP/net
 
 ### Tags and GitHub Releases after merging
 
-When a pull request that updates the version in `app.config.json` is merged into `main`, `.github/workflows/release-on-merge.yml` rebuilds and tests the exact merged commit. Only after successful verification does it create a tag such as `v1.0.5` and a GitHub Release containing both readable and self-extracting standalone HTML files. Existing releases are not duplicated; merges without a version change or with failed checks do not publish a release. The maintainer remains responsible for merging the pull request.
+When a pull request that updates the version in `app.config.json` is merged into `main`, `.github/workflows/release-on-merge.yml` rebuilds and tests the exact merged commit. Only after successful verification does it create a tag such as `v1.0.6` and a GitHub Release containing both readable and self-extracting standalone HTML files. Existing releases are not duplicated; merges without a version change or with failed checks do not publish a release. The maintainer remains responsible for merging the pull request.
 
 ## Privacy and runtime network protection
 
@@ -204,18 +204,18 @@ The GitHub Pages version naturally makes an initial request to download the page
 
 ## Limitations
 
-- Canvas dimensions are limited to 128×128 pixels in v1.0.5.
+- Canvas dimensions are limited to 128×128 pixels in v1.0.6.
 - A project can contain up to 128 frames.
-- Input is PNG only; GIF, WebP, JPEG, Aseprite, and sprite-sheet import are not supported in v1.0.5.
+- Input is PNG only; GIF, WebP, JPEG, Aseprite, and sprite-sheet import are not supported in v1.0.6.
 - GIF output is limited to 256 colors and cannot preserve partial alpha.
-- Layers, lasso selection, palette files, animation tags, Animated WebP, and sprite metadata JSON are not included in v1.0.5.
+- Layers, lasso selection, palette files, animation tags, Animated WebP, and sprite metadata JSON are not included in v1.0.6.
 - Autosave depends on IndexedDB. Clearing browser site data can remove the locally saved project.
 - Undo / Redo history is not restored after a page reload.
 - Large 128×128 projects with many frames can use more memory, especially during GIF encoding.
 
 ## Dependencies
 
-Pixel Animation Studio v1.0.5 has **no runtime third-party dependencies** declared in `dependencies.json`.
+Pixel Animation Studio v1.0.6 has **no runtime third-party dependencies** declared in `dependencies.json`.
 
 Animated GIF encoding is implemented directly in the application. See [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md) for details.
 

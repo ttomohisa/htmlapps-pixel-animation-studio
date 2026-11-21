@@ -593,7 +593,7 @@
           <img id="appBrandIcon" src="__APP_ICON_DATA_URI__" alt="">
         </div>
         <div class="brand-copy">
-          <p class="brand-name"><span id="brandName">Pixel Animation Studio</span><span class="version-badge" id="versionBadge">v1.0.5</span></p>
+          <p class="brand-name"><span id="brandName">Pixel Animation Studio</span><span class="version-badge" id="versionBadge">v1.0.6</span></p>
           <p class="brand-meta" data-i18n="brandMeta">ドット絵アニメ・PNG読み込み・GIF書き出し</p>
         </div>
       </div>
@@ -897,7 +897,7 @@
               </div></div>
               <label class="field" for="spriteColumns"><span class="export-label" data-i18n="columns">列数</span><input class="number-input" id="spriteColumns" type="number" min="1" max="128" step="1" inputmode="numeric" value="4" disabled></label>
             </div>
-            <details class="sprite-preview-details"><summary data-i18n="spriteSheetPreviewLabel">Sprite Sheetプレビュー</summary><div class="sprite-preview-wrap"><canvas id="spriteSheetPreview" width="32" height="32" data-i18n-aria-label="spriteSheetPreviewLabel" aria-label="Sprite Sheet preview"></canvas></div></details>
+            <details id="spritePreviewDetails" class="sprite-preview-details"><summary data-i18n="spriteSheetPreviewLabel">Sprite Sheetプレビュー</summary><div class="sprite-preview-wrap"><canvas id="spriteSheetPreview" width="32" height="32" data-i18n-aria-label="spriteSheetPreviewLabel" aria-label="Sprite Sheet preview"></canvas></div></details>
             </div>
             <div class="export-info"><strong id="spriteOutputSize">32 × 32 px</strong><span id="spriteOutputDetails">Frame 32 × 32 · 1 frame · 1 column × 1 row</span><span id="spriteOutputName">pixel-animation-spritesheet.png</span></div>
             <button class="button primary export-action" id="saveSpriteSheetButton" type="button" data-i18n="saveSpriteSheet">Sprite Sheetを保存</button>
@@ -962,7 +962,7 @@
     <details class="build-details help-build">
       <summary data-i18n="buildInfo">ビルド情報</summary>
       <div class="build-grid">
-        <div class="build-item"><span data-i18n="appVersion">アプリバージョン</span><strong id="buildVersion">1.0.5</strong></div>
+        <div class="build-item"><span data-i18n="appVersion">アプリバージョン</span><strong id="buildVersion">1.0.6</strong></div>
         <div class="build-item"><span data-i18n="builtAt">生成日時</span><strong id="builtAt">—</strong></div>
         <div class="build-item"><span data-i18n="dependencies">内包依存数</span><strong id="dependencyCount">0</strong></div>
       </div>
@@ -1054,7 +1054,7 @@
           helpTouchTitle: 'スマートフォン', helpTouchBody: '1本指で描画します。2本指でPan / Pinch Zoomできます。2本指操作へ移った場合は、誤って始まった描画を取り消して表示操作へ切り替えます。塗りつぶしとスポイトは指を離すと実行され、タッチ操作がキャンセルされた場合は実行されません。',
           confirmTitle: '確認', cancel: 'キャンセル', confirmNew: '新しく作る', newConfirmMessage: '現在の自動保存データを置き換えて、新しいキャンバスを作成しますか？',
           created: 'キャンバスを作成しました', toolChangedPencil: '鉛筆に切り替えました', toolChangedEraser: '消しゴムに切り替えました', toolChangedFill: '塗りつぶしに切り替えました', toolChangedEyedropper: 'スポイトに切り替えました', brushChanged: 'ブラシサイズを変更しました', colorChanged: '描画色を変更しました',
-          undone: '元に戻しました', redone: 'やり直しました', noUndo: '元に戻せる操作はありません', noRedo: 'やり直せる操作はありません', transparentPixel: '透明なピクセルです', selectAll:'すべて選択', selectedAll:'キャンバス全体を選択しました', copySelection:'コピー', cutSelection:'切り取り', pasteSelection:'貼り付け', deleteSelection:'削除', clearSelection:'選択解除', selectionCopied:'選択範囲をコピーしました', selectionCut:'選択範囲を切り取りました', selectionPasted:'貼り付けました', selectionDeleted:'選択範囲を削除しました', noSelection:'選択範囲がありません', clipboardEmpty:'コピーしたピクセルがありません', selectPasteTarget:'貼り付け先を選択してください', toolChangedSelection:'選択ツールに切り替えました', gridOn: 'グリッドを表示しました', gridOff: 'グリッドを非表示にしました', fitApplied: 'キャンバスを画面に合わせました', mobileExportTab:'書き出し', exportTitle:'書き出し', exportIntro:'PNG・Animated GIF・Sprite Sheetとして端末へ保存します。', outputFilename:'ファイル名', currentFramePng:'現在のフレームをPNG', currentFramePngNote:'透明背景を保ったまま、Nearest Neighborで拡大して保存できます。', pngScale:'倍率', savePng:'PNGを保存', spriteSheetTitle:'Sprite Sheet', spriteSheetNote:'全フレームを1枚のPNGへ並べます。', spriteLayout:'配置', horizontal:'横一列', gridLayout:'Grid', columns:'列数', saveSpriteSheet:'Sprite Sheetを保存', spriteSheetPreviewLabel:'Sprite Sheetプレビュー', pngSaved:'PNGを保存しました', spriteSheetSaved:'Sprite Sheetを保存しました', exportFailed:'画像を書き出せませんでした', invalidFilename:'ファイル名を確認してください', spriteDetails:'Frame {frame} · {frames}フレーム · {columns}列 × {rows}行', animatedGifTitle:'Animated GIF', animatedGifNote:'各フレームの表示時間を使い、透明背景・無限ループのGIFとして保存します。', saveGif:'GIFを保存', gifSaved:'GIFを保存しました', gifEncoding:'GIFを作成中… {current} / {total}', gifDetails:'{frames}フレーム · {duration} ms · 無限ループ', gifFailed:'GIFを書き出せませんでした'
+          undone: '元に戻しました', redone: 'やり直しました', noUndo: '元に戻せる操作はありません', noRedo: 'やり直せる操作はありません', transparentPixel: '透明なピクセルです', selectAll:'すべて選択', selectedAll:'キャンバス全体を選択しました', copySelection:'コピー', cutSelection:'切り取り', pasteSelection:'貼り付け', deleteSelection:'削除', clearSelection:'選択解除', selectionCopied:'選択範囲をコピーしました', selectionCut:'選択範囲を切り取りました', selectionPasted:'貼り付けました', selectionDeleted:'選択範囲を削除しました', noSelection:'選択範囲がありません', clipboardEmpty:'コピーしたピクセルがありません', selectPasteTarget:'貼り付け先を選択してください', toolChangedSelection:'選択ツールに切り替えました', gridOn: 'グリッドを表示しました', gridOff: 'グリッドを非表示にしました', fitApplied: 'キャンバスを画面に合わせました', mobileExportTab:'書き出し', exportTitle:'書き出し', exportIntro:'PNG・Animated GIF・Sprite Sheetとして端末へ保存します。', outputFilename:'ファイル名', currentFramePng:'現在のフレームをPNG', currentFramePngNote:'透明背景を保ったまま、Nearest Neighborで拡大して保存できます。', pngScale:'倍率', savePng:'PNGを保存', spriteSheetTitle:'Sprite Sheet', spriteSheetNote:'全フレームを1枚のPNGへ並べます。', spriteLayout:'配置', horizontal:'横一列', gridLayout:'Grid', columns:'列数', saveSpriteSheet:'Sprite Sheetを保存', spriteSheetPreviewLabel:'Sprite Sheetプレビュー', pngSaved:'PNGを保存しました', spriteSheetSaved:'Sprite Sheetを保存しました', spriteSheetFailed:'スプライトシートを保存できませんでした。画像が大きすぎる可能性があります。Gridで列数を調整してお試しください。', exportFailed:'画像を書き出せませんでした', invalidFilename:'ファイル名を確認してください', spriteDetails:'Frame {frame} · {frames}フレーム · {columns}列 × {rows}行', animatedGifTitle:'Animated GIF', animatedGifNote:'各フレームの表示時間を使い、透明背景・無限ループのGIFとして保存します。', saveGif:'GIFを保存', gifSaved:'GIFを保存しました', gifEncoding:'GIFを作成中… {current} / {total}', gifDetails:'{frames}フレーム · {duration} ms · 無限ループ', gifFailed:'GIFを書き出せませんでした'
         },
         en: {
           projectFileTitle:'Editable project', projectFileNote:'Save all frames, colors, timing, and editing settings to resume editing on another device.', openProject:'Open project', saveProject:'Save project', projectSaved:'Editable project saved.', replaceProjectMessage:'Replace your current work with this project? Cancel and save a project file first if needed. Undo history is not carried over.', projectFileError:'Unable to read this project. Check its format, version, contents, and 12 MiB size limit. Your current work has not changed.',
@@ -1077,7 +1077,7 @@
           helpTouchTitle: 'Smartphones', helpTouchBody: 'Draw with one finger. Use two fingers to pan or pinch zoom. When a second finger arrives, any accidental stroke start is restored before the view gesture begins. Fill and Eyedropper run when you lift your finger; a cancelled touch does not apply them.',
           confirmTitle: 'Confirm', cancel: 'Cancel', confirmNew: 'Start new', newConfirmMessage: 'Replace the current autosaved project and create a new canvas?',
           created: 'Canvas created', toolChangedPencil: 'Switched to Pencil', toolChangedEraser: 'Switched to Eraser', toolChangedFill: 'Switched to Fill', toolChangedEyedropper: 'Switched to Eyedropper', brushChanged: 'Brush size changed', colorChanged: 'Drawing color changed',
-          undone: 'Undone', redone: 'Redone', noUndo: 'Nothing to undo', noRedo: 'Nothing to redo', transparentPixel: 'That pixel is transparent', selectAll:'Select all', selectedAll:'Entire canvas selected', copySelection:'Copy', cutSelection:'Cut', pasteSelection:'Paste', deleteSelection:'Delete', clearSelection:'Clear selection', selectionCopied:'Selection copied', selectionCut:'Selection cut', selectionPasted:'Pasted', selectionDeleted:'Selection deleted', noSelection:'No selection', clipboardEmpty:'Nothing has been copied', selectPasteTarget:'Select a destination before pasting', toolChangedSelection:'Switched to Selection', gridOn: 'Grid shown', gridOff: 'Grid hidden', fitApplied: 'Canvas fitted to view', mobileExportTab:'Export', exportTitle:'Export', exportIntro:'Save PNG, animated GIF, or sprite-sheet output directly to your device.', outputFilename:'Filename', currentFramePng:'Current frame PNG', currentFramePngNote:'Preserve transparency and scale with nearest-neighbor pixels.', pngScale:'Scale', savePng:'Save PNG', spriteSheetTitle:'Sprite Sheet', spriteSheetNote:'Arrange every frame into one PNG image.', spriteLayout:'Layout', horizontal:'Horizontal', gridLayout:'Grid', columns:'Columns', saveSpriteSheet:'Save Sprite Sheet', spriteSheetPreviewLabel:'Sprite Sheet preview', pngSaved:'PNG saved', spriteSheetSaved:'Sprite Sheet saved', exportFailed:'Could not export the image', invalidFilename:'Check the filename', spriteDetails:'Frame {frame} · {frames} frames · {columns} columns × {rows} rows', animatedGifTitle:'Animated GIF', animatedGifNote:'Uses each frame delay and saves a transparent, infinitely looping GIF.', saveGif:'Save GIF', gifSaved:'GIF saved', gifEncoding:'Creating GIF… {current} / {total}', gifDetails:'{frames} frames · {duration} ms · infinite loop', gifFailed:'Could not export the GIF'
+          undone: 'Undone', redone: 'Redone', noUndo: 'Nothing to undo', noRedo: 'Nothing to redo', transparentPixel: 'That pixel is transparent', selectAll:'Select all', selectedAll:'Entire canvas selected', copySelection:'Copy', cutSelection:'Cut', pasteSelection:'Paste', deleteSelection:'Delete', clearSelection:'Clear selection', selectionCopied:'Selection copied', selectionCut:'Selection cut', selectionPasted:'Pasted', selectionDeleted:'Selection deleted', noSelection:'No selection', clipboardEmpty:'Nothing has been copied', selectPasteTarget:'Select a destination before pasting', toolChangedSelection:'Switched to Selection', gridOn: 'Grid shown', gridOff: 'Grid hidden', fitApplied: 'Canvas fitted to view', mobileExportTab:'Export', exportTitle:'Export', exportIntro:'Save PNG, animated GIF, or sprite-sheet output directly to your device.', outputFilename:'Filename', currentFramePng:'Current frame PNG', currentFramePngNote:'Preserve transparency and scale with nearest-neighbor pixels.', pngScale:'Scale', savePng:'Save PNG', spriteSheetTitle:'Sprite Sheet', spriteSheetNote:'Arrange every frame into one PNG image.', spriteLayout:'Layout', horizontal:'Horizontal', gridLayout:'Grid', columns:'Columns', saveSpriteSheet:'Save Sprite Sheet', spriteSheetPreviewLabel:'Sprite Sheet preview', pngSaved:'PNG saved', spriteSheetSaved:'Sprite Sheet saved', spriteSheetFailed:'Could not save the sprite sheet. This image may be too large for your browser. Try Grid and adjust the column count.', exportFailed:'Could not export the image', invalidFilename:'Check the filename', spriteDetails:'Frame {frame} · {frames} frames · {columns} columns × {rows} rows', animatedGifTitle:'Animated GIF', animatedGifNote:'Uses each frame delay and saves a transparent, infinitely looping GIF.', saveGif:'Save GIF', gifSaved:'GIF saved', gifEncoding:'Creating GIF… {current} / {total}', gifDetails:'{frames} frames · {duration} ms · infinite loop', gifFailed:'Could not export the GIF'
         }
       };
 
@@ -1104,7 +1104,7 @@
         touchPointers: new Map(), touchGesture: null, touchGestureBlocked: false, deferredTouchAction: null,
         recentColors: [], frames: [], currentFrameIndex: 0,
         previewPlaying: false, previewIndex: 0, previewTimer: 0, previewLoop: true, onionSkin: true,
-        persistenceAvailable: true, persistenceReady: false, autosaveTimer: 0, autosaveInFlight: false, autosaveQueued: false, selection:null, selectionDrag:null, clipboard:null, pngScale:1, spriteLayout:'horizontal', spriteColumns:4, outputBase:'pixel-animation', projectGeneration:0, importBusy:false, importReport:null, gifBusy:false, projectFileBusy:false
+        persistenceAvailable: true, persistenceReady: false, autosaveTimer: 0, autosaveInFlight: false, autosaveQueued: false, selection:null, selectionDrag:null, clipboard:null, pngScale:1, spriteLayout:'horizontal', spriteColumns:4, outputBase:'pixel-animation', projectGeneration:0, importBusy:false, importReport:null, gifBusy:false, projectFileBusy:false, spritePreviewDirty:true, spritePreviewTimer:0
       };
       const canvas = $('#pixelCanvas');
       const ctx = canvas.getContext('2d', { alpha: true });
@@ -1147,9 +1147,10 @@
       async function idbDeleteProject() { const db=await openProjectDb(); try { await new Promise((resolve,reject)=>{ const tx=db.transaction(DB_STORE,'readwrite'); tx.oncomplete=()=>resolve(); tx.onerror=()=>reject(tx.error); tx.objectStore(DB_STORE).delete(DB_KEY); }); } finally { db.close(); } }
       function updateAutosaveStatus(mode='saved') { const root=$('#projectStatus'); const text=$('#projectStatusText'); if(!root||!text)return; root.dataset.state=mode; text.textContent=t(mode==='saving'?'autosaveSaving':mode==='error'?'autosaveUnavailableShort':'autosaveSaved'); }
       function disablePersistence() { state.persistenceAvailable=false; state.persistenceReady=true; clearTimeout(state.autosaveTimer); state.autosaveTimer=0; $('#storageWarning').hidden=false; updateAutosaveStatus('error'); }
+      function currentProjectSettings() { return {tool:state.tool,brushSize:state.brushSize,previewLoop:state.previewLoop,pngScale:state.pngScale,spriteLayout:state.spriteLayout,spriteColumns:state.spriteColumns}; }
       function serializeProject() {
         if (!state.width || !state.height || !state.frames.length) return null; saveCurrentFrame();
-        return { schemaVersion:PROJECT_SCHEMA_VERSION, savedAt:new Date().toISOString(), width:state.width, height:state.height, currentFrameIndex:state.currentFrameIndex, color:state.color, recentColors:[...state.recentColors], grid:state.grid, onionSkin:state.onionSkin, outputBase:state.outputBase, frames:state.frames.map(frame=>({ duration:frame.duration||DEFAULT_FRAME_DURATION, data:new Uint8ClampedArray(frame.imageData.data) })) };
+        return { schemaVersion:PROJECT_SCHEMA_VERSION, savedAt:new Date().toISOString(), width:state.width, height:state.height, currentFrameIndex:state.currentFrameIndex, color:state.color, recentColors:[...state.recentColors], grid:state.grid, onionSkin:state.onionSkin, outputBase:state.outputBase, settings:currentProjectSettings(), frames:state.frames.map(frame=>({ duration:frame.duration||DEFAULT_FRAME_DURATION, data:new Uint8ClampedArray(frame.imageData.data) })) };
       }
       // Project downloads are independent of the IndexedDB recovery schema.
       // Base64 RGBA keeps even 128 full-size frames below the 12 MiB file cap.
@@ -1183,7 +1184,7 @@
         if(!state.width || state.importBusy || state.gifBusy || state.projectFileBusy || state.drawing || state.selectionDrag) return;
         try {
           syncOutputBase(); const project=serializeProject();
-          const settings={tool:state.tool,brushSize:state.brushSize,previewLoop:state.previewLoop,pngScale:state.pngScale,spriteLayout:state.spriteLayout,spriteColumns:state.spriteColumns};
+          const settings=currentProjectSettings();
           const blob=new Blob([encodeProjectFile(project,settings)],{type:'application/json'});
           if(blob.size>MAX_PROJECT_FILE_BYTES) throw new Error('Project too large');
           downloadBlob(blob,`${state.outputBase}.pixel-project.json`); AppToast.show({message:t('projectSaved'),tone:'success'});
@@ -1203,7 +1204,6 @@
           clearTimeout(state.autosaveTimer); state.autosaveTimer=0; state.autosaveQueued=false;
           await waitForAutosaveIdle();
           restoreProject(project,preparedFrames);
-          const s=project.settings; setTool(s.tool,{announceChange:false}); setBrushSize(s.brushSize,{announceChange:false}); state.previewLoop=s.previewLoop; state.pngScale=s.pngScale; state.spriteLayout=s.spriteLayout; state.spriteColumns=s.spriteColumns;
           state.importReport=null; renderImportReport(); updatePreviewControls(); updateExportPanel(); scheduleAutosave();
         } catch { AppToast.show({message:t('projectFileError'),tone:'warning',duration:6500}); }
         finally { state.projectFileBusy=false; $('#editorView').inert=false; $('#setupView').inert=false; $('#projectFileInput').value=''; }
@@ -1240,8 +1240,18 @@
         state.projectGeneration++;
         pausePreview({announceChange:false}); state.width=project.width; state.height=project.height; state.frames=frames;
         state.currentFrameIndex=Math.max(0,Math.min(Number(project.currentFrameIndex)||0,state.frames.length-1)); state.selection=null; state.selectionDrag=null; state.clipboard=null; state.color=normalizeHex(project.color)||'#16624F'; state.previousValidColor=state.color; state.recentColors=Array.isArray(project.recentColors)?project.recentColors.map(normalizeHex).filter(Boolean).slice(0,12):[]; state.grid=project.grid!==false; state.onionSkin=project.onionSkin!==false; state.outputBase=sanitizeFilenameBase(project.outputBase||'pixel-animation'); state.undoStack=[]; state.redoStack=[]; state.dirty=false; state.previewIndex=state.currentFrameIndex;
+        // Optional for recovery of projects saved before v1.0.6.
+        const settings=project.settings;
+        if(settings && typeof settings==='object'){
+          if(['pencil','eraser','fill','eyedropper','selection'].includes(settings.tool))state.tool=settings.tool;
+          if([1,2,4].includes(settings.brushSize))state.brushSize=settings.brushSize;
+          if(typeof settings.previewLoop==='boolean')state.previewLoop=settings.previewLoop;
+          if([1,2,4,8].includes(settings.pngScale))state.pngScale=settings.pngScale;
+          if(['horizontal','grid'].includes(settings.spriteLayout))state.spriteLayout=settings.spriteLayout;
+          if(Number.isInteger(settings.spriteColumns)&&settings.spriteColumns>=1&&settings.spriteColumns<=128)state.spriteColumns=settings.spriteColumns;
+        }
         canvas.width=state.width; canvas.height=state.height; onionCanvas.width=state.width; onionCanvas.height=state.height; ctx.imageSmoothingEnabled=false; onionCtx.imageSmoothingEnabled=false; ctx.putImageData(cloneImageData(state.frames[state.currentFrameIndex].imageData),0,0);
-        $('#projectSize').textContent=`${state.width} × ${state.height}`; $('#setupView').hidden=true; $('#editorView').hidden=false; document.body.dataset.projectState='editing'; $('#storageWarning').hidden=state.persistenceAvailable; applyColor(state.color); outputFilename.value=state.outputBase; renderRecentColors(); updateHistoryButtons(); renderFrames(); updateOnionSkin(); updatePreviewControls(); setMobilePage('edit'); requestAnimationFrame(()=>fitCanvas()); updateAutosaveStatus(state.persistenceAvailable?'saved':'error'); announce(t('restoredProject')); AppToast.show({message:t('restoredProject'),tone:'success'});
+        $('#projectSize').textContent=`${state.width} × ${state.height}`; $('#setupView').hidden=true; $('#editorView').hidden=false; document.body.dataset.projectState='editing'; $('#storageWarning').hidden=state.persistenceAvailable; applyColor(state.color); outputFilename.value=state.outputBase; setTool(state.tool,{announceChange:false}); setBrushSize(state.brushSize,{announceChange:false}); renderRecentColors(); updateHistoryButtons(); renderFrames(); updateOnionSkin(); updatePreviewControls(); setMobilePage('edit'); requestAnimationFrame(()=>fitCanvas()); updateAutosaveStatus(state.persistenceAvailable?'saved':'error'); announce(t('restoredProject')); AppToast.show({message:t('restoredProject'),tone:'success'});
       }
       async function initializePersistence() {
         const generation=state.projectGeneration;
@@ -1434,15 +1444,26 @@
       }
       function spriteGrid() { const count=Math.max(1,state.frames.length); const columns=state.spriteLayout==='horizontal'?count:Math.max(1,Math.min(count,Math.round(Number(state.spriteColumns)||1))); const rows=Math.ceil(count/columns); return {columns,rows}; }
       function renderSpriteSheet(targetCanvas=$('#spriteSheetPreview')) {
-        if(!state.width||!state.height||!state.frames.length||!targetCanvas)return null; saveCurrentFrame(); const {columns,rows}=spriteGrid(); targetCanvas.width=state.width*columns; targetCanvas.height=state.height*rows; const targetCtx=targetCanvas.getContext('2d',{alpha:true}); targetCtx.imageSmoothingEnabled=false; targetCtx.clearRect(0,0,targetCanvas.width,targetCanvas.height);
+        if(!state.width||!state.height||!state.frames.length||!targetCanvas)return null; saveCurrentFrame(); const {columns,rows}=spriteGrid(); targetCanvas.width=state.width*columns; targetCanvas.height=state.height*rows; const targetCtx=targetCanvas.getContext('2d',{alpha:true}); if(!targetCtx)throw new Error('Sprite sheet canvas unavailable'); targetCtx.imageSmoothingEnabled=false; targetCtx.clearRect(0,0,targetCanvas.width,targetCanvas.height);
         state.frames.forEach((frame,index)=>{ const col=index%columns,row=Math.floor(index/columns); targetCtx.putImageData(frame.imageData,col*state.width,row*state.height); }); return {columns,rows,width:targetCanvas.width,height:targetCanvas.height};
+      }
+      function queueSpritePreview() {
+        const details=$('#spritePreviewDetails');
+        if(!details?.open || !state.width || !state.height || !state.frames.length || !state.spritePreviewDirty)return;
+        if(state.spritePreviewTimer)clearTimeout(state.spritePreviewTimer);
+        state.spritePreviewTimer=window.setTimeout(()=>{
+          state.spritePreviewTimer=0;
+          if(!details.open || !state.frames.length || !state.spritePreviewDirty)return;
+          try{renderSpriteSheet();state.spritePreviewDirty=false;}
+          catch(error){console.error(error);details.open=false;AppToast.show({message:t('spriteSheetFailed'),tone:'warning'});}
+        },150);
       }
       function updateExportPanel() {
         if(!outputFilename)return; const base=sanitizeFilenameBase(outputFilename.value||state.outputBase); const frameNo=String(state.currentFrameIndex+1).padStart(2,'0'); const scale=state.pngScale||1;
         const pngW=Math.max(0,state.width*scale),pngH=Math.max(0,state.height*scale); $('#pngOutputSize').textContent=`${pngW} × ${pngH} px`; $('#pngOutputName').textContent=`${base}-frame-${frameNo}.png`;
         $$('[data-png-scale]').forEach(button=>button.setAttribute('aria-pressed',String(Number(button.dataset.pngScale)===scale))); $$('[data-sprite-layout]').forEach(button=>button.setAttribute('aria-pressed',String(button.dataset.spriteLayout===state.spriteLayout)));
         const columnsInput=$('#spriteColumns'); state.spriteColumns=Math.max(1,Math.min(Math.max(1,state.frames.length),Math.round(Number(state.spriteColumns)||1))); columnsInput.disabled=state.spriteLayout!=='grid'; columnsInput.max=String(Math.max(1,state.frames.length)); if(Number(columnsInput.value)!==state.spriteColumns) columnsInput.value=String(state.spriteColumns);
-        const info=renderSpriteSheet(); if(info){ $('#spriteOutputSize').textContent=`${info.width} × ${info.height} px`; $('#spriteOutputDetails').textContent=formatText(t('spriteDetails'),{frame:`${state.width} × ${state.height}`,frames:state.frames.length,columns:info.columns,rows:info.rows}); }
+        if(state.width && state.height && state.frames.length){ const {columns,rows}=spriteGrid(); $('#spriteOutputSize').textContent=`${state.width*columns} × ${state.height*rows} px`; $('#spriteOutputDetails').textContent=formatText(t('spriteDetails'),{frame:`${state.width} × ${state.height}`,frames:state.frames.length,columns,rows}); } queueSpritePreview();
         $('#spriteOutputName').textContent=`${base}-spritesheet.png`;
         const totalDuration=state.frames.reduce((sum,frame)=>sum+(frame.duration||DEFAULT_FRAME_DURATION),0); $('#gifOutputSize').textContent=`${state.width} × ${state.height} px`; $('#gifOutputDetails').textContent=formatText(t('gifDetails'),{frames:state.frames.length,duration:totalDuration}); $('#gifOutputName').textContent=`${base}.gif`;
       }
@@ -1460,7 +1481,7 @@
         } catch(error){ console.error(error); AppToast.show({message:t('exportFailed'),tone:'warning'}); }
       }
       async function saveSpriteSheet() {
-        if(!state.frames.length)return; try { syncOutputBase(); const filename=`${state.outputBase}-spritesheet.png`; const out=document.createElement('canvas'); renderSpriteSheet(out); const blob=await canvasToPngBlob(out); downloadBlob(blob,filename); AppToast.show({message:t('spriteSheetSaved'),tone:'success'}); } catch(error){ console.error(error); AppToast.show({message:t('exportFailed'),tone:'warning'}); }
+        if(!state.frames.length)return; try { syncOutputBase(); const filename=`${state.outputBase}-spritesheet.png`; const out=document.createElement('canvas'); renderSpriteSheet(out); const blob=await canvasToPngBlob(out); downloadBlob(blob,filename); AppToast.show({message:t('spriteSheetSaved'),tone:'success'}); } catch(error){ console.error(error); AppToast.show({message:t('spriteSheetFailed'),tone:'warning',duration:6500}); }
       }
 
 
@@ -1563,6 +1584,17 @@
       function decodeImageElement(file) { return new Promise((resolve,reject)=>{ const url=URL.createObjectURL(file); const image=new Image(); image.onload=()=>{URL.revokeObjectURL(url);resolve(image);}; image.onerror=()=>{URL.revokeObjectURL(url);reject(new Error('decode'));}; image.src=url; }); }
       async function decodePngFile(file) {
         if(!isPngFile(file)) throw Object.assign(new Error('not-png'),{code:'notPng'});
+        // Read the 24-byte PNG signature and IHDR dimensions before allocating a decoded bitmap.
+        const header=new Uint8Array(await file.slice(0,24).arrayBuffer());
+        const signature=[137,80,78,71,13,10,26,10];
+        const validHeader=header.length===24 && signature.every((byte,i)=>header[i]===byte) &&
+          header[8]===0 && header[9]===0 && header[10]===0 && header[11]===13 &&
+          header[12]===73 && header[13]===72 && header[14]===68 && header[15]===82;
+        if(!validHeader)throw Object.assign(new Error('decode'),{code:'decode'});
+        const view=new DataView(header.buffer,header.byteOffset,header.byteLength);
+        const imageWidth=view.getUint32(16,false),imageHeight=view.getUint32(20,false);
+        if(!imageWidth || !imageHeight)throw Object.assign(new Error('decode'),{code:'decode'});
+        if(!validateDimension(imageWidth)||!validateDimension(imageHeight))throw Object.assign(new Error('too-large'),{code:'tooLarge',width:imageWidth,height:imageHeight});
         let source=null; try { source=typeof createImageBitmap==='function' ? await createImageBitmap(file) : await decodeImageElement(file); } catch { throw Object.assign(new Error('decode'),{code:'decode'}); }
         const width=source.width||source.naturalWidth,height=source.height||source.naturalHeight; if(!validateDimension(width)||!validateDimension(height)){ source.close?.(); throw Object.assign(new Error('too-large'),{code:'tooLarge',width,height}); }
         const temp=document.createElement('canvas'); temp.width=width; temp.height=height; const tempCtx=temp.getContext('2d',{alpha:true,willReadFrequently:true}); tempCtx.clearRect(0,0,width,height); tempCtx.drawImage(source,0,0); source.close?.(); return {width,height,imageData:tempCtx.getImageData(0,0,width,height)};
@@ -1642,7 +1674,7 @@
       }
 
       function renderFrames() {
-        const strip = $('#frameStrip'); if (!strip) return; saveCurrentFrame(); strip.replaceChildren();
+        const strip = $('#frameStrip'); if (!strip) return; saveCurrentFrame(); state.spritePreviewDirty=true; strip.replaceChildren();
         state.frames.forEach((frame,index) => { const card=document.createElement('button'); card.type='button'; card.className='frame-card'; card.setAttribute('role','option'); card.setAttribute('aria-current',String(index===state.currentFrameIndex)); card.setAttribute('aria-selected',String(index===state.currentFrameIndex)); card.setAttribute('aria-label',`${t('frameLabel')} ${index+1}, ${frame.duration || DEFAULT_FRAME_DURATION} ms`);
           const wrap=document.createElement('span'); wrap.className='frame-thumb-wrap'; const thumb=document.createElement('canvas'); thumb.className='frame-thumb'; thumb.width=state.width; thumb.height=state.height; const tctx=thumb.getContext('2d',{alpha:true}); tctx.imageSmoothingEnabled=false; tctx.putImageData(frame.imageData,0,0); const scale=Math.min(66/state.width,66/state.height); thumb.style.width=`${Math.max(1,Math.round(state.width*scale))}px`; thumb.style.height=`${Math.max(1,Math.round(state.height*scale))}px`; wrap.append(thumb);
           const meta=document.createElement('span'); meta.className='frame-meta'; meta.innerHTML=`<strong>${index+1}</strong><span>${frame.duration || DEFAULT_FRAME_DURATION} ms</span>`; card.append(wrap,meta); card.addEventListener('click',()=>loadFrame(index)); strip.append(card); });
@@ -1945,8 +1977,9 @@
       $('#playPreviewButton').addEventListener('click', () => playPreview()); $('#pausePreviewButton').addEventListener('click', () => pausePreview()); $('#restartPreviewButton').addEventListener('click', restartPreview); $('#loopPreviewButton').addEventListener('click', togglePreviewLoop);
       $$('[data-mobile-page-button]').forEach(button => button.addEventListener('click', () => setMobilePage(button.dataset.mobilePageButton)));
       $$('[data-png-scale]').forEach(button => button.addEventListener('click',()=>{state.pngScale=Number(button.dataset.pngScale)||1;updateExportPanel();}));
-      $$('[data-sprite-layout]').forEach(button => button.addEventListener('click',()=>{state.spriteLayout=button.dataset.spriteLayout==='grid'?'grid':'horizontal';updateExportPanel();}));
-      $('#spriteColumns').addEventListener('change',event=>{state.spriteColumns=Math.max(1,Math.min(Math.max(1,state.frames.length),Math.round(Number(event.target.value)||1)));event.target.value=String(state.spriteColumns);updateExportPanel();});
+      $$('[data-sprite-layout]').forEach(button => button.addEventListener('click',()=>{state.spriteLayout=button.dataset.spriteLayout==='grid'?'grid':'horizontal';state.spritePreviewDirty=true;updateExportPanel();}));
+      $('#spriteColumns').addEventListener('change',event=>{state.spriteColumns=Math.max(1,Math.min(Math.max(1,state.frames.length),Math.round(Number(event.target.value)||1)));event.target.value=String(state.spriteColumns);state.spritePreviewDirty=true;updateExportPanel();});
+      $('#spritePreviewDetails').addEventListener('toggle',event=>{if(event.target.open){state.spritePreviewDirty=true;queueSpritePreview();}else{clearTimeout(state.spritePreviewTimer);state.spritePreviewTimer=0;}});
       outputFilename.addEventListener('input',()=>{state.outputBase=sanitizeFilenameBase(outputFilename.value);updateExportPanel();scheduleAutosave();}); outputFilename.addEventListener('change',()=>syncOutputBase()); outputFilename.addEventListener('blur',()=>syncOutputBase());
       $('#saveProjectButton').addEventListener('click',saveProjectFile);
       ['setupOpenProjectButton','openProjectButton'].forEach(id=>$('#'+id).addEventListener('click',()=>$('#projectFileInput').click()));

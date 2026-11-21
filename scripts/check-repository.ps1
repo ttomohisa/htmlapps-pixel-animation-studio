@@ -276,3 +276,6 @@ if ($LASTEXITCODE -ne 0) { throw "Project file regression tests failed." }
 
 & $node.Source --test (Join-Path $Root "scripts\test-recovery-release.cjs")
 if ($LASTEXITCODE -ne 0) { throw "Recovery and post-merge release regression tests failed." }
+
+& $node.Source --test (Join-Path $Root "scripts\test-preview-and-png-guards.cjs")
+if ($LASTEXITCODE -ne 0) { throw "Sprite preview and PNG preflight regression tests failed." }

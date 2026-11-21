@@ -6,7 +6,7 @@
 - **Japanese description:** ドット絵アニメーション
 - **Repository:** `ttomohisa/htmlapps-pixel-animation-studio`
 - **Slug:** `pixel-animation-studio`
-- **Current stable release:** v1.0.4
+- **Current stable release:** v1.0.6
 - **Release artifacts:** `dist/index.html` and `dist/index.self-extract.html`
 
 ## 2. One-sentence purpose
@@ -81,7 +81,7 @@ Create small pixel-art animations frame by frame in the browser, preview motion,
 
 ### Persistence
 
-- IndexedDB autosave with schema versioning.
+- IndexedDB autosave with schema versioning, including editing/export preferences (older saves without preferences remain readable).
 - Reload recovery.
 - If IndexedDB is unavailable, editing remains usable and the data-loss risk is explained.
 

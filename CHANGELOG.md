@@ -2,6 +2,16 @@
 
 ## Unreleased
 
+## [1.0.6] - 2026-11-22
+
+### Fixed
+- Avoid full sprite-sheet rasterization on routine edits, frame-list updates, and filename changes; render the expanded preview on demand with debounced updates.
+- Reject oversized and invalid PNG dimensions from the IHDR before allocating a decoded image.
+- Preserve drawing and export preferences in IndexedDB autosave while accepting older saved projects without them.
+- Explain Canvas size-related sprite-sheet export errors and how to adjust Grid columns.
+- Correct the direct-open standalone instructions and update the documented stable version.
+
+
 - Hide the informational footer at 640px and below without hiding functional mobile controls; move existing build information to the quiet end of Help and preserve keyboard disclosure activation and existing phone metadata hiding.
 
 ## [1.0.5] - 2026-11-11
