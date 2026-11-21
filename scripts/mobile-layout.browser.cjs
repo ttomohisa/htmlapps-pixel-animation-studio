@@ -56,17 +56,32 @@ async function main() {
         await page.waitForFunction(() => /^\d+\.\d+\.\d+$/.test(document.querySelector('#buildVersion').textContent));
         if (await page.locator('html').getAttribute('lang') !== language) await page.locator('#languageButton').click();
         assert.equal((await page.locator('[data-i18n="localBadge"]').textContent()).trim(), language === 'ja' ? '完全ローカル処理' : 'Fully local processing');
-        await bounds(page.locator('.local-badge'), width, height, label, false);
+        assert.equal(await page.locator('.local-badge').isVisible(), width > cfg.bp, label + ': local badge hidden on phones');
+        if (width > cfg.bp) await bounds(page.locator('.local-badge'), width, height, label, false);
         assert.equal(await page.locator('body > footer').isVisible(), width > cfg.bp, label + ': initial footer');
         assert.equal(await page.locator(cfg.nav).isVisible(),false,'no project yet');
         await page.locator('[data-preset="16"]').click();
         await page.waitForFunction(()=>document.body.dataset.projectState==='editing');
         assert.equal(await page.locator('#editorView').isVisible(),true);
+        assert.equal(await page.locator('.page-intro').isVisible(),false,label + ': intro hidden in editor');
+        assert.equal(await page.locator('#fileFallbackButton').count(),0,label + ': extra picker removed');
         for (const w of [cfg.bp+1, cfg.bp, width]) {
           await page.setViewportSize({width:w,height}); await settle(page);
           assert.equal(await page.locator('body > footer').isVisible(), w > cfg.bp, label + ': footer resize');
           assert.equal(await page.locator(cfg.nav).isVisible(), w <= cfg.bp, label + ': functional bar');
+           assert.equal(await page.locator('.editor-top-actions').isVisible(), w > cfg.bp, label + ': top actions only on desktop');
           if (w <= cfg.bp) await bounds(page.locator(cfg.nav), w, height, label);
+        }
+        if (width <= cfg.bp) {
+          await page.locator('[data-mobile-page-button="frames"]').click();
+          assert.equal(await page.locator('#mobileImportButton').isVisible(),true,label + ': PNG import available under Frames');
+          assert.equal(await page.locator('#editorImportButton').isVisible(),false,label + ': top import hidden');
+          await bounds(page.locator('#mobileImportButton'),width,height,label,false);
+          await page.locator('[data-mobile-page-button="export"]').click();
+          assert.equal(await page.locator('#mobileNewCanvasButton').isVisible(),true,label + ': new canvas available under Export');
+          assert.equal(await page.locator('#newCanvasButton').isVisible(),false,label + ': top new canvas hidden');
+          await bounds(page.locator('#mobileNewCanvasButton'),width,height,label,false);
+          await page.locator('[data-mobile-page-button="edit"]').click();
         }
         await page.evaluate(() => scrollTo({left:0,top:0,behavior:'instant'})); await settle(page);
         assert.ok(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), label + ': page width');
@@ -84,7 +99,7 @@ async function main() {
           assert.equal(await page.locator('#helpDialog').isVisible(), true, label + ': keyboard disclosure stays inside Help');
         }
         await body.evaluate(e => { e.scrollTop = e.scrollHeight; }); await settle(page);
-        const end = page.locator(hiddenBuild ? '[data-i18n="helpTouchBody"]' : cfg.end);
+        const end = page.locator(hiddenBuild ? '[data-i18n="helpMobileActions"]' : cfg.end);
         const last = await end.evaluate(el => {
           const walker = document.createTreeWalker(el, NodeFilter.SHOW_TEXT); let node, last;
           while (node = walker.nextNode()) if (node.textContent.trim()) last = node;
