@@ -279,3 +279,6 @@ if ($LASTEXITCODE -ne 0) { throw "Recovery and post-merge release regression tes
 
 & $node.Source --test (Join-Path $Root "scripts\test-preview-and-png-guards.cjs")
 if ($LASTEXITCODE -ne 0) { throw "Sprite preview and PNG preflight regression tests failed." }
+
+& $node.Source --test (Join-Path $Root "scripts\test-compact-mobile-layout.cjs")
+if ($LASTEXITCODE -ne 0) { throw "Compact layout and mobile action regression tests failed." }

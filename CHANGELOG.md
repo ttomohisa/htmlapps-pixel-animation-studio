@@ -4,6 +4,11 @@
 
 ## [1.0.6] - 2026-11-22
 
+### Changed
+- Remove the redundant hero heading, shorten Japanese and English introductions, and hide the introduction after a project opens.
+- Soften cards, reduce emphasis on desktop project actions, and align major layout spacing to an 8 px rhythm.
+- Hide the local-processing badge on phones, move PNG import to Frames and New canvas to the bottom of Export, and remove the extra phone file-picker fallback while preserving regular PNG import.
+
 ### Fixed
 - Avoid full sprite-sheet rasterization on routine edits, frame-list updates, and filename changes; render the expanded preview on demand with debounced updates.
 - Reject oversized and invalid PNG dimensions from the IHDR before allocating a decoded image.

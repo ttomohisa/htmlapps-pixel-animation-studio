@@ -70,12 +70,12 @@
       width: min(1180px, 100%);
       min-height: var(--header-height);
       margin: 0 auto;
-      padding: 10px clamp(14px, 2.8vw, 30px);
+      padding: 8px 32px;
       display: flex;
       align-items: center;
       gap: 14px;
     }
-    .brand { display: flex; align-items: center; gap: 10px; min-width: 0; }
+    .brand { display: flex; align-items: center; gap: 8px; min-width: 0; }
     .brand-mark {
       display: block;
       width: 38px;
@@ -117,7 +117,7 @@
       overflow: hidden;
       text-overflow: ellipsis;
     }
-    .header-actions { margin-left: auto; display: flex; align-items: center; gap: 12px; }
+    .header-actions { margin-left: auto; display: flex; align-items: center; gap: 16px; }
     .language-button {
       min-width: 0;
       padding: 5px 1px;
@@ -160,39 +160,43 @@
     .header-icon-button:hover { border-color: transparent; background: transparent; color: var(--text); }
     .header-icon-button:active { transform: none; opacity: .65; }
     .header-icon-button svg { width: 20px; height: 20px; }
-    .main { width: min(1180px, 100%); margin: 0 auto; padding: 22px clamp(14px, 2.8vw, 30px) 50px; }
-    .page-intro { display: flex; justify-content: space-between; gap: 20px; align-items: flex-start; margin-bottom: 18px; }
-    .page-intro h2 { margin: 0; font-size: clamp(22px, 3.4vw, 29px); letter-spacing: -.03em; line-height: 1.25; }
-    .page-intro p { margin: 6px 0 0; max-width: 720px; color: var(--muted); font-size: 13px; }
+    .main { width: min(1180px, 100%); margin: 0 auto; padding: 24px 32px 48px; }
+    body[data-project-state="editing"] .main { padding-top: 16px; }
+    .page-intro { display: flex; justify-content: space-between; gap: 16px; align-items: center; margin-bottom: 16px; }
+    .page-intro p { margin: 0; max-width: 720px; color: var(--muted); font-size: 13px; }
+    body[data-project-state="editing"] .page-intro { display: none; }
     .local-badge {
-      display: inline-flex; align-items: center; gap: 7px; flex: 0 0 auto; margin-top: 3px;
-      padding: 7px 0; border: 0;
+      display: inline-flex; align-items: center; gap: 8px; flex: 0 0 auto; margin-top: 0;
+      padding: 8px 0; border: 0;
       border-radius: 0; color: var(--accent); background: transparent; font-size: 12px; font-weight: 500; white-space: nowrap;
     }
     .local-badge svg { width: 15px; height: 15px; }
     .panel {
-      border: 1px solid var(--line); border-radius: 16px; background: var(--surface); box-shadow: var(--shadow-sm);
+      border: 1px solid var(--line); border-radius: 12px; background: var(--surface); box-shadow: none;
     }
-    .setup-panel { padding: clamp(18px, 4vw, 30px); }
-    .setup-copy { max-width: 720px; margin-bottom: 22px; }
-    .setup-copy h3 { margin: 0 0 6px; font-size: 20px; letter-spacing: -.02em; }
+    .setup-panel { padding: 24px; }
+    .setup-copy { max-width: 720px; margin-bottom: 16px; }
+    .setup-copy h3 { margin: 0 0 8px; font-size: 20px; letter-spacing: -.02em; }
     .setup-copy p { margin: 0; color: var(--muted); font-size: 13px; }
-    .preset-grid { display: grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap: 10px; }
+    .preset-grid { display: grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap: 8px; }
     .preset-button {
-      min-height: 76px; padding: 12px; border: 1px solid var(--line); border-radius: 13px; background: #fbfbf9;
+      min-height: 80px; padding: 16px; border: 1px solid var(--line); border-radius: 8px; background: var(--surface);
       cursor: pointer; text-align: left; transition: background .15s ease, border-color .15s ease, transform .15s ease;
     }
-    .preset-button:hover { border-color: color-mix(in srgb, var(--accent) 44%, var(--line)); background: var(--accent-soft); }
+    .preset-button:hover { border-color: var(--line-strong); background: var(--surface-muted); }
     .preset-button:active { transform: translateY(1px); }
     .preset-size { display: block; font-size: 20px; font-weight: 820; letter-spacing: -.02em; }
-    .preset-note { display: block; margin-top: 3px; color: var(--muted); font-size: 11px; }
-    .custom-card { margin-top: 14px; padding: 16px; border: 1px solid var(--line); border-radius: 13px; background: var(--surface-muted); }
-    .setup-import-card { margin-top: 14px; padding: 16px; border: 1px dashed var(--line-strong); border-radius: 13px; background: #fbfbf9; }
-    .setup-import-head { display:flex; align-items:flex-start; justify-content:space-between; gap:14px; }
+    .preset-note { display: block; margin-top: 8px; color: var(--muted); font-size: 11px; }
+    .custom-card { margin-top: 16px; padding: 16px; border: 1px solid var(--line); border-radius: 8px; background: #fafaf8; }
+    .setup-import-card { margin-top: 16px; padding: 16px; border: 1px dashed var(--line); border-radius: 8px; background: #fafaf8; }
+    .setup-import-head { display:flex; align-items:flex-start; justify-content:space-between; gap:16px; }
     .setup-import-copy strong { display:block; font-size:14px; }
-    .setup-import-copy span { display:block; margin-top:3px; color:var(--muted); font-size:11px; }
+    .setup-import-copy span { display:block; margin-top:8px; color:var(--muted); font-size:11px; }
     .drop-target.drag-over { border-color:var(--accent); background:var(--accent-soft); box-shadow:0 0 0 2px color-mix(in srgb,var(--accent) 20%,transparent) inset; }
     .editor-top-actions { display:flex; align-items:center; gap:8px; flex:0 0 auto; }
+    .button.subtle { min-height:44px; padding:8px; border-color:transparent; background:transparent; color:var(--muted); font-size:12px; font-weight:600; }
+    .button.subtle:hover { border-color:transparent; background:var(--surface-muted); color:var(--text); }
+    .mobile-frame-import, .mobile-canvas-actions { display:none; }
     .import-result { margin:10px 14px 0; padding:10px 12px; border:1px solid var(--line); border-radius:10px; background:var(--surface-muted); font-size:11px; }
     .setup-import-card .import-result { margin:12px 0 0; }
     .import-summary { display:flex; flex-wrap:wrap; gap:8px 14px; }
@@ -200,11 +204,11 @@
     .import-failures { margin:7px 0 0; padding-left:18px; color:var(--muted); }
     .import-failures li + li { margin-top:3px; }
     .import-more { margin:5px 0 0; color:var(--muted); }
-    .custom-head { display: flex; justify-content: space-between; gap: 14px; align-items: center; margin-bottom: 12px; }
+    .custom-head { display: flex; justify-content: space-between; gap: 16px; align-items: center; margin-bottom: 16px; }
     .custom-head strong { font-size: 14px; }
     .custom-head span { color: var(--muted); font-size: 11px; }
-    .custom-row { display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0,1fr) auto; gap: 9px; align-items: end; }
-    .field { display: grid; gap: 5px; }
+    .custom-row { display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0,1fr) auto; gap: 8px; align-items: end; }
+    .field { display: grid; gap: 8px; }
     .field-label { color: var(--muted); font-size: 11px; font-weight: 730; }
     .number-input, .hex-input {
       width: 100%; min-height: 44px; border: 1px solid var(--line); border-radius: 10px; padding: 8px 10px; background: var(--surface); color: var(--text);
@@ -212,7 +216,7 @@
     .number-input:hover, .hex-input:hover { border-color: var(--line-strong); }
     .multiply { padding-bottom: 12px; color: var(--muted); font-weight: 800; }
     .button {
-      min-height: 42px; padding: 8px 14px; border: 1px solid var(--line); border-radius: 10px; background: var(--surface);
+      min-height: 44px; padding: 8px 16px; border: 1px solid var(--line); border-radius: 8px; background: var(--surface);
       cursor: pointer; font-weight: 730; transition: background .15s ease, border-color .15s ease, transform .15s ease;
     }
     .button:hover { border-color: var(--line-strong); background: var(--surface-hover); }
@@ -223,17 +227,17 @@
     .inline-error { min-height: 20px; margin: 8px 0 0; color: var(--danger); font-size: 12px; }
     .editor-panel { overflow: hidden; }
     .editor-topbar {
-      display: flex; align-items: center; justify-content: space-between; gap: 14px; padding: 12px 14px;
-      border-bottom: 1px solid var(--line); background: #fbfbf9;
+      display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 8px 16px;
+      border-bottom: 1px solid var(--line); background: var(--surface);
     }
-    .project-info { display: flex; align-items: center; gap: 10px; min-width: 0; }
+    .project-info { display: flex; align-items: center; gap: 8px; min-width: 0; }
     .project-size { font-size: 14px; font-weight: 810; white-space: nowrap; }
     .project-note { color: var(--muted); font-size: 11px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
     .editor-layout { display: grid; grid-template-columns: 190px minmax(0,1fr) 220px; min-height: 560px; }
     .side-panel { padding: 16px; background: var(--surface); }
     .side-panel.left { border-right: 1px solid var(--line); }
     .side-panel.right { border-left: 1px solid var(--line); }
-    .panel-title { margin: 0 0 10px; color: var(--muted); font-size: 11px; font-weight: 820; letter-spacing: .06em; text-transform: uppercase; }
+    .panel-title { margin: 0 0 8px; color: var(--muted); font-size: 11px; font-weight: 820; letter-spacing: .06em; text-transform: uppercase; }
     .tool-list { display: grid; gap: 8px; }
     .tool-button {
       display: flex; align-items: center; gap: 9px; width: 100%; min-height: 44px; padding: 8px 10px;
@@ -252,7 +256,7 @@
     .compact-button:disabled { opacity: .42; cursor: not-allowed; }
     .compact-button[aria-pressed="true"] { border-color: var(--accent); color: var(--accent); background: var(--accent-soft); }
     .compact-button svg { width: 17px; height: 17px; flex: 0 0 auto; }
-    .control-group + .control-group { margin-top: 20px; }
+    .control-group + .control-group { margin-top: 16px; }
     .segmented { display: grid; grid-template-columns: repeat(3,1fr); gap: 6px; }
     .segment-button {
       min-height: 42px; border: 1px solid var(--line); border-radius: 9px; background: var(--surface); cursor: pointer; font-weight: 760;
@@ -273,8 +277,8 @@
     .recent-colors-empty { grid-column: 1 / -1; margin: 0; color: var(--muted); font-size: 11px; }
     .tip-box { margin-top: 18px; padding: 11px; border-radius: 10px; background: var(--surface-muted); color: var(--muted); font-size: 11px; }
     .canvas-column { min-width: 0; padding: 16px; display: flex; flex-direction: column; background: #ededeb; }
-    .canvas-toolbar { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 9px; }
-    .canvas-toolbar-group { display: flex; align-items: center; gap: 6px; min-width: 0; }
+    .canvas-toolbar { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 8px; }
+    .canvas-toolbar-group { display: flex; align-items: center; gap: 8px; min-width: 0; }
     .canvas-toolbar .compact-button { min-width: 38px; min-height: 38px; padding: 6px 8px; }
     .zoom-label { min-width: 48px; color: var(--muted); font-size: 11px; font-weight: 760; text-align: center; }
     .canvas-stage {
@@ -311,7 +315,7 @@
       outline-color:rgba(32,33,31,.92);
     }
     .grid-overlay { position: absolute; inset: 0; pointer-events: none; opacity: .42; background-image: linear-gradient(to right, rgba(32,33,31,.52) 1px, transparent 1px), linear-gradient(to bottom, rgba(32,33,31,.52) 1px, transparent 1px); background-size: var(--pixel-size, 8px) var(--pixel-size, 8px); }
-    .canvas-footer { display: flex; justify-content: space-between; gap: 12px; align-items: center; padding-top: 10px; color: var(--muted); font-size: 11px; }
+    .canvas-footer { display: flex; justify-content: space-between; gap: 16px; align-items: center; padding-top: 8px; color: var(--muted); font-size: 11px; }
     .canvas-footer strong { color: var(--text); }
     .project-status { display:inline-flex; align-items:center; gap:6px; margin-left:7px; color:var(--muted); font-size:11px; }
     .project-status-dot { width:7px; height:7px; border-radius:50%; background:var(--accent); flex:0 0 auto; }
@@ -333,56 +337,56 @@
     #pixelCanvas.is-selection-moving { cursor:grabbing; }
     #pixelCanvas.is-pan-ready { cursor:grab; }
     #pixelCanvas.is-panning { cursor:grabbing; }
-    .frames-panel { border-top: 1px solid var(--line); background: #fbfbf9; padding: 12px 14px 14px; }
-    .frames-head { display:flex; align-items:center; justify-content:space-between; gap:10px; margin-bottom:10px; }
+    .frames-panel { border-top: 1px solid var(--line); background: #fafaf8; padding: 16px; }
+    .frames-head { display:flex; align-items:center; justify-content:space-between; gap:8px; margin-bottom:8px; }
     .frames-head .panel-title { margin:0; }
-    .frame-actions { display:flex; gap:6px; flex-wrap:wrap; }
-    .frame-strip { display:flex; gap:9px; overflow-x:auto; padding:2px 1px 6px; scrollbar-width:thin; }
-    .frame-card { position:relative; flex:0 0 auto; width:82px; padding:7px; border:1px solid var(--line); border-radius:11px; background:var(--surface); cursor:pointer; text-align:left; }
+    .frame-actions { display:flex; gap:8px; flex-wrap:wrap; }
+    .frame-strip { display:flex; gap:8px; overflow-x:auto; padding:0 0 8px; scrollbar-width:thin; }
+    .frame-card { position:relative; flex:0 0 auto; width:80px; padding:8px; border:1px solid var(--line); border-radius:8px; background:var(--surface); cursor:pointer; text-align:left; }
     .frame-card:hover { border-color:var(--line-strong); background:var(--surface-hover); }
-    .frame-card[aria-current="true"] { border-color:var(--accent); box-shadow:0 0 0 2px var(--accent-soft); }
-    .frame-thumb-wrap { width:66px; height:66px; display:grid; place-items:center; overflow:hidden; border-radius:7px; background:linear-gradient(45deg,var(--checker-b) 25%,transparent 25%) 0 0/10px 10px,linear-gradient(-45deg,var(--checker-b) 25%,transparent 25%) 0 5px/10px 10px,linear-gradient(45deg,transparent 75%,var(--checker-b) 75%) 5px -5px/10px 10px,linear-gradient(-45deg,transparent 75%,var(--checker-b) 75%) -5px 0/10px 10px,var(--checker-a); }
-    .frame-thumb { max-width:66px; max-height:66px; width:auto; height:auto; image-rendering:pixelated; }
-    .frame-meta { display:flex; align-items:center; justify-content:space-between; gap:4px; margin-top:5px; color:var(--muted); font-size:10px; }
+    .frame-card[aria-current="true"] { border-color:var(--accent); box-shadow:none; }
+    .frame-thumb-wrap { width:62px; height:62px; display:grid; place-items:center; overflow:hidden; border-radius:7px; background:linear-gradient(45deg,var(--checker-b) 25%,transparent 25%) 0 0/10px 10px,linear-gradient(-45deg,var(--checker-b) 25%,transparent 25%) 0 5px/10px 10px,linear-gradient(45deg,transparent 75%,var(--checker-b) 75%) 5px -5px/10px 10px,linear-gradient(-45deg,transparent 75%,var(--checker-b) 75%) -5px 0/10px 10px,var(--checker-a); }
+    .frame-thumb { max-width:62px; max-height:62px; width:auto; height:auto; image-rendering:pixelated; }
+    .frame-meta { display:flex; align-items:center; justify-content:space-between; gap:8px; margin-top:8px; color:var(--muted); font-size:10px; }
     .frame-meta strong { color:var(--text); font-size:11px; }
     .frame-count { color:var(--muted); font-size:11px; white-space:nowrap; }
-    .timing-controls { display:flex; align-items:end; gap:8px; flex-wrap:wrap; margin-top:10px; }
+    .timing-controls { display:flex; align-items:end; gap:8px; flex-wrap:wrap; margin-top:16px; }
     .duration-field { display:grid; gap:4px; min-width:130px; }
     .duration-input-wrap { display:grid; grid-template-columns:minmax(0,1fr) auto; align-items:center; overflow:hidden; border:1px solid var(--line); border-radius:9px; background:var(--surface); }
     .duration-input-wrap:focus-within { border-color:var(--focus); box-shadow:0 0 0 3px color-mix(in srgb,var(--focus) 18%,transparent); }
     .duration-input { width:100%; min-width:0; min-height:38px; padding:6px 8px; border:0; outline:0; background:transparent; color:var(--text); }
     .duration-unit { padding:0 9px; color:var(--muted); font-size:11px; }
-    .preview-panel { border-top:1px solid var(--line); padding:14px; background:var(--surface); }
+    .preview-panel { border-top:1px solid var(--line); padding:16px; background:var(--surface); }
     .preview-layout { display:grid; grid-template-columns:minmax(150px,220px) minmax(0,1fr); gap:16px; align-items:center; }
     .preview-stage { min-height:190px; display:grid; place-items:center; overflow:hidden; padding:12px; border:1px solid var(--line); border-radius:12px; background:linear-gradient(45deg,var(--checker-b) 25%,transparent 25%) 0 0/16px 16px,linear-gradient(-45deg,var(--checker-b) 25%,transparent 25%) 0 8px/16px 16px,linear-gradient(45deg,transparent 75%,var(--checker-b) 75%) 8px -8px/16px 16px,linear-gradient(-45deg,transparent 75%,var(--checker-b) 75%) -8px 0/16px 16px,var(--checker-a); }
     #previewCanvas { display:block; image-rendering:pixelated; image-rendering:crisp-edges; box-shadow:0 0 0 1px rgba(32,33,31,.3); }
     .preview-copy { min-width:0; }
     .preview-copy .panel-title { margin-bottom:5px; }
-    .preview-status { margin:0 0 10px; color:var(--muted); font-size:12px; }
-    .preview-actions { display:flex; flex-wrap:wrap; gap:7px; }
+    .preview-status { margin:0 0 8px; color:var(--muted); font-size:12px; }
+    .preview-actions { display:flex; flex-wrap:wrap; gap:8px; }
     .preview-actions .compact-button { min-width:86px; }
     .preview-note { margin:10px 0 0; color:var(--muted); font-size:11px; }
-    .export-panel { border-top:1px solid var(--line); padding:14px; background:#fbfbf9; }
-    .export-head { display:flex; align-items:flex-start; justify-content:space-between; gap:12px; margin-bottom:12px; }
+    .export-panel { border-top:1px solid var(--line); padding:16px; background:#fafaf8; }
+    .export-head { display:flex; align-items:flex-start; justify-content:space-between; gap:16px; margin-bottom:16px; }
     .export-head p { margin:4px 0 0; color:var(--muted); font-size:11px; }
-    .project-file-card { margin-bottom:12px; padding:12px; border:1px solid var(--line); border-radius:12px; background:var(--surface); }
+    .project-file-card { margin-bottom:16px; padding:16px; border:1px solid var(--line); border-radius:8px; background:var(--surface); }
     .project-file-card strong { font-size:13px; }
     .project-file-card p { margin:4px 0 10px; color:var(--muted); font-size:11px; }
-    .project-file-actions { display:flex; flex-wrap:wrap; gap:8px; margin-bottom:6px; }
+    .project-file-actions { display:flex; flex-wrap:wrap; gap:8px; margin-bottom:8px; }
     .project-file-actions .button { flex:1; }
-    .export-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:12px; }
-    .export-card { min-width:0; padding:12px; border:1px solid var(--line); border-radius:12px; background:var(--surface); }
+    .export-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:16px; }
+    .export-card { min-width:0; padding:16px; border:1px solid var(--line); border-radius:8px; background:var(--surface); }
     .export-card h4 { margin:0 0 4px; font-size:13px; }
-    .export-card-note { margin:0 0 10px; color:var(--muted); font-size:11px; }
-    .export-field { display:grid; gap:5px; margin-bottom:10px; }
+    .export-card-note { margin:0 0 16px; color:var(--muted); font-size:11px; }
+    .export-field { display:grid; gap:8px; margin-bottom:16px; }
     .export-label { color:var(--muted); font-size:10px; font-weight:750; }
     .filename-control { display:grid; grid-template-columns:minmax(0,1fr) auto; align-items:center; overflow:hidden; border:1px solid var(--line); border-radius:9px; background:var(--surface); }
     .filename-control:focus-within { border-color:var(--focus); box-shadow:0 0 0 3px color-mix(in srgb,var(--focus) 18%,transparent); }
     .filename-input { width:100%; min-width:0; min-height:38px; padding:7px 9px; border:0; outline:0; background:transparent; color:var(--text); }
     .filename-extension { padding:0 9px; color:var(--muted); font-size:11px; user-select:none; }
-    .export-options { display:flex; flex-wrap:wrap; align-items:end; gap:8px; margin-bottom:10px; }
+    .export-options { display:flex; flex-wrap:wrap; align-items:end; gap:8px; margin-bottom:16px; }
     .export-options .field { min-width:96px; }
-    .export-info { display:grid; gap:3px; margin:8px 0 10px; padding:8px 10px; border-radius:9px; background:var(--surface-muted); color:var(--muted); font-size:11px; }
+    .export-info { display:grid; gap:8px; margin:8px 0 16px; padding:8px; border-radius:8px; background:var(--surface-muted); color:var(--muted); font-size:11px; }
     .export-info strong { color:var(--text); font-size:12px; }
     .sprite-preview-details { font-size:11px; margin-bottom:8px; }
     .sprite-preview-details summary { cursor:pointer; color:var(--muted); }
@@ -413,7 +417,7 @@
     #helpDialog .help-build summary { font-size: 11px; }
     #helpDialog .help-build .build-grid { grid-template-columns: 1fr; }
     @media (max-width: 640px) { body > footer { display: none; } }
-    footer { width: min(1180px,100%); margin: 0 auto; padding: 0 clamp(14px,2.8vw,30px) 30px; color: var(--muted); font-size: 12px; }
+    footer { width: min(1180px,100%); margin: 0 auto; padding: 0 32px 32px; color: var(--muted); font-size: 12px; }
     html:has(dialog:modal), body:has(dialog:modal) { overflow: hidden; }
     dialog {
       width: min(560px, calc(100vw - 28px)); max-height: min(82vh, 700px); padding: 0; overflow: hidden;
@@ -423,7 +427,7 @@
     .dialog-shell { display: flex; flex-direction: column; max-height: min(82vh,700px); }
     .dialog-head { display: flex; align-items: center; gap: 12px; padding: 15px 16px; border-bottom: 1px solid var(--line); }
     .dialog-head h2 { margin: 0; font-size: 17px; }
-    .dialog-close { margin-left: auto; width: 34px; height: 34px; display: grid; place-items: center; border: 0; border-radius: 9px; background: transparent; cursor: pointer; }.file-fallback-button{display:none;width:100%;margin-top:10px;padding:11px 14px;border:1px solid var(--line);border-radius:10px;background:var(--surface);color:var(--text);font:inherit;font-size:13px;font-weight:600;cursor:pointer}@media (max-width:767px),(pointer:coarse) and (max-height:600px){.file-fallback-button{display:block}}
+    .dialog-close { margin-left: auto; width: 34px; height: 34px; display: grid; place-items: center; border: 0; border-radius: 8px; background: transparent; cursor: pointer; }
     .dialog-close:hover { background: var(--surface-hover); }
     .dialog-close svg { width: 18px; height: 18px; }
     .dialog-body { overflow: auto; padding: 16px; overscroll-behavior: contain; }
@@ -445,6 +449,7 @@
     .toast-message { min-width: 0; font-size: 12px; }
     .toast-action { margin-left: auto; min-height: 34px; padding: 4px 8px; border: 0; border-radius: 8px; background: var(--accent-soft); color: var(--accent); cursor: pointer; font-weight: 780; }
     @media (max-width: 900px) {
+      .header-inner, .main, footer { padding-inline:24px; }
       .editor-layout { grid-template-columns: 150px minmax(0,1fr); }
       .side-panel.right { grid-column: 1 / -1; display: grid; grid-template-columns: minmax(0,1fr) minmax(0,1fr); gap: 12px; border-left: 0; border-top: 1px solid var(--line); }
       .side-panel.right .control-group + .control-group { margin-top: 0; }
@@ -452,12 +457,13 @@
     }
     @media (max-width: 640px) {
       .build-details { display: none; }
-      .main { padding: 16px 12px 36px; }
-      .page-intro { display: block; }
-      .local-badge { margin-top: 12px; }
+      .header-inner, footer { padding-inline:16px; }
+      .main { padding:16px 16px 32px; }
+      .page-intro { display:block; }
+      .local-badge { display:none; }
       .preset-grid { grid-template-columns: repeat(2, minmax(0,1fr)); }
       .preset-button { min-height: 68px; }
-      .custom-card { padding: 13px; }
+      .custom-card { padding:16px; }
       .custom-head { align-items: flex-start; }
       .custom-row { grid-template-columns: minmax(0,1fr) auto minmax(0,1fr); }
       .custom-row .button { grid-column: 1 / -1; width: 100%; }
@@ -466,12 +472,12 @@
       .project-note { display: block; margin-top: 2px; }
       .editor-layout { display: flex; flex-direction: column; min-height: 0; }
       .side-panel.left, .side-panel.right { display: none; }
-      .canvas-column { order: 1; padding: 10px; }
+      .canvas-column { order: 1; padding: 8px; }
       .canvas-toolbar { margin-bottom: 8px; }
       .canvas-toolbar .compact-button { min-width: 40px; min-height: 40px; }
       .canvas-toolbar-group:first-child .compact-button span { display: none; }
       .canvas-stage { height: min(46dvh, 400px); min-height: 0; padding: 12px; }
-      .canvas-footer { padding: 9px 2px 0; }
+      .canvas-footer { padding: 8px 0 0; }
       body:not([data-mobile-page="edit"]) .selection-actions { display:none; }
       body[data-mobile-page="edit"] .frames-panel, body[data-mobile-page="edit"] .preview-panel, body[data-mobile-page="edit"] .export-panel { display:none; }
       body[data-mobile-page="frames"] .editor-layout, body[data-mobile-page="frames"] .mobile-controls, body[data-mobile-page="frames"] .preview-panel, body[data-mobile-page="frames"] .export-panel { display:none; }
@@ -483,12 +489,12 @@
       .mobile-workspace-tabs { position:sticky; bottom:0; z-index:25; display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:6px; margin:0; padding:8px 10px calc(8px + env(safe-area-inset-bottom)); border-top:1px solid var(--line); background:color-mix(in srgb,var(--surface) 96%,transparent); backdrop-filter:blur(12px); }
       .mobile-page-button { min-height:44px; padding:6px 4px; border:1px solid var(--line); border-radius:10px; background:var(--surface); font-size:13px; font-weight:760; white-space:nowrap; }
       .mobile-page-button[aria-pressed="true"] { color:var(--accent); border-color:var(--accent); background:var(--accent-soft); }
-      .frames-panel { padding:10px; }
+      .frames-panel { padding:16px; }
       .frames-head { align-items:flex-start; }
       .frame-actions { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); width:100%; }
       .frames-head { display:grid; }
-      .frame-card { width:76px; }
-      .frame-thumb-wrap { width:60px; height:60px; }
+      .frame-card { width:80px; }
+      .frame-thumb-wrap { width:62px; height:62px; }
       .timing-controls { display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr); align-items:end; }
       .duration-field { min-width:0; }
       .preview-layout { grid-template-columns:1fr; }
@@ -497,19 +503,21 @@
       .preview-actions .compact-button { min-width:0; min-height:44px; }
       .export-grid { grid-template-columns:1fr; }
       .editor-topbar { align-items:flex-start; flex-wrap:wrap; }
-      .editor-top-actions { display:grid; grid-template-columns:1fr 1fr; width:100%; }
+      .editor-top-actions { display:none; }
+      .mobile-frame-import { display:flex; justify-content:flex-end; margin-top:16px; }
+      .mobile-canvas-actions { display:flex; justify-content:flex-end; margin-top:16px; padding-top:16px; border-top:1px solid var(--line); }
       .setup-import-head { display:grid; }
       .setup-import-head .button { width:100%; }
       .export-head { display:grid; }
-      .export-panel { padding:10px; }
+      .export-panel { padding:16px; }
       .export-action { min-height:44px; }
       .mobile-controls {
-        order: 2; display: block; padding: 10px; border-top: 1px solid var(--line); background: var(--surface);
+        order: 2; display: block; padding: 16px; border-top: 1px solid var(--line); background: var(--surface);
       }
       .mobile-tool-row { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 8px; }
       .mobile-tool-row .tool-button { justify-content: center; }
-      .mobile-setting-row { display: grid; grid-template-columns: minmax(0,1fr) minmax(0,1fr); gap: 10px; margin-top: 10px; }
-      .mobile-setting-card { min-width: 0; padding: 10px; border: 1px solid var(--line); border-radius: 10px; background: var(--surface-muted); }
+      .mobile-setting-row { display: grid; grid-template-columns: minmax(0,1fr) minmax(0,1fr); gap: 8px; margin-top: 16px; }
+      .mobile-setting-card { min-width: 0; padding: 8px; border: 1px solid var(--line); border-radius: 8px; background: var(--surface); }
       .mobile-setting-card .panel-title { margin-bottom: 7px; }
       .color-row { grid-template-columns: 46px minmax(0,1fr); }
       .color-well { width: 46px; }
@@ -522,47 +530,46 @@
       body[data-project-state="editing"] { height: 100dvh; overflow: hidden; }
       body[data-project-state="editing"] .page-intro { display: none; }
       body[data-project-state="editing"] .main {
-        height: calc(100dvh - var(--header-height) - 90px - env(safe-area-inset-bottom));
-        padding-top: 12px; padding-bottom: 16px; overflow-y: auto; overscroll-behavior-y: contain; -webkit-overflow-scrolling: touch;
+        height: calc(100dvh - var(--header-height) - 88px - env(safe-area-inset-bottom));
+        padding-top: 8px; padding-bottom: 16px; overflow-y: auto; overscroll-behavior-y: contain; -webkit-overflow-scrolling: touch;
       }
       body[data-project-state="editing"] footer { display: none; }
-      .editor-panel { margin-bottom: 18px; border-radius: 18px; box-shadow: 0 8px 28px rgba(25,28,24,.08); }
-      .editor-topbar { padding: 12px; gap: 10px; background: var(--surface); }
-      .project-info { display: flex; align-items: center; flex-wrap: wrap; gap: 6px 8px; width: 100%; }
+      .editor-panel { margin-bottom: 16px; border-radius: 12px; box-shadow:none; }
+      .editor-topbar { padding: 8px 16px; gap: 8px; background: var(--surface); }
+      .project-info { display: flex; align-items: center; flex-wrap: wrap; gap: 8px; width: 100%; }
       .project-size { font-size: 15px; }
       .project-note { display: none; }
-      .project-status { margin-left: 0; padding: 4px 8px; border-radius: 999px; background: var(--accent-soft); color: var(--accent); }
+      .project-status { margin-left: 0; padding: 8px; border-radius: 8px; background: var(--surface-muted); color: var(--muted); }
       .project-status[data-state="saving"] { background: #fff5dc; color: #80570e; }
       .project-status[data-state="error"] { background: #fff0ed; }
-      .editor-top-actions { gap: 8px; }
-      .editor-top-actions .button { min-height: 42px; border-radius: 11px; }
+      .editor-top-actions { display:none; }
       .import-result { margin: 10px 12px 14px; border-radius: 11px; }
-      .canvas-column { padding: 12px; background: #f0f0ed; }
+      .canvas-column { padding:8px; background:#f0f0ed; }
       .canvas-stage { height: min(46dvh, 400px); min-height: 0; border-radius: 16px; }
       .canvas-toolbar { padding: 0 1px; }
-      .mobile-controls { padding: 12px; background: #fbfbf9; }
-      .mobile-tool-row { grid-template-columns: repeat(5,minmax(0,1fr)); gap: 6px; }
+      .mobile-controls { padding:16px; background:var(--surface); }
+      .mobile-tool-row { grid-template-columns: repeat(5,minmax(0,1fr)); gap: 8px; }
       .mobile-tool-row .tool-button { min-width: 0; min-height: 58px; padding: 6px 2px; flex-direction: column; gap: 3px; justify-content: center; border-radius: 12px; font-size: 10px; line-height: 1.15; }
       .mobile-tool-row .tool-button svg { width: 20px; height: 20px; }
       .mobile-setting-row { gap: 8px; }
-      .mobile-setting-card { padding: 11px; border-radius: 12px; background: var(--surface); }
+      .mobile-setting-card { padding:8px; border-radius:8px; background:var(--surface); }
       .selection-actions { margin: 0 10px 10px; padding: 8px; border: 1px solid var(--line); border-radius: 12px; background: #fbfbf9; }
       .mobile-workspace-tabs {
-        position: fixed; left: 12px; right: 12px; bottom: calc(10px + env(safe-area-inset-bottom)); z-index: 45;
-        grid-template-columns: repeat(4,minmax(0,1fr)); gap: 4px; margin: 0; padding: 6px;
-        border: 1px solid color-mix(in srgb,var(--line) 90%,transparent); border-radius: 17px;
-        background: color-mix(in srgb,var(--surface) 94%,transparent); box-shadow: 0 12px 34px rgba(25,28,24,.16); backdrop-filter: blur(18px) saturate(1.15);
+        position: fixed; left: 16px; right: 16px; bottom: calc(8px + env(safe-area-inset-bottom)); z-index: 45;
+        grid-template-columns: repeat(4,minmax(0,1fr)); gap: 8px; margin: 0; padding: 8px;
+        border: 1px solid var(--line); border-radius:16px;
+        background: color-mix(in srgb,var(--surface) 96%,transparent); box-shadow: 0 4px 16px rgba(25,28,24,.08); backdrop-filter: blur(18px) saturate(1.15);
       }
       .mobile-page-button { min-height: 54px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; padding: 5px 2px; border: 0; border-radius: 12px; background: transparent; color: var(--muted); font-size: 10px; font-weight: 760; line-height: 1.15; }
       .mobile-page-button svg { width: 20px; height: 20px; flex: 0 0 auto; }
       .mobile-page-button[aria-pressed="true"] { color: var(--accent); border-color: transparent; background: var(--accent-soft); box-shadow: inset 0 0 0 1px color-mix(in srgb,var(--accent) 16%,transparent); }
       .frames-panel, .preview-panel, .export-panel { scroll-margin-bottom: 96px; }
       .storage-warning { margin: 0 12px 12px; border-radius: 11px; }
-      .app-toast { bottom: calc(84px + env(safe-area-inset-bottom)); }
+      .app-toast { bottom: calc(88px + env(safe-area-inset-bottom)); }
     }
     @media (max-width: 520px) {
       :root { --header-height: 58px; }
-      .header-inner { padding-block: 8px; }
+      .header-inner { padding:8px 16px; }
       .brand-mark { width: 34px; height: 34px; border-radius: 10px; }
       .brand-name { font-size: 15px; }
       .brand-meta { display: none; }
@@ -607,22 +614,19 @@
   </header>
 
   <main class="main">
-    <section class="page-intro" aria-labelledby="introTitle">
-      <div>
-        <h2 id="introTitle" data-i18n="introTitle">小さなドット絵をすぐ描く</h2>
-        <p data-i18n="introLead">前のフレームを重ねて動きを描きやすくし、作業内容はこの端末内へ自動保存します。</p>
-      </div>
+    <div class="page-intro">
+      <p data-i18n="introLead">フレームごとにドット絵を描き、GIFやPNGに保存できます。</p>
       <span class="local-badge">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3 5 6v5c0 4.6 2.8 8 7 10 4.2-2 7-5.4 7-10V6z"/><path d="m9 12 2 2 4-5"/></svg>
         <span data-i18n="localBadge">完全ローカル処理</span>
       </span>
-    </section>
+    </div>
 
     <!-- APP:BEGIN -->
     <section class="panel setup-panel" id="setupView" aria-labelledby="setupTitle">
       <div class="setup-copy">
         <h3 id="setupTitle" data-i18n="setupTitle">新しいキャンバス</h3>
-        <p data-i18n="setupBody">サイズを選ぶと、透明なドット絵キャンバスをすぐに編集できます。</p>
+        <p data-i18n="setupBody">サイズを選ぶか、PNGから始めます。</p>
       </div>
       <div class="preset-grid" aria-label="Canvas presets">
         <button class="preset-button" type="button" data-preset="16"><span class="preset-size">16 × 16</span><span class="preset-note" data-i18n="presetTiny">小さなアイコン向け</span></button>
@@ -648,7 +652,7 @@
         </div>
         <div class="import-result" id="setupImportResult" role="status" hidden></div>
       </div>
-      <input id="pngFileInput" type="file" accept="image/png,.png" multiple hidden><button class="file-fallback-button" id="fileFallbackButton" type="button" data-i18n="fileFallback">ファイルから選択</button><input id="fileFallbackInput" type="file" multiple hidden>
+      <input id="pngFileInput" type="file" accept="image/png,.png" multiple hidden>
     </section>
 
     <section class="panel editor-panel drop-target" id="editorView" hidden aria-label="Pixel editor">
@@ -659,8 +663,8 @@
           <span class="project-status" id="projectStatus" data-state="saved"><span class="project-status-dot" aria-hidden="true"></span><span id="projectStatusText" data-i18n="autosaveReady">自動保存</span></span>
         </div>
         <div class="editor-top-actions">
-          <button class="button" id="editorImportButton" type="button" data-i18n="addPng">PNGを追加</button>
-          <button class="button" id="newCanvasButton" type="button" data-i18n="newCanvas">新しいキャンバス</button>
+          <button class="button subtle" id="editorImportButton" type="button" data-i18n="addPng">PNGを追加</button>
+          <button class="button subtle" id="newCanvasButton" type="button" data-i18n="newCanvas">新しいキャンバス</button>
         </div>
       </div>
       <div class="storage-warning" id="storageWarning" role="status" hidden data-i18n="autosaveUnavailable">自動保存を利用できません。このタブを閉じると作業内容が失われます。</div>
@@ -830,6 +834,7 @@
             </label>
             <button class="compact-button" id="applyDurationAllButton" type="button" data-i18n="applyDurationAll">すべてに適用</button>
           </div>
+          <div class="mobile-frame-import"><button class="button subtle" id="mobileImportButton" type="button" data-i18n="addPng">PNGを追加</button></div>
       </section>
 
       <section class="preview-panel" id="previewPanel" aria-labelledby="previewTitle">
@@ -903,6 +908,7 @@
             <button class="button primary export-action" id="saveSpriteSheetButton" type="button" data-i18n="saveSpriteSheet">Sprite Sheetを保存</button>
           </article>
         </div>
+        <div class="mobile-canvas-actions"><button class="button subtle" id="mobileNewCanvasButton" type="button" data-i18n="newCanvas">新しいキャンバス</button></div>
       </section>
 
       <nav class="mobile-workspace-tabs" aria-label="Mobile workspace">
@@ -958,6 +964,7 @@
         </ul>
         <h3 data-i18n="helpTouchTitle">スマートフォン</h3>
         <p data-i18n="helpTouchBody">1本指で描画します。2本指でPan / Pinch Zoomできます。2本指操作へ移った場合は、誤って始まった描画を取り消して表示操作へ切り替えます。塗りつぶしとスポイトは指を離すと実行され、タッチ操作がキャンセルされた場合は実行されません。</p>
+        <p data-i18n="helpMobileActions">スマホでは「フレーム」画面からPNGを追加し、「書き出し」画面の下部で新しいキャンバスを作れます。</p>
         <!-- APP:HELP:END -->
     <details class="build-details help-build">
       <summary data-i18n="buildInfo">ビルド情報</summary>
@@ -1036,8 +1043,8 @@
         ja: {
           projectFileTitle:'編集用プロジェクト', projectFileNote:'全フレーム・色・表示時間・編集設定をファイルに保存し、別の端末でも編集を再開できます。', openProject:'プロジェクトを開く', saveProject:'プロジェクトを保存', projectSaved:'編集用プロジェクトを保存しました。', replaceProjectMessage:'現在の作業を読み込んだプロジェクトに置き換えます。必要ならキャンセルして先にプロジェクトを保存してください。元に戻す履歴は引き継がれません。', projectFileError:'読み込めないプロジェクトです。形式・バージョン・内容と12 MiB以下であることを確認してください。現在の作業は変更していません。',
           brandMeta: 'ドット絵アニメ・PNG読み込み・GIF書き出し', helpButtonLabel: '使い方', close: '閉じる',
-          introTitle: '小さなドット絵をすぐ描く', introLead: 'PNGを読み込むかフレームごとに描いて、動きを確認し、PNG・GIF・Sprite Sheetとして保存できます。', localBadge: '完全ローカル処理', fileFallback: 'ファイルから選択',
-          setupTitle: '新しいキャンバス', setupBody: 'サイズを選ぶかPNGを読み込むと、透明なドット絵キャンバスをすぐに編集できます。',
+          introLead: 'フレームごとにドット絵を描き、GIFやPNGに保存できます。', localBadge: '完全ローカル処理',
+          setupTitle: '新しいキャンバス', setupBody: 'サイズを選ぶか、PNGから始めます。',
           importPngTitle:'PNGから始める', importPngSetupHint:'1枚または同じサイズの複数PNGを選択・ドロップできます。', choosePng:'PNGを選択', addPng:'PNGを追加', importingPng:'PNGを読み込み中…', importCancelled:'キャンバスが変更されたため、PNGの読み込みを中止しました。', importAdded:'追加しました', importFailed:'追加できませんでした', importAllFailed:'PNGを読み込めませんでした', importReasonNotPng:'PNGファイルではありません', importReasonDecode:'画像を読み込めません', importReasonTooLarge:'最大128×128を超えています（{size}）', importReasonMismatch:'サイズが異なります（{actual} / 必要: {expected}）', importReasonFrameLimit:'最大128フレームを超えます', importMore:'ほか{count}件',
           presetTiny: '小さなアイコン向け', presetSmall: '基本サイズ', presetMedium: '少し細かく描く', presetLarge: 'v1.0の最大サイズ',
           customTitle: 'Custom', customHint: '幅・高さはそれぞれ1〜128 px', widthLabel: '幅', heightLabel: '高さ', createCanvas: '作成', invalidCustom: '幅と高さは1〜128の整数で指定してください。',
@@ -1051,7 +1058,7 @@
           helpPrivacyTitle: 'プライバシー', helpPrivacyBody: '描画データはこのブラウザー内で処理され、このアプリから外部サーバーへ送信されません。実行時の外部通信も行いません。',
           helpProjectFile:'編集を続けるには「書き出し」の「プロジェクトを保存」を使い、.pixel-project.jsonを保管します。「プロジェクトを開く」で復元できます（最大12 MiB）。端末内自動保存とは別です。アプリを閉じる直前の変更は保存されないことがあるため、大切な作品はプロジェクトファイルでも保存してください。Undo履歴・選択範囲・クリップボードは含みません。表示倍率はFitで開きます。拡大しても作業領域の高さは変わりません。スクロール、Space＋ドラッグ、2本指で表示を移動できます。',
           helpLimitsTitle: '機能と注意事項', helpLimit1: '前のフレームを約30%で重ねるOnion SkinをON/OFFできます。', helpLimit2: '作業内容はIndexedDBへ端末内自動保存し、再読み込み後に復元できます。', helpLimit3: 'PNGを1枚または複数読み込み、PNG・Animated GIF・Sprite Sheetを書き出せます。GIFは256色制約があり、半透明は透明/不透明へ変換されます。',
-          helpTouchTitle: 'スマートフォン', helpTouchBody: '1本指で描画します。2本指でPan / Pinch Zoomできます。2本指操作へ移った場合は、誤って始まった描画を取り消して表示操作へ切り替えます。塗りつぶしとスポイトは指を離すと実行され、タッチ操作がキャンセルされた場合は実行されません。',
+          helpTouchTitle: 'スマートフォン', helpTouchBody: '1本指で描画します。2本指でPan / Pinch Zoomできます。2本指操作へ移った場合は、誤って始まった描画を取り消して表示操作へ切り替えます。塗りつぶしとスポイトは指を離すと実行され、タッチ操作がキャンセルされた場合は実行されません。', helpMobileActions: 'スマホでは「フレーム」画面からPNGを追加し、「書き出し」画面の下部で新しいキャンバスを作れます。',
           confirmTitle: '確認', cancel: 'キャンセル', confirmNew: '新しく作る', newConfirmMessage: '現在の自動保存データを置き換えて、新しいキャンバスを作成しますか？',
           created: 'キャンバスを作成しました', toolChangedPencil: '鉛筆に切り替えました', toolChangedEraser: '消しゴムに切り替えました', toolChangedFill: '塗りつぶしに切り替えました', toolChangedEyedropper: 'スポイトに切り替えました', brushChanged: 'ブラシサイズを変更しました', colorChanged: '描画色を変更しました',
           undone: '元に戻しました', redone: 'やり直しました', noUndo: '元に戻せる操作はありません', noRedo: 'やり直せる操作はありません', transparentPixel: '透明なピクセルです', selectAll:'すべて選択', selectedAll:'キャンバス全体を選択しました', copySelection:'コピー', cutSelection:'切り取り', pasteSelection:'貼り付け', deleteSelection:'削除', clearSelection:'選択解除', selectionCopied:'選択範囲をコピーしました', selectionCut:'選択範囲を切り取りました', selectionPasted:'貼り付けました', selectionDeleted:'選択範囲を削除しました', noSelection:'選択範囲がありません', clipboardEmpty:'コピーしたピクセルがありません', selectPasteTarget:'貼り付け先を選択してください', toolChangedSelection:'選択ツールに切り替えました', gridOn: 'グリッドを表示しました', gridOff: 'グリッドを非表示にしました', fitApplied: 'キャンバスを画面に合わせました', mobileExportTab:'書き出し', exportTitle:'書き出し', exportIntro:'PNG・Animated GIF・Sprite Sheetとして端末へ保存します。', outputFilename:'ファイル名', currentFramePng:'現在のフレームをPNG', currentFramePngNote:'透明背景を保ったまま、Nearest Neighborで拡大して保存できます。', pngScale:'倍率', savePng:'PNGを保存', spriteSheetTitle:'Sprite Sheet', spriteSheetNote:'全フレームを1枚のPNGへ並べます。', spriteLayout:'配置', horizontal:'横一列', gridLayout:'Grid', columns:'列数', saveSpriteSheet:'Sprite Sheetを保存', spriteSheetPreviewLabel:'Sprite Sheetプレビュー', pngSaved:'PNGを保存しました', spriteSheetSaved:'Sprite Sheetを保存しました', spriteSheetFailed:'スプライトシートを保存できませんでした。画像が大きすぎる可能性があります。Gridで列数を調整してお試しください。', exportFailed:'画像を書き出せませんでした', invalidFilename:'ファイル名を確認してください', spriteDetails:'Frame {frame} · {frames}フレーム · {columns}列 × {rows}行', animatedGifTitle:'Animated GIF', animatedGifNote:'各フレームの表示時間を使い、透明背景・無限ループのGIFとして保存します。', saveGif:'GIFを保存', gifSaved:'GIFを保存しました', gifEncoding:'GIFを作成中… {current} / {total}', gifDetails:'{frames}フレーム · {duration} ms · 無限ループ', gifFailed:'GIFを書き出せませんでした'
@@ -1059,8 +1066,8 @@
         en: {
           projectFileTitle:'Editable project', projectFileNote:'Save all frames, colors, timing, and editing settings to resume editing on another device.', openProject:'Open project', saveProject:'Save project', projectSaved:'Editable project saved.', replaceProjectMessage:'Replace your current work with this project? Cancel and save a project file first if needed. Undo history is not carried over.', projectFileError:'Unable to read this project. Check its format, version, contents, and 12 MiB size limit. Your current work has not changed.',
           brandMeta: 'Pixel animation · PNG import · GIF export', helpButtonLabel: 'Help', close: 'Close',
-          introTitle: 'Draw small pixel art, right away.', introLead: 'Import PNG files or draw frame by frame, preview the motion, then save PNG, GIF, or sprite-sheet output to your device.', localBadge: 'Fully local processing', fileFallback: 'Choose from files',
-          setupTitle: 'New canvas', setupBody: 'Choose a size or import PNG files to start editing a transparent pixel canvas.',
+          introLead: 'Draw pixel art frame by frame and save it as GIF or PNG.', localBadge: 'Fully local processing',
+          setupTitle: 'New canvas', setupBody: 'Choose a size or start from PNG files.',
           importPngTitle:'Start from PNG', importPngSetupHint:'Choose or drop one PNG, or multiple PNGs with matching dimensions.', choosePng:'Choose PNG', addPng:'Add PNG', importingPng:'Importing PNG…', importCancelled:'PNG import stopped because the canvas changed.', importAdded:'Added', importFailed:'Could not add', importAllFailed:'Could not import PNG files', importReasonNotPng:'Not a PNG file', importReasonDecode:'Could not decode the image', importReasonTooLarge:'Exceeds the 128×128 maximum ({size})', importReasonMismatch:'Dimensions differ ({actual} / expected: {expected})', importReasonFrameLimit:'Would exceed the 128-frame limit', importMore:'{count} more',
           presetTiny: 'For tiny icons', presetSmall: 'A practical default', presetMedium: 'More room for detail', presetLarge: 'v1.0 maximum size',
           customTitle: 'Custom', customHint: 'Width and height: 1–128 px', widthLabel: 'Width', heightLabel: 'Height', createCanvas: 'Create', invalidCustom: 'Enter whole-number width and height values from 1 to 128.',
@@ -1074,7 +1081,7 @@
           helpPrivacyTitle: 'Privacy', helpPrivacyBody: 'Pixel data is processed in this browser and is not sent to an external server by this app. The app also makes no runtime network requests.',
           helpProjectFile:'To resume editing, use Save project in Export and keep the .pixel-project.json file. Open project restores it (12 MiB maximum), independently of local autosave. Very recent edits may not be saved when you close the app; keep a project file for important work. Undo history, selections, and clipboard are not included; the view opens at Fit. Zoom does not enlarge the viewport. Scroll, Space-drag, or use two fingers to pan.',
           helpLimitsTitle: 'Features and limitations', helpLimit1: 'Onion Skin can show the previous frame at about 30% opacity while editing.', helpLimit2: 'Your project is autosaved locally to IndexedDB and can be restored after reload.', helpLimit3: 'Import one or more PNG files and export PNG, animated GIF, or sprite-sheet output. GIF is limited to 256 colors and converts partial alpha to transparent or opaque pixels.',
-          helpTouchTitle: 'Smartphones', helpTouchBody: 'Draw with one finger. Use two fingers to pan or pinch zoom. When a second finger arrives, any accidental stroke start is restored before the view gesture begins. Fill and Eyedropper run when you lift your finger; a cancelled touch does not apply them.',
+          helpTouchTitle: 'Smartphones', helpTouchBody: 'Draw with one finger. Use two fingers to pan or pinch zoom. When a second finger arrives, any accidental stroke start is restored before the view gesture begins. Fill and Eyedropper run when you lift your finger; a cancelled touch does not apply them.', helpMobileActions: 'On phones, add PNG files from Frames and start a new canvas at the bottom of Export.',
           confirmTitle: 'Confirm', cancel: 'Cancel', confirmNew: 'Start new', newConfirmMessage: 'Replace the current autosaved project and create a new canvas?',
           created: 'Canvas created', toolChangedPencil: 'Switched to Pencil', toolChangedEraser: 'Switched to Eraser', toolChangedFill: 'Switched to Fill', toolChangedEyedropper: 'Switched to Eyedropper', brushChanged: 'Brush size changed', colorChanged: 'Drawing color changed',
           undone: 'Undone', redone: 'Redone', noUndo: 'Nothing to undo', noRedo: 'Nothing to redo', transparentPixel: 'That pixel is transparent', selectAll:'Select all', selectedAll:'Entire canvas selected', copySelection:'Copy', cutSelection:'Cut', pasteSelection:'Paste', deleteSelection:'Delete', clearSelection:'Clear selection', selectionCopied:'Selection copied', selectionCut:'Selection cut', selectionPasted:'Pasted', selectionDeleted:'Selection deleted', noSelection:'No selection', clipboardEmpty:'Nothing has been copied', selectPasteTarget:'Select a destination before pasting', toolChangedSelection:'Switched to Selection', gridOn: 'Grid shown', gridOff: 'Grid hidden', fitApplied: 'Canvas fitted to view', mobileExportTab:'Export', exportTitle:'Export', exportIntro:'Save PNG, animated GIF, or sprite-sheet output directly to your device.', outputFilename:'Filename', currentFramePng:'Current frame PNG', currentFramePngNote:'Preserve transparency and scale with nearest-neighbor pixels.', pngScale:'Scale', savePng:'Save PNG', spriteSheetTitle:'Sprite Sheet', spriteSheetNote:'Arrange every frame into one PNG image.', spriteLayout:'Layout', horizontal:'Horizontal', gridLayout:'Grid', columns:'Columns', saveSpriteSheet:'Save Sprite Sheet', spriteSheetPreviewLabel:'Sprite Sheet preview', pngSaved:'PNG saved', spriteSheetSaved:'Sprite Sheet saved', spriteSheetFailed:'Could not save the sprite sheet. This image may be too large for your browser. Try Grid and adjust the column count.', exportFailed:'Could not export the image', invalidFilename:'Check the filename', spriteDetails:'Frame {frame} · {frames} frames · {columns} columns × {rows} rows', animatedGifTitle:'Animated GIF', animatedGifNote:'Uses each frame delay and saves a transparent, infinitely looping GIF.', saveGif:'Save GIF', gifSaved:'GIF saved', gifEncoding:'Creating GIF… {current} / {total}', gifDetails:'{frames} frames · {duration} ms · infinite loop', gifFailed:'Could not export the GIF'
@@ -1985,9 +1992,9 @@
       ['setupOpenProjectButton','openProjectButton'].forEach(id=>$('#'+id).addEventListener('click',()=>$('#projectFileInput').click()));
       $('#projectFileInput').addEventListener('change',event=>loadProjectFile(event.target.files[0]));
       $('#savePngButton').addEventListener('click',saveCurrentFramePng); $('#saveGifButton').addEventListener('click',saveAnimatedGif); $('#saveSpriteSheetButton').addEventListener('click',saveSpriteSheet);
-      ['setupImportButton','editorImportButton'].forEach(id=>$('#'+id).addEventListener('click',()=>$('#pngFileInput').click())); $('#pngFileInput').addEventListener('change',event=>importPngFiles(event.target.files));$('#fileFallbackButton').addEventListener('click',()=>$('#fileFallbackInput').click());$('#fileFallbackInput').addEventListener('change',event=>{importPngFiles(event.target.files);event.target.value='';}); installPngDropTarget($('#setupImportZone')); installPngDropTarget($('#editorView'));
+      ['setupImportButton','editorImportButton','mobileImportButton'].forEach(id=>$('#'+id).addEventListener('click',()=>$('#pngFileInput').click())); $('#pngFileInput').addEventListener('change',event=>importPngFiles(event.target.files)); installPngDropTarget($('#setupImportZone')); installPngDropTarget($('#editorView'));
       $('#zoomOutButton').addEventListener('click', () => setScale(state.scale-1)); $('#zoomInButton').addEventListener('click', () => setScale(state.scale+1)); $('#fitButton').addEventListener('click', () => fitCanvas({announceChange:true})); $('#gridButton').addEventListener('click',toggleGrid);
-      $('#newCanvasButton').addEventListener('click', returnToSetup);
+      ['newCanvasButton','mobileNewCanvasButton'].forEach(id=>$('#'+id).addEventListener('click', returnToSetup));
       canvas.addEventListener('pointerdown', handleCanvasPointerDown); canvas.addEventListener('pointermove', handleCanvasPointerMove); canvas.addEventListener('pointerup', handleCanvasPointerEnd); canvas.addEventListener('pointercancel', handleCanvasPointerEnd); canvas.addEventListener('pointerenter', event => updateBrushPreview(event)); canvas.addEventListener('pointerleave', () => { hideBrushPreview(); canvas.classList.remove('is-selection-hover'); }); canvas.addEventListener('contextmenu', event => event.preventDefault());
       stage.addEventListener('pointerdown', event => { if(event.target===canvas||event.target===surface) return; if(event.pointerType==='mouse' && (event.button===1||state.spacePressed)){event.preventDefault();startPan(event);} });
       stage.addEventListener('pointermove', event => { if(state.pan) {event.preventDefault();continuePan(event);} }); stage.addEventListener('pointerup',endPan); stage.addEventListener('pointercancel',endPan);
