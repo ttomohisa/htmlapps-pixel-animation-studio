@@ -44,7 +44,7 @@ Create small pixel-art animations frame by frame in the browser, preview motion,
 
 ### Navigation / view
 
-- Integer zoom presets plus Fit.
+- Integer zoom plus fit-to-view by activating the live zoom value; no separate Fit button.
 - Pan.
 - Smartphone pinch zoom / two-finger pan.
 - Grid on/off.

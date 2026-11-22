@@ -5,6 +5,7 @@
 ## [1.0.6] - 2026-11-22
 
 ### Changed
+- Shorten the 128×128 preset note to “Maximum size”, keep custom dimensions collapsed until requested, and make the live zoom value a clickable Fit control (keyboard-accessible) without the separate Fit button.
 - Replace stacked bordered cards on the canvas setup, export and phone editing views with quiet sections and dividers; retain useful input, canvas and selected-frame boundaries.
 - Redesign button hierarchy: softer presets, clean tool selection, underlined segmented choices, lighter secondary actions, and neutral export buttons alongside primary create/save actions.
 - Remove the redundant hero heading, shorten Japanese and English introductions, and hide the introduction after a project opens.

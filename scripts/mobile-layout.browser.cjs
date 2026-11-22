@@ -56,6 +56,15 @@ async function main() {
         await page.waitForFunction(() => /^\d+\.\d+\.\d+$/.test(document.querySelector('#buildVersion').textContent));
         if (await page.locator('html').getAttribute('lang') !== language) await page.locator('#languageButton').click();
         assert.equal((await page.locator('[data-i18n="localBadge"]').textContent()).trim(), language === 'ja' ? '完全ローカル処理' : 'Fully local processing');
+        const custom = page.locator('#customCanvasDetails');
+        assert.equal(await custom.evaluate(el=>el.open),false,label+': Custom starts folded');
+        assert.equal(await page.locator('#customWidth').isVisible(),false,label+': Custom inputs are initially hidden');
+        assert.equal((await page.locator('[data-i18n="presetLarge"]').textContent()).trim(),language==='ja'?'最大サイズ':'Maximum size',label+': preset note');
+        await custom.locator('summary').focus(); await page.keyboard.press('Enter');
+        assert.equal(await custom.evaluate(el=>el.open),true,label+': Enter expands Custom');
+        assert.equal(await page.locator('#customWidth').isVisible(),true,label+': custom dimensions become visible');
+        await page.keyboard.press('Space');
+        assert.equal(await custom.evaluate(el=>el.open),false,label+': Space folds Custom');
         if (file==='dist/index.html' && language==='ja' && [320,1360].includes(width)) {
           await page.screenshot({path:path.join(evidence,'ja-'+width+'-setup.png')});
         }
@@ -74,6 +83,19 @@ async function main() {
         await page.locator('[data-preset="16"]').click();
         await page.waitForFunction(()=>document.body.dataset.projectState==='editing');
         assert.equal(await page.locator('#editorView').isVisible(),true);
+        assert.equal(await page.locator('#fitButton').count(),0,label+': separate Fit button removed');
+        const liveZoom=page.locator('#toolbarScaleValue');
+        const fittedZoom=(await liveZoom.textContent()).trim();
+        assert.match(fittedZoom,/^\d+×$/,label+': live zoom is a button');
+        assert.match(await liveZoom.getAttribute('aria-label'),language==='ja'?/全体を表示/:/Fit canvas to view/,label+': accessible fit label');
+        await page.locator('#zoomInButton').click();
+        assert.notEqual((await liveZoom.textContent()).trim(),fittedZoom,label+': zoom increment');
+        await liveZoom.click();
+        assert.equal((await liveZoom.textContent()).trim(),fittedZoom,label+': tapping live zoom fits canvas');
+        await page.locator('#zoomInButton').click();
+        await liveZoom.focus(); await page.keyboard.press('Space');
+        assert.equal((await liveZoom.textContent()).trim(),fittedZoom,label+': Space on live zoom fits canvas');
+        assert.ok((await liveZoom.getAttribute('aria-label')).startsWith(fittedZoom+' · '),label+': accessible current zoom');
         const editorStyles=await page.evaluate(() => {
           const computed = selector=>getComputedStyle(document.querySelector(selector));
           return {

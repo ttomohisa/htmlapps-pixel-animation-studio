@@ -207,9 +207,13 @@
     .import-failures { margin:8px 0 0; padding-left:16px; color:var(--muted); }
     .import-failures li + li { margin-top:0px; }
     .import-more { margin:8px 0 0; color:var(--muted); }
-    .custom-head { display: flex; justify-content: space-between; gap: 16px; align-items: center; margin-bottom: 16px; }
-    .custom-head strong { font-size: 14px; }
-    .custom-head span { color: var(--muted); font-size: 11px; }
+    .custom-head { display:flex; align-items:center; gap:16px; margin:0; list-style:none; cursor:pointer; min-height:44px; }
+    .custom-head::-webkit-details-marker { display:none; }
+    .custom-head strong { font-size:14px; }
+    .custom-head span { flex:1 1 auto; min-width:0; text-align:right; color:var(--muted); font-size:11px; }
+    .custom-head svg { width:16px; height:16px; flex:0 0 auto; color:var(--muted); transition:transform .15s ease; }
+    .custom-card[open] .custom-head svg { transform:rotate(180deg); }
+    .custom-content { padding-top:16px; }
     .custom-row { display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0,1fr) auto; gap: 8px; align-items: end; }
     .field { display: grid; gap: 8px; }
     .field-label { color: var(--muted); font-size: 11px; font-weight: 730; }
@@ -291,7 +295,9 @@
     .canvas-toolbar { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 8px; }
     .canvas-toolbar-group { display: flex; align-items: center; gap: 8px; min-width: 0; }
     .canvas-toolbar .compact-button { min-width: 38px; min-height: 38px; padding: 8px 8px; }
-    .zoom-label { min-width: 48px; color: var(--muted); font-size: 11px; font-weight: 760; text-align: center; }
+    .zoom-label { min-width:48px; color:var(--muted); font-size:11px; font-weight:760; text-align:center; }
+    .zoom-fit-button { display:inline-flex; align-items:center; justify-content:center; min-height:44px; min-width:52px; padding:8px; border:0; border-radius:8px; background:transparent; color:var(--text); cursor:pointer; text-decoration:underline; text-decoration-style:dotted; text-underline-offset:4px; transition:background .15s ease,color .15s ease; }
+    .zoom-fit-button:hover { color:var(--accent); background:var(--surface-muted); }
     .canvas-stage {
       position: relative; flex: none; height: clamp(280px, 52vh, 480px); min-height: 0; min-width: 0; contain: size; display: grid; align-items: safe center; justify-items: safe center; overflow: auto; padding: 16px;
       border: 1px solid var(--line-strong); border-radius: 13px;
@@ -659,18 +665,20 @@
         <button class="preset-button" type="button" data-preset="16"><span class="preset-size">16 × 16</span><span class="preset-note" data-i18n="presetTiny">小さなアイコン向け</span></button>
         <button class="preset-button" type="button" data-preset="32"><span class="preset-size">32 × 32</span><span class="preset-note" data-i18n="presetSmall">基本サイズ</span></button>
         <button class="preset-button" type="button" data-preset="64"><span class="preset-size">64 × 64</span><span class="preset-note" data-i18n="presetMedium">少し細かく描く</span></button>
-        <button class="preset-button" type="button" data-preset="128"><span class="preset-size">128 × 128</span><span class="preset-note" data-i18n="presetLarge">v1.0の最大サイズ</span></button>
+        <button class="preset-button" type="button" data-preset="128"><span class="preset-size">128 × 128</span><span class="preset-note" data-i18n="presetLarge">最大サイズ</span></button>
       </div>
-      <div class="custom-card">
-        <div class="custom-head"><strong data-i18n="customTitle">Custom</strong><span data-i18n="customHint">幅・高さはそれぞれ1〜128 px</span></div>
-        <div class="custom-row">
+      <details class="custom-card" id="customCanvasDetails">
+        <summary class="custom-head"><strong data-i18n="customTitle">Custom</strong><span data-i18n="customHint">幅・高さはそれぞれ1〜128 px</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></summary>
+        <div class="custom-content">
+          <div class="custom-row">
           <label class="field" for="customWidth"><span class="field-label" data-i18n="widthLabel">幅</span><input class="number-input" id="customWidth" type="number" min="1" max="128" step="1" inputmode="numeric" value="32"></label>
           <span class="multiply" aria-hidden="true">×</span>
           <label class="field" for="customHeight"><span class="field-label" data-i18n="heightLabel">高さ</span><input class="number-input" id="customHeight" type="number" min="1" max="128" step="1" inputmode="numeric" value="32"></label>
           <button class="button primary" id="createCustomButton" type="button" data-i18n="createCanvas">作成</button>
         </div>
-        <p class="inline-error" id="customError" role="alert"></p>
-      </div>
+          <p class="inline-error" id="customError" role="alert"></p>
+        </div>
+      </details>
       <div class="setup-import-card drop-target" id="setupImportZone">
         <div class="setup-import-head">
           <div class="setup-import-copy"><strong data-i18n="importPngTitle">PNGから始める</strong><span data-i18n="importPngSetupHint">1枚または同じサイズの複数PNGを選択・ドロップできます。</span></div>
@@ -749,8 +757,7 @@
             </div>
             <div class="canvas-toolbar-group">
               <button class="compact-button" id="zoomOutButton" type="button" data-i18n-aria-label="zoomOut" aria-label="縮小"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M6 12h12"/></svg></button>
-              <button class="compact-button" id="fitButton" type="button" data-i18n="fit">Fit</button>
-              <span class="zoom-label" id="toolbarScaleValue">1×</span>
+              <button class="zoom-label zoom-fit-button" id="toolbarScaleValue" type="button" data-i18n-title="fitScale" title="キャンバス全体を表示" aria-label="1× · キャンバス全体を表示">1×</button>
               <button class="compact-button" id="zoomInButton" type="button" data-i18n-aria-label="zoomIn" aria-label="拡大"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 6v12M6 12h12"/></svg></button>
               <button class="compact-button" id="gridButton" type="button" aria-pressed="true" data-i18n-aria-label="grid"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M4 4h16v16H4zM4 10h16M4 16h16M10 4v16M16 4v16"/></svg></button>
             </div>
@@ -982,7 +989,7 @@
           <li data-i18n="helpStep4">フレームを追加・複製し、サムネイルから切り替えます。</li>
           <li data-i18n="helpKeyboard">Tabで操作先を選び、ボタンはSpaceまたはEnterで実行できます。キャンバスにフォーカスがあるときはSpace + ドラッグで表示を移動できます。</li>
         </ol>
-        <p data-i18n="helpProjectFile">編集を続けるには「書き出し」の「プロジェクトを保存」を使い、.pixel-project.jsonを保管します。「プロジェクトを開く」で復元できます（最大12 MiB）。端末内自動保存とは別です。アプリを閉じる直前の変更は保存されないことがあるため、大切な作品はプロジェクトファイルでも保存してください。Undo履歴・選択範囲・クリップボードは含みません。表示倍率はFitで開きます。</p>
+        <p data-i18n="helpProjectFile">編集を続けるには「書き出し」の「プロジェクトを保存」を使い、.pixel-project.jsonを保管します。「プロジェクトを開く」で復元できます（最大12 MiB）。端末内自動保存とは別です。アプリを閉じる直前の変更は保存されないことがあるため、大切な作品はプロジェクトファイルでも保存してください。Undo履歴・選択範囲・クリップボードは含みません。開くとキャンバス全体が収まる倍率になります。</p>
         <h3 data-i18n="helpPrivacyTitle">プライバシー</h3>
         <p data-i18n="helpPrivacyBody">描画データはこのブラウザー内で処理され、このアプリから外部サーバーへ送信されません。実行時の外部通信も行いません。</p>
         <h3 data-i18n="helpLimitsTitle">機能と注意事項</h3>
@@ -1075,17 +1082,17 @@
           introLead: 'フレームごとにドット絵を描き、GIFやPNGに保存できます。', localBadge: '完全ローカル処理',
           setupTitle: '新しいキャンバス', setupBody: 'サイズを選ぶか、PNGから始めます。',
           importPngTitle:'PNGから始める', importPngSetupHint:'1枚または同じサイズの複数PNGを選択・ドロップできます。', choosePng:'PNGを選択', addPng:'PNGを追加', importingPng:'PNGを読み込み中…', importCancelled:'キャンバスが変更されたため、PNGの読み込みを中止しました。', importAdded:'追加しました', importFailed:'追加できませんでした', importAllFailed:'PNGを読み込めませんでした', importReasonNotPng:'PNGファイルではありません', importReasonDecode:'画像を読み込めません', importReasonTooLarge:'最大128×128を超えています（{size}）', importReasonMismatch:'サイズが異なります（{actual} / 必要: {expected}）', importReasonFrameLimit:'最大128フレームを超えます', importMore:'ほか{count}件',
-          presetTiny: '小さなアイコン向け', presetSmall: '基本サイズ', presetMedium: '少し細かく描く', presetLarge: 'v1.0の最大サイズ',
+          presetTiny: '小さなアイコン向け', presetSmall: '基本サイズ', presetMedium: '少し細かく描く', presetLarge: '最大サイズ',
           customTitle: 'Custom', customHint: '幅・高さはそれぞれ1〜128 px', widthLabel: '幅', heightLabel: '高さ', createCanvas: '作成', invalidCustom: '幅と高さは1〜128の整数で指定してください。',
           projectNote: '透明キャンバス', newCanvas: '新しいキャンバス', toolsTitle: 'ツール', pencil: '鉛筆', eraser: '消しゴム', fill: '塗りつぶし', eyedropper: 'スポイト', selection: '選択', brushTitle: 'ブラシサイズ',
-          historyTitle: '履歴', undo: '元に戻す', redo: 'やり直す', fit: 'Fit', zoomIn: '拡大', zoomOut: '縮小', grid: 'グリッド', recentColorsTitle: '最近使った色', recentColorsEmpty: '色を選ぶとここに表示されます。',
+          historyTitle: '履歴', undo: '元に戻す', redo: 'やり直す', fitScale: 'キャンバス全体を表示', zoomIn: '拡大', zoomOut: '縮小', grid: 'グリッド', recentColorsTitle: '最近使った色', recentColorsEmpty: '色を選ぶとここに表示されます。',
           desktopTip: 'ドラッグして描画。Space + DragでPan、ホイールでZoomできます。', colorTitle: '描画色', colorPickerTitle: 'カラーピッカー', currentToolTitle: '現在の設定', displayScale: '表示倍率', canvasLabel: 'ドット絵キャンバス', framesTitle: 'フレーム', mobileEditTab: '編集', mobileFramesTab: 'フレーム', addFrame: '追加', duplicateFrame: '複製', deleteFrame: '削除', moveFrameLeft: '前へ移動', moveFrameRight: '後ろへ移動', frameLabel: 'フレーム', frameAdded: 'フレームを追加しました', frameDuplicated: 'フレームを複製しました', frameDeleted: 'フレームを削除しました', frameRestored: 'フレームを元に戻しました', frameMoved: 'フレームを並べ替えました', frameLimit: 'フレームは最大128個です', keepOneFrame: '少なくとも1フレーム必要です', restore: '元に戻す', mobilePreviewTab: 'プレビュー', frameDuration: '表示時間', applyDurationAll: 'すべてに適用', durationAppliedAll: 'すべてのフレームに表示時間を適用しました', invalidDuration: '表示時間は20〜5000msを10ms単位で指定してください', previewTitle: 'プレビュー', playPreview: '再生', pausePreview: '一時停止', restartPreview: '最初から', loopPreview: 'ループ', previewNote: '各フレームの表示時間を使って再生します。', previewStarted: 'プレビューを再生しました', previewPaused: 'プレビューを一時停止しました', previewRestarted: '最初のフレームへ戻しました', loopOn: 'ループを有効にしました', loopOff: 'ループを無効にしました', animationAssistTitle: 'アニメ補助', onionSkin: 'Onion Skin', onionOn: 'ON', onionOff: 'OFF', onionEnabled: 'Onion Skinを表示しました', onionDisabled: 'Onion Skinを非表示にしました', autosaveReady: '自動保存', autosaveSaving: '保存中…', autosaveSaved: '自動保存済み', autosaveUnavailable: '自動保存を利用できません。このタブを閉じると作業内容が失われます。', autosaveUnavailableShort: '自動保存不可', restoreTitle: '前回の作業があります', restoreContinue: '続きから', restoreNew: '新しく作る', restoreSummary: '{size} · {frames}フレーム', restoredProject: '前回の作業を復元しました',
           buildInfo: 'ビルド情報', appVersion: 'アプリバージョン', builtAt: '生成日時', dependencies: '内包依存数', footer: 'ブラウザー内で処理',
 
           helpTitle: '使い方と注意事項', helpStartTitle: '基本操作', helpStep1: '16×16〜128×128、またはCustomからキャンバスサイズを選びます。', helpStep2: '鉛筆 / 消しゴム / 塗りつぶし / スポイト / 選択を使い分けます。', helpStep3: '「すべて選択」は絵全体のコピー・切り取り・削除に使えます。選択範囲をドラッグすると、元の位置から切り取って移動します。選択範囲は別のツールへ切り替えると解除されます。貼り付けは貼り付け先を選択してから行います。元に戻す / やり直す、Zoom / Pan / GridはCanvas上部から操作できます。', helpStep4: 'フレームを追加・複製し、表示時間を設定してPreviewで動きを確認します。',
           helpKeyboard: 'Tabで操作先を選び、ボタンはSpaceまたはEnterで実行できます。キャンバスにフォーカスがあるときはSpace + ドラッグで表示を移動できます。',
           helpPrivacyTitle: 'プライバシー', helpPrivacyBody: '描画データはこのブラウザー内で処理され、このアプリから外部サーバーへ送信されません。実行時の外部通信も行いません。',
-          helpProjectFile:'編集を続けるには「書き出し」の「プロジェクトを保存」を使い、.pixel-project.jsonを保管します。「プロジェクトを開く」で復元できます（最大12 MiB）。端末内自動保存とは別です。アプリを閉じる直前の変更は保存されないことがあるため、大切な作品はプロジェクトファイルでも保存してください。Undo履歴・選択範囲・クリップボードは含みません。表示倍率はFitで開きます。拡大しても作業領域の高さは変わりません。スクロール、Space＋ドラッグ、2本指で表示を移動できます。',
+          helpProjectFile:'編集を続けるには「書き出し」の「プロジェクトを保存」を使い、.pixel-project.jsonを保管します。「プロジェクトを開く」で復元できます（最大12 MiB）。端末内自動保存とは別です。アプリを閉じる直前の変更は保存されないことがあるため、大切な作品はプロジェクトファイルでも保存してください。Undo履歴・選択範囲・クリップボードは含みません。開くとキャンバス全体が収まる倍率になります。拡大しても作業領域の高さは変わりません。スクロール、Space＋ドラッグ、2本指で表示を移動できます。',
           helpLimitsTitle: '機能と注意事項', helpLimit1: '前のフレームを約30%で重ねるOnion SkinをON/OFFできます。', helpLimit2: '作業内容はIndexedDBへ端末内自動保存し、再読み込み後に復元できます。', helpLimit3: 'PNGを1枚または複数読み込み、PNG・Animated GIF・Sprite Sheetを書き出せます。GIFは256色制約があり、半透明は透明/不透明へ変換されます。',
           helpTouchTitle: 'スマートフォン', helpTouchBody: '1本指で描画します。2本指でPan / Pinch Zoomできます。2本指操作へ移った場合は、誤って始まった描画を取り消して表示操作へ切り替えます。塗りつぶしとスポイトは指を離すと実行され、タッチ操作がキャンセルされた場合は実行されません。', helpMobileActions: 'スマホでは「フレーム」画面からPNGを追加し、「書き出し」画面の下部で新しいキャンバスを作れます。',
           confirmTitle: '確認', cancel: 'キャンセル', confirmNew: '新しく作る', newConfirmMessage: '現在の自動保存データを置き換えて、新しいキャンバスを作成しますか？',
@@ -1098,17 +1105,17 @@
           introLead: 'Draw pixel art frame by frame and save it as GIF or PNG.', localBadge: 'Fully local processing',
           setupTitle: 'New canvas', setupBody: 'Choose a size or start from PNG files.',
           importPngTitle:'Start from PNG', importPngSetupHint:'Choose or drop one PNG, or multiple PNGs with matching dimensions.', choosePng:'Choose PNG', addPng:'Add PNG', importingPng:'Importing PNG…', importCancelled:'PNG import stopped because the canvas changed.', importAdded:'Added', importFailed:'Could not add', importAllFailed:'Could not import PNG files', importReasonNotPng:'Not a PNG file', importReasonDecode:'Could not decode the image', importReasonTooLarge:'Exceeds the 128×128 maximum ({size})', importReasonMismatch:'Dimensions differ ({actual} / expected: {expected})', importReasonFrameLimit:'Would exceed the 128-frame limit', importMore:'{count} more',
-          presetTiny: 'For tiny icons', presetSmall: 'A practical default', presetMedium: 'More room for detail', presetLarge: 'v1.0 maximum size',
+          presetTiny: 'For tiny icons', presetSmall: 'A practical default', presetMedium: 'More room for detail', presetLarge: 'Maximum size',
           customTitle: 'Custom', customHint: 'Width and height: 1–128 px', widthLabel: 'Width', heightLabel: 'Height', createCanvas: 'Create', invalidCustom: 'Enter whole-number width and height values from 1 to 128.',
           projectNote: 'Transparent canvas', newCanvas: 'New canvas', toolsTitle: 'Tools', pencil: 'Pencil', eraser: 'Eraser', fill: 'Fill', eyedropper: 'Eyedropper', selection: 'Selection', brushTitle: 'Brush size',
-          historyTitle: 'History', undo: 'Undo', redo: 'Redo', fit: 'Fit', zoomIn: 'Zoom in', zoomOut: 'Zoom out', grid: 'Grid', recentColorsTitle: 'Recent colors', recentColorsEmpty: 'Selected colors appear here.',
+          historyTitle: 'History', undo: 'Undo', redo: 'Redo', fitScale: 'Fit canvas to view', zoomIn: 'Zoom in', zoomOut: 'Zoom out', grid: 'Grid', recentColorsTitle: 'Recent colors', recentColorsEmpty: 'Selected colors appear here.',
           desktopTip: 'Drag to draw. Use Space + Drag to pan and the wheel to zoom.', colorTitle: 'Drawing color', colorPickerTitle: 'Color picker', currentToolTitle: 'Current settings', displayScale: 'Display scale', canvasLabel: 'Pixel art canvas', framesTitle: 'Frames', mobileEditTab: 'Edit', mobileFramesTab: 'Frames', addFrame: 'Add', duplicateFrame: 'Duplicate', deleteFrame: 'Delete', moveFrameLeft: 'Move earlier', moveFrameRight: 'Move later', frameLabel: 'Frame', frameAdded: 'Frame added', frameDuplicated: 'Frame duplicated', frameDeleted: 'Frame deleted', frameRestored: 'Frame restored', frameMoved: 'Frame reordered', frameLimit: 'Up to 128 frames are supported', keepOneFrame: 'At least one frame is required', restore: 'Undo', mobilePreviewTab: 'Preview', frameDuration: 'Frame delay', applyDurationAll: 'Apply to all', durationAppliedAll: 'Frame delay applied to all frames', invalidDuration: 'Use a frame delay from 20 to 5000 ms in 10 ms steps', previewTitle: 'Preview', playPreview: 'Play', pausePreview: 'Pause', restartPreview: 'Restart', loopPreview: 'Loop', previewNote: 'Playback uses each frame’s individual delay.', previewStarted: 'Preview started', previewPaused: 'Preview paused', previewRestarted: 'Returned to the first frame', loopOn: 'Loop enabled', loopOff: 'Loop disabled', animationAssistTitle: 'Animation assist', onionSkin: 'Onion Skin', onionOn: 'ON', onionOff: 'OFF', onionEnabled: 'Onion skin shown', onionDisabled: 'Onion skin hidden', autosaveReady: 'Autosave', autosaveSaving: 'Saving…', autosaveSaved: 'Autosaved', autosaveUnavailable: 'Autosave is unavailable. Closing this tab will discard your work.', autosaveUnavailableShort: 'Autosave unavailable', restoreTitle: 'Previous work found', restoreContinue: 'Continue', restoreNew: 'Start new', restoreSummary: '{size} · {frames} frames', restoredProject: 'Previous work restored',
           buildInfo: 'Build information', appVersion: 'App version', builtAt: 'Built at', dependencies: 'Embedded dependencies', footer: 'Processed in your browser',
 
           helpTitle: 'How to use & notes', helpStartTitle: 'Basics', helpStep1: 'Choose 16×16 through 128×128, or enter a Custom canvas size.', helpStep2: 'Choose Pencil, Eraser, Fill, Eyedropper, or Selection.', helpStep3: 'Use Select all to copy, cut, or delete the whole image. Drag a selection to cut it from its original position and move it. Selection clears when you switch tools. Choose a destination before pasting. Undo / Redo, Zoom / Pan, and Grid stay above the canvas.', helpStep4: 'Add or duplicate frames, set their delays, and check the motion in Preview.',
           helpKeyboard: 'Use Tab to focus controls and Space or Enter to activate buttons. With the canvas focused, hold Space and drag to pan.',
           helpPrivacyTitle: 'Privacy', helpPrivacyBody: 'Pixel data is processed in this browser and is not sent to an external server by this app. The app also makes no runtime network requests.',
-          helpProjectFile:'To resume editing, use Save project in Export and keep the .pixel-project.json file. Open project restores it (12 MiB maximum), independently of local autosave. Very recent edits may not be saved when you close the app; keep a project file for important work. Undo history, selections, and clipboard are not included; the view opens at Fit. Zoom does not enlarge the viewport. Scroll, Space-drag, or use two fingers to pan.',
+          helpProjectFile:'To resume editing, use Save project in Export and keep the .pixel-project.json file. Open project restores it (12 MiB maximum), independently of local autosave. Very recent edits may not be saved when you close the app; keep a project file for important work. Undo history, selections, and clipboard are not included; the canvas fits the view when opened. Zoom does not enlarge the viewport. Scroll, Space-drag, or use two fingers to pan.',
           helpLimitsTitle: 'Features and limitations', helpLimit1: 'Onion Skin can show the previous frame at about 30% opacity while editing.', helpLimit2: 'Your project is autosaved locally to IndexedDB and can be restored after reload.', helpLimit3: 'Import one or more PNG files and export PNG, animated GIF, or sprite-sheet output. GIF is limited to 256 colors and converts partial alpha to transparent or opaque pixels.',
           helpTouchTitle: 'Smartphones', helpTouchBody: 'Draw with one finger. Use two fingers to pan or pinch zoom. When a second finger arrives, any accidental stroke start is restored before the view gesture begins. Fill and Eyedropper run when you lift your finger; a cancelled touch does not apply them.', helpMobileActions: 'On phones, add PNG files from Frames and start a new canvas at the bottom of Export.',
           confirmTitle: 'Confirm', cancel: 'Cancel', confirmNew: 'Start new', newConfirmMessage: 'Replace the current autosaved project and create a new canvas?',
@@ -1360,6 +1367,7 @@
         $('#languageButton').textContent = language === 'ja' ? 'EN' : 'JA';
         $('#languageButton').setAttribute('aria-label', language === 'ja' ? '英語に切り替え' : 'Switch to Japanese');
         $('#languageButton').title = language === 'ja' ? '英語に切り替え' : 'Switch to Japanese';
+        $('#toolbarScaleValue').setAttribute('aria-label', `${state.scale}× · ${t('fitScale')}`);
         document.title = APP_CONFIG.name;
         $('#brandName').textContent = APP_CONFIG.name;
         $('#footerName').textContent = APP_CONFIG.name;
@@ -1789,7 +1797,7 @@
         if (!state.width || !state.height) return;
         surface.style.width = `${state.width * state.scale}px`; surface.style.height = `${state.height * state.scale}px`; surface.style.setProperty('--pixel-size', `${state.scale}px`);
         gridOverlay.hidden = !state.grid || state.scale < 4; $('#gridButton').setAttribute('aria-pressed', String(state.grid));
-        $('#displayScaleValue').textContent = `${state.scale}×`; $('#toolbarScaleValue').textContent = `${state.scale}×`;
+        $('#displayScaleValue').textContent = `${state.scale}×`; $('#toolbarScaleValue').textContent = `${state.scale}×`; $('#toolbarScaleValue').setAttribute('aria-label', `${state.scale}× · ${t('fitScale')}`);
         $('#zoomOutButton').disabled = state.scale <= 1; $('#zoomInButton').disabled = state.scale >= MAX_SCALE; updateSelectionOverlay();
       }
       function setScale(value, { anchorClientX = null, anchorClientY = null } = {}) {
@@ -1992,7 +2000,7 @@
         if(state.projectFileBusy) return;
         if (state.width) { const accepted = await AppConfirm.ask({ title:t('confirmTitle'), message:t('newConfirmMessage'), confirmLabel:t('confirmNew'), cancelLabel:t('cancel'), tone:'danger' }); if(!accepted)return; }
         state.projectGeneration++; AppToast.dismiss();
-        pausePreview({announceChange:false}); clearTimeout(state.autosaveTimer); state.autosaveQueued=false; await waitForAutosaveIdle(); await clearAutosave(); state.width=0; state.height=0; state.selection=null; state.selectionDrag=null; state.clipboard=null; state.importReport=null; renderImportReport(); state.dirty=false; state.undoStack=[]; state.redoStack=[]; state.frames=[]; state.currentFrameIndex=0; state.previewIndex=0; state.touchPointers.clear(); state.touchGesture=null; state.touchGestureBlocked=false; ctx.clearRect(0,0,canvas.width,canvas.height); onionCtx.clearRect(0,0,onionCanvas.width,onionCanvas.height); onionCanvas.hidden=true; updateHistoryButtons(); updatePreviewControls(); $('#editorView').hidden=true; $('#setupView').hidden=false; document.body.dataset.projectState='setup'; $('#customError').textContent=''; $('#setupTitle').focus?.(); window.scrollTo({top:0,behavior:'smooth'});
+        pausePreview({announceChange:false}); clearTimeout(state.autosaveTimer); state.autosaveQueued=false; await waitForAutosaveIdle(); await clearAutosave(); state.width=0; state.height=0; state.selection=null; state.selectionDrag=null; state.clipboard=null; state.importReport=null; renderImportReport(); state.dirty=false; state.undoStack=[]; state.redoStack=[]; state.frames=[]; state.currentFrameIndex=0; state.previewIndex=0; state.touchPointers.clear(); state.touchGesture=null; state.touchGestureBlocked=false; ctx.clearRect(0,0,canvas.width,canvas.height); onionCtx.clearRect(0,0,onionCanvas.width,onionCanvas.height); onionCanvas.hidden=true; updateHistoryButtons(); updatePreviewControls(); $('#editorView').hidden=true; $('#setupView').hidden=false; document.body.dataset.projectState='setup'; $('#customCanvasDetails').open=false; $('#customError').textContent=''; $('#setupTitle').focus?.(); window.scrollTo({top:0,behavior:'smooth'});
       }
 
       $$('[data-preset]').forEach(button => button.addEventListener('click', () => { const size=Number(button.dataset.preset); createProject(size,size); }));
@@ -2022,7 +2030,7 @@
       $('#projectFileInput').addEventListener('change',event=>loadProjectFile(event.target.files[0]));
       $('#savePngButton').addEventListener('click',saveCurrentFramePng); $('#saveGifButton').addEventListener('click',saveAnimatedGif); $('#saveSpriteSheetButton').addEventListener('click',saveSpriteSheet);
       ['setupImportButton','editorImportButton','mobileImportButton'].forEach(id=>$('#'+id).addEventListener('click',()=>$('#pngFileInput').click())); $('#pngFileInput').addEventListener('change',event=>importPngFiles(event.target.files)); installPngDropTarget($('#setupImportZone')); installPngDropTarget($('#editorView'));
-      $('#zoomOutButton').addEventListener('click', () => setScale(state.scale-1)); $('#zoomInButton').addEventListener('click', () => setScale(state.scale+1)); $('#fitButton').addEventListener('click', () => fitCanvas({announceChange:true})); $('#gridButton').addEventListener('click',toggleGrid);
+      $('#zoomOutButton').addEventListener('click', () => setScale(state.scale-1)); $('#zoomInButton').addEventListener('click', () => setScale(state.scale+1)); $('#toolbarScaleValue').addEventListener('click', () => fitCanvas({announceChange:true})); $('#gridButton').addEventListener('click',toggleGrid);
       ['newCanvasButton','mobileNewCanvasButton'].forEach(id=>$('#'+id).addEventListener('click', returnToSetup));
       canvas.addEventListener('pointerdown', handleCanvasPointerDown); canvas.addEventListener('pointermove', handleCanvasPointerMove); canvas.addEventListener('pointerup', handleCanvasPointerEnd); canvas.addEventListener('pointercancel', handleCanvasPointerEnd); canvas.addEventListener('pointerenter', event => updateBrushPreview(event)); canvas.addEventListener('pointerleave', () => { hideBrushPreview(); canvas.classList.remove('is-selection-hover'); }); canvas.addEventListener('contextmenu', event => event.preventDefault());
       stage.addEventListener('pointerdown', event => { if(event.target===canvas||event.target===surface) return; if(event.pointerType==='mouse' && (event.button===1||state.spacePressed)){event.preventDefault();startPan(event);} });

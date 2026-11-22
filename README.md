@@ -19,7 +19,7 @@ GitHub Pages delivers the initial HTML. After it loads, drawing, PNG import, fra
 ## Features
 
 - **Start small and draw immediately** — Create 16×16, 32×32, 64×64, 128×128, or custom canvases up to 128×128 pixels.
-- **Pixel-focused drawing tools** — Pencil, Eraser, Fill, Eyedropper, rectangle Selection, 1 / 2 / 4 px brushes, Grid, Zoom, Fit, Pan, and pinch zoom.
+- **Pixel-focused drawing tools** — Pencil, Eraser, Fill, Eyedropper, rectangle Selection, 1 / 2 / 4 px brushes, Grid, Zoom, Pan, and pinch zoom. Tap the displayed zoom value (e.g. 27×) to fit the canvas to the view.
 - **See the exact brush footprint** — Pencil and Eraser preview the actual 1 / 2 / 4 px area that will be affected before drawing.
 - **Build animations frame by frame** — Add, duplicate, delete, reorder, and edit up to 128 frames with independent Undo / Redo history.
 - **Tune timing and preview motion** — Set each frame from 20 to 5000 ms, apply one delay to all frames, and use Play / Pause / Restart / Loop plus previous-frame Onion Skin.
@@ -54,14 +54,14 @@ The v1.0.6 application has no runtime third-party package dependency, so the bui
 
 ### Save an editable project
 
-In Export, edit the filename and choose **Save project** to download `.pixel-project.json`. Use **Open project** on the start screen or in Export to resume on this or another device. This is separate from IndexedDB autosave. All frames, exact RGBA pixels, timing, current/recent colors, and editing/export settings are preserved. Files are limited to 12 MiB. Opening replaces the current document after confirmation; invalid files leave it unchanged. Undo history, selections, and clipboard are not included; the view opens at Fit.
+In Export, edit the filename and choose **Save project** to download `.pixel-project.json`. Use **Open project** on the start screen or in Export to resume on this or another device. This is separate from IndexedDB autosave. All frames, exact RGBA pixels, timing, current/recent colors, and editing/export settings are preserved. Files are limited to 12 MiB. Opening replaces the current document after confirmation; invalid files leave it unchanged. Undo history, selections, and clipboard are not included; the canvas fits the view when opened.
 
 Zoom stays within a bounded viewport. Scroll or use Space-drag to pan on desktop; use two fingers on touch devices. Selection controls appear only on the mobile Edit tab, while selections survive tab changes.
 
 ## Usage
 
-1. Choose 16×16, 32×32, 64×64, 128×128, or Custom, or start from PNG files.
-2. Draw with Pencil / Eraser / Fill / Eyedropper. Use Grid, Zoom, Fit, Pan, and Recent Colors as needed.
+1. Choose 16×16, 32×32, 64×64, or 128×128, expand Custom to enter dimensions, or start from PNG files.
+2. Draw with Pencil / Eraser / Fill / Eyedropper. Use Grid, Zoom, Pan, and Recent Colors as needed; tap the zoom value to fit the canvas.
 3. Add or duplicate frames, then edit each pose. Onion Skin can show the previous frame while drawing the next one.
 4. Set each frame delay. Use **Apply to all** when the animation should use one common timing value.
 5. Open Preview and check the animation with Play / Pause / Restart / Loop.

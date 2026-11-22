@@ -63,4 +63,20 @@ for(const [label,html] of variants){
   assert.match(html,/class="setup-import-actions"/);
     assert.match(html,/connect-src 'none'/);
  });
+
+ test(label+': custom size disclosure and live zoom fit control',()=>{
+  assert.match(html,/<details class="custom-card" id="customCanvasDetails">/);
+  assert.doesNotMatch(html,/<details class="custom-card" id="customCanvasDetails" open/);
+  assert.match(html,/<summary class="custom-head">[\s\S]*?data-i18n="customTitle"[\s\S]*?<\/summary>/);
+  assert.match(html,/\.custom-content \{ padding-top:16px; \}/);
+  assert.match(html,/<span class="preset-note" data-i18n="presetLarge">最大サイズ<\/span>/);
+  assert.match(html,/presetLarge: '最大サイズ'/);
+  assert.match(html,/presetLarge: 'Maximum size'/);
+  assert.doesNotMatch(html,/id="fitButton"/);
+  assert.match(html,/<button class="zoom-label zoom-fit-button" id="toolbarScaleValue" type="button" data-i18n-title="fitScale"[^>]*>1×<\/button>/);
+  assert.match(html,/\$\('#toolbarScaleValue'\)\.addEventListener\('click', \(\) => fitCanvas\(\{announceChange:true\}\)\)/);
+  assert.match(html,/setAttribute\('aria-label',/);
+  assert.match(html,/\$\('#customCanvasDetails'\)\.open=false;/);
+  assert.match(html,/fitScale: 'Fit canvas to view'/);
+ });
 }
