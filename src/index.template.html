@@ -373,16 +373,26 @@
     .duration-input-wrap:focus-within { border-color:var(--focus); box-shadow:0 0 0 3px color-mix(in srgb,var(--focus) 18%,transparent); }
     .duration-input { width:100%; min-width:0; min-height:38px; padding:8px 8px; border:0; outline:0; background:transparent; color:var(--text); }
     .duration-unit { padding:0 8px; color:var(--muted); font-size:11px; }
-    .preview-panel { border-top:1px solid var(--line); padding:16px; background:var(--surface); }
-    .preview-layout { display:grid; grid-template-columns:minmax(150px,220px) minmax(0,1fr); gap:16px; align-items:center; }
-    .preview-stage { min-height:190px; display:grid; place-items:center; overflow:hidden; padding:8px; border:1px solid var(--line); border-radius:12px; background:linear-gradient(45deg,var(--checker-b) 25%,transparent 25%) 0 0/16px 16px,linear-gradient(-45deg,var(--checker-b) 25%,transparent 25%) 0 8px/16px 16px,linear-gradient(45deg,transparent 75%,var(--checker-b) 75%) 8px -8px/16px 16px,linear-gradient(-45deg,transparent 75%,var(--checker-b) 75%) -8px 0/16px 16px,var(--checker-a); }
+    .preview-panel { border-top:1px solid var(--line); padding:24px; background:var(--surface); }
+    .preview-layout { display:grid; grid-template-columns:208px minmax(0,1fr); gap:24px; align-items:center; }
+    .preview-stage { width:208px; height:208px; display:grid; place-items:center; overflow:hidden; padding:8px; border:1px solid var(--line); border-radius:8px; background:linear-gradient(45deg,var(--checker-b) 25%,transparent 25%) 0 0/16px 16px,linear-gradient(-45deg,var(--checker-b) 25%,transparent 25%) 0 8px/16px 16px,linear-gradient(45deg,transparent 75%,var(--checker-b) 75%) 8px -8px/16px 16px,linear-gradient(-45deg,transparent 75%,var(--checker-b) 75%) -8px 0/16px 16px,var(--checker-a); }
     #previewCanvas { display:block; image-rendering:pixelated; image-rendering:crisp-edges; box-shadow:0 0 0 1px rgba(32,33,31,.3); }
     .preview-copy { min-width:0; }
-    .preview-copy .panel-title { margin-bottom:8px; }
-    .preview-status { margin:0 0 8px; color:var(--muted); font-size:12px; }
-    .preview-actions { display:flex; flex-wrap:wrap; gap:8px; }
-    .preview-actions .compact-button { min-width:86px; }
-    .preview-note { margin:8px 0 0; color:var(--muted); font-size:11px; }
+    .preview-heading { display:flex; align-items:baseline; justify-content:space-between; flex-wrap:wrap; gap:8px 16px; margin-bottom:16px; }
+    .preview-heading .panel-title { margin:0; }
+    .preview-status { margin:0; color:var(--muted); font-size:12px; font-variant-numeric:tabular-nums; white-space:nowrap; }
+    .preview-actions { display:flex; align-items:center; flex-wrap:wrap; gap:8px; }
+    .preview-actions button { display:inline-flex; align-items:center; justify-content:center; gap:8px; min-height:44px; padding:8px 16px; border:1px solid transparent; border-radius:8px; background:transparent; color:var(--text); font-size:13px; font-weight:640; white-space:nowrap; cursor:pointer; transition:background .15s ease,color .15s ease; }
+    .preview-actions button:hover { background:var(--surface-muted); }
+    .preview-actions button:disabled { opacity:.42; cursor:not-allowed; }
+    .preview-actions svg { width:18px; height:18px; flex:0 0 auto; }
+    .preview-actions .preview-main { min-width:112px; border-color:var(--accent); background:var(--accent); color:#fff; }
+    .preview-actions .preview-main:not(:disabled):hover { background:var(--accent-hover); }
+    .preview-actions .preview-loop[aria-pressed="true"] { background:var(--accent-soft); color:var(--accent); }
+    .preview-actions .preview-loop[aria-pressed="false"] { color:var(--muted); }
+    .preview-scrubber { margin-top:16px; }
+    .preview-scrubber[hidden] { display:none; }
+    .preview-scrubber input { display:block; width:100%; height:32px; margin:0; accent-color:var(--accent); cursor:pointer; }
     .export-panel { border-top:1px solid var(--line); padding:16px; background:#fafaf8; }
     .export-head { display:flex; align-items:flex-start; justify-content:space-between; gap:16px; margin-bottom:16px; }
     .export-head p { margin:8px 0 0; color:var(--muted); font-size:11px; }
@@ -415,9 +425,6 @@
     .export-action:hover { border-color:var(--accent); color:var(--accent); background:var(--accent-soft); }
     .frame-actions #addFrameButton { background:var(--accent-soft); color:var(--accent); }
     .frame-actions #deleteFrameButton:hover { color:var(--danger); background:#fff0ed; }
-    .preview-actions #playPreviewButton:not(:disabled), .preview-actions #pausePreviewButton:not(:disabled) { color:#fff; background:var(--accent); border-color:var(--accent); }
-    .preview-actions #playPreviewButton:not(:disabled):hover, .preview-actions #pausePreviewButton:not(:disabled):hover { background:var(--accent-hover); }
-    .preview-actions #loopPreviewButton[aria-pressed="true"] { color:var(--accent); background:transparent; box-shadow:inset 0 -2px 0 var(--accent); border-radius:0; }
     @media (min-width:641px) {
       .export-card { display:grid; grid-template-rows:subgrid; grid-row:span 5; gap:0; }
       .export-card h4 { grid-row:1; }
@@ -522,10 +529,13 @@
       .frame-thumb-wrap { width:62px; height:62px; }
       .timing-controls { display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr); align-items:end; }
       .duration-field { min-width:0; }
-      .preview-layout { grid-template-columns:1fr; }
-      .preview-stage { min-height:min(42vh,320px); }
+      .preview-layout { grid-template-columns:1fr; gap:24px; justify-items:center; }
+      .preview-stage { width:min(100%,288px); height:auto; aspect-ratio:1; }
+      .preview-copy { width:100%; }
       .preview-actions { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); }
-      .preview-actions .compact-button { min-width:0; min-height:44px; }
+      .preview-actions .preview-main { grid-column:1 / -1; width:100%; min-width:0; min-height:48px; }
+      .preview-actions button { min-width:0; padding:8px; }
+      .preview-panel { padding:16px; }
       .export-grid { grid-template-columns:1fr; gap:0; }
       .export-card, .export-card:first-child { padding:24px 0; border:0; border-top:1px solid var(--line); }
       .export-card:first-child { padding-top:0; border-top:0; }
@@ -878,18 +888,23 @@
       <section class="preview-panel" id="previewPanel" aria-labelledby="previewTitle">
         <div class="preview-layout">
           <div class="preview-stage" id="previewStage">
-            <canvas id="previewCanvas" width="32" height="32" aria-label="Animation preview"></canvas>
+            <canvas id="previewCanvas" width="32" height="32" data-i18n-aria-label="previewCanvasLabel" aria-label="アニメーションのプレビュー"></canvas>
           </div>
           <div class="preview-copy">
-            <h3 class="panel-title" id="previewTitle" data-i18n="previewTitle">プレビュー</h3>
-            <p class="preview-status" id="previewStatus">1 / 1 · 100 ms</p>
-            <div class="preview-actions">
-              <button class="compact-button" id="playPreviewButton" type="button" data-i18n="playPreview">再生</button>
-              <button class="compact-button" id="pausePreviewButton" type="button" disabled data-i18n="pausePreview">一時停止</button>
-              <button class="compact-button" id="restartPreviewButton" type="button" data-i18n="restartPreview">最初から</button>
-              <button class="compact-button" id="loopPreviewButton" type="button" aria-pressed="true" data-i18n="loopPreview">ループ</button>
+            <div class="preview-heading">
+              <h3 class="panel-title" id="previewTitle" data-i18n="previewTitle">プレビュー</h3>
+              <p class="preview-status" id="previewStatus">1 / 1 · 100 ms</p>
             </div>
-            <p class="preview-note" data-i18n="previewNote">各フレームの表示時間を使って再生します。</p>
+            <div class="preview-actions">
+              <button class="preview-main" id="playPreviewButton" type="button" aria-pressed="false">
+                <svg id="previewPlayIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m8 5 11 7-11 7V5Z"/></svg>
+                <svg id="previewPauseIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" aria-hidden="true" hidden><path d="M8 5v14M16 5v14"/></svg>
+                <span id="previewPlayLabel">再生</span>
+              </button>
+              <button class="preview-secondary" id="restartPreviewButton" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 11a8 8 0 1 1 2 6M4 4v7h7"/></svg><span data-i18n="restartPreview">最初から</span></button>
+              <button class="preview-loop" id="loopPreviewButton" type="button" aria-pressed="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m17 2 4 4-4 4"/><path d="M3 11V8a2 2 0 0 1 2-2h16M7 22l-4-4 4-4"/><path d="M21 13v3a2 2 0 0 1-2 2H3"/></svg><span data-i18n="loopPreview">ループ</span></button>
+            </div>
+            <div class="preview-scrubber" id="previewScrubber" hidden><input id="previewFrameSlider" type="range" min="1" max="1" value="1" step="1" data-i18n-aria-label="previewSeek" aria-label="プレビューのフレームを選ぶ"></div>
           </div>
         </div>
       </section>
@@ -1088,7 +1103,7 @@
           customTitle: 'Custom', customHint: '幅・高さはそれぞれ1〜128 px', widthLabel: '幅', heightLabel: '高さ', createCanvas: '作成', invalidCustom: '幅と高さは1〜128の整数で指定してください。',
           projectNote: '透明キャンバス', newCanvas: '新しいキャンバス', toolsTitle: 'ツール', pencil: '鉛筆', eraser: '消しゴム', fill: '塗りつぶし', eyedropper: 'スポイト', selection: '選択', brushTitle: 'ブラシサイズ',
           historyTitle: '履歴', undo: '元に戻す', redo: 'やり直す', fitScale: 'キャンバス全体を表示', zoomIn: '拡大', zoomOut: '縮小', grid: 'グリッド', recentColorsTitle: '最近使った色', recentColorsEmpty: '色を選ぶとここに表示されます。',
-          desktopTip: 'ドラッグして描画。Space + DragでPan、ホイールでZoomできます。', colorTitle: '描画色', colorPickerTitle: 'カラーピッカー', currentToolTitle: '現在の設定', displayScale: '表示倍率', canvasLabel: 'ドット絵キャンバス', framesTitle: 'フレーム', mobileEditTab: '編集', mobileFramesTab: 'フレーム', addFrame: '追加', duplicateFrame: '複製', deleteFrame: '削除', moveFrameLeft: '前へ移動', moveFrameRight: '後ろへ移動', frameLabel: 'フレーム', frameAdded: 'フレームを追加しました', frameDuplicated: 'フレームを複製しました', frameDeleted: 'フレームを削除しました', frameRestored: 'フレームを元に戻しました', frameMoved: 'フレームを並べ替えました', frameLimit: 'フレームは最大128個です', keepOneFrame: '少なくとも1フレーム必要です', restore: '元に戻す', mobilePreviewTab: 'プレビュー', frameDuration: '表示時間', applyDurationAll: 'すべてに適用', durationAppliedAll: 'すべてのフレームに表示時間を適用しました', invalidDuration: '表示時間は20〜5000msを10ms単位で指定してください', previewTitle: 'プレビュー', playPreview: '再生', pausePreview: '一時停止', restartPreview: '最初から', loopPreview: 'ループ', previewNote: '各フレームの表示時間を使って再生します。', previewStarted: 'プレビューを再生しました', previewPaused: 'プレビューを一時停止しました', previewRestarted: '最初のフレームへ戻しました', loopOn: 'ループを有効にしました', loopOff: 'ループを無効にしました', animationAssistTitle: 'アニメ補助', onionSkin: 'Onion Skin', onionOn: 'ON', onionOff: 'OFF', onionEnabled: 'Onion Skinを表示しました', onionDisabled: 'Onion Skinを非表示にしました', autosaveReady: '自動保存', autosaveSaving: '保存中…', autosaveSaved: '自動保存済み', autosaveUnavailable: '自動保存を利用できません。このタブを閉じると作業内容が失われます。', autosaveUnavailableShort: '自動保存不可', restoreTitle: '前回の作業があります', restoreContinue: '続きから', restoreNew: '新しく作る', restoreSummary: '{size} · {frames}フレーム', restoredProject: '前回の作業を復元しました',
+          desktopTip: 'ドラッグして描画。Space + DragでPan、ホイールでZoomできます。', colorTitle: '描画色', colorPickerTitle: 'カラーピッカー', currentToolTitle: '現在の設定', displayScale: '表示倍率', canvasLabel: 'ドット絵キャンバス', framesTitle: 'フレーム', mobileEditTab: '編集', mobileFramesTab: 'フレーム', addFrame: '追加', duplicateFrame: '複製', deleteFrame: '削除', moveFrameLeft: '前へ移動', moveFrameRight: '後ろへ移動', frameLabel: 'フレーム', frameAdded: 'フレームを追加しました', frameDuplicated: 'フレームを複製しました', frameDeleted: 'フレームを削除しました', frameRestored: 'フレームを元に戻しました', frameMoved: 'フレームを並べ替えました', frameLimit: 'フレームは最大128個です', keepOneFrame: '少なくとも1フレーム必要です', restore: '元に戻す', mobilePreviewTab: 'プレビュー', frameDuration: '表示時間', applyDurationAll: 'すべてに適用', durationAppliedAll: 'すべてのフレームに表示時間を適用しました', invalidDuration: '表示時間は20〜5000msを10ms単位で指定してください', previewTitle: 'プレビュー', previewCanvasLabel:'アニメーションのプレビュー', previewSeek:'プレビューのフレームを選ぶ', playPreview: '再生', pausePreview: '一時停止', restartPreview: '最初から', loopPreview: 'ループ', previewStarted: 'プレビューを再生しました', previewPaused: 'プレビューを一時停止しました', previewRestarted: '最初のフレームへ戻しました', loopOn: 'ループを有効にしました', loopOff: 'ループを無効にしました', animationAssistTitle: 'アニメ補助', onionSkin: 'Onion Skin', onionOn: 'ON', onionOff: 'OFF', onionEnabled: 'Onion Skinを表示しました', onionDisabled: 'Onion Skinを非表示にしました', autosaveReady: '自動保存', autosaveSaving: '保存中…', autosaveSaved: '自動保存済み', autosaveUnavailable: '自動保存を利用できません。このタブを閉じると作業内容が失われます。', autosaveUnavailableShort: '自動保存不可', restoreTitle: '前回の作業があります', restoreContinue: '続きから', restoreNew: '新しく作る', restoreSummary: '{size} · {frames}フレーム', restoredProject: '前回の作業を復元しました',
           buildInfo: 'ビルド情報', appVersion: 'アプリバージョン', builtAt: '生成日時', dependencies: '内包依存数', footer: 'ブラウザー内で処理',
 
           helpTitle: '使い方と注意事項', helpStartTitle: '基本操作', helpStep1: '16×16〜128×128、またはCustomからキャンバスサイズを選びます。', helpStep2: '鉛筆 / 消しゴム / 塗りつぶし / スポイト / 選択を使い分けます。', helpStep3: '「すべて選択」は絵全体のコピー・切り取り・削除に使えます。選択範囲をドラッグすると、元の位置から切り取って移動します。選択範囲は別のツールへ切り替えると解除されます。貼り付けは貼り付け先を選択してから行います。元に戻す / やり直す、Zoom / Pan / GridはCanvas上部から操作できます。', helpStep4: 'フレームを追加・複製し、表示時間を設定してPreviewで動きを確認します。',
@@ -1111,7 +1126,7 @@
           customTitle: 'Custom', customHint: 'Width and height: 1–128 px', widthLabel: 'Width', heightLabel: 'Height', createCanvas: 'Create', invalidCustom: 'Enter whole-number width and height values from 1 to 128.',
           projectNote: 'Transparent canvas', newCanvas: 'New canvas', toolsTitle: 'Tools', pencil: 'Pencil', eraser: 'Eraser', fill: 'Fill', eyedropper: 'Eyedropper', selection: 'Selection', brushTitle: 'Brush size',
           historyTitle: 'History', undo: 'Undo', redo: 'Redo', fitScale: 'Fit canvas to view', zoomIn: 'Zoom in', zoomOut: 'Zoom out', grid: 'Grid', recentColorsTitle: 'Recent colors', recentColorsEmpty: 'Selected colors appear here.',
-          desktopTip: 'Drag to draw. Use Space + Drag to pan and the wheel to zoom.', colorTitle: 'Drawing color', colorPickerTitle: 'Color picker', currentToolTitle: 'Current settings', displayScale: 'Display scale', canvasLabel: 'Pixel art canvas', framesTitle: 'Frames', mobileEditTab: 'Edit', mobileFramesTab: 'Frames', addFrame: 'Add', duplicateFrame: 'Duplicate', deleteFrame: 'Delete', moveFrameLeft: 'Move earlier', moveFrameRight: 'Move later', frameLabel: 'Frame', frameAdded: 'Frame added', frameDuplicated: 'Frame duplicated', frameDeleted: 'Frame deleted', frameRestored: 'Frame restored', frameMoved: 'Frame reordered', frameLimit: 'Up to 128 frames are supported', keepOneFrame: 'At least one frame is required', restore: 'Undo', mobilePreviewTab: 'Preview', frameDuration: 'Frame delay', applyDurationAll: 'Apply to all', durationAppliedAll: 'Frame delay applied to all frames', invalidDuration: 'Use a frame delay from 20 to 5000 ms in 10 ms steps', previewTitle: 'Preview', playPreview: 'Play', pausePreview: 'Pause', restartPreview: 'Restart', loopPreview: 'Loop', previewNote: 'Playback uses each frame’s individual delay.', previewStarted: 'Preview started', previewPaused: 'Preview paused', previewRestarted: 'Returned to the first frame', loopOn: 'Loop enabled', loopOff: 'Loop disabled', animationAssistTitle: 'Animation assist', onionSkin: 'Onion Skin', onionOn: 'ON', onionOff: 'OFF', onionEnabled: 'Onion skin shown', onionDisabled: 'Onion skin hidden', autosaveReady: 'Autosave', autosaveSaving: 'Saving…', autosaveSaved: 'Autosaved', autosaveUnavailable: 'Autosave is unavailable. Closing this tab will discard your work.', autosaveUnavailableShort: 'Autosave unavailable', restoreTitle: 'Previous work found', restoreContinue: 'Continue', restoreNew: 'Start new', restoreSummary: '{size} · {frames} frames', restoredProject: 'Previous work restored',
+          desktopTip: 'Drag to draw. Use Space + Drag to pan and the wheel to zoom.', colorTitle: 'Drawing color', colorPickerTitle: 'Color picker', currentToolTitle: 'Current settings', displayScale: 'Display scale', canvasLabel: 'Pixel art canvas', framesTitle: 'Frames', mobileEditTab: 'Edit', mobileFramesTab: 'Frames', addFrame: 'Add', duplicateFrame: 'Duplicate', deleteFrame: 'Delete', moveFrameLeft: 'Move earlier', moveFrameRight: 'Move later', frameLabel: 'Frame', frameAdded: 'Frame added', frameDuplicated: 'Frame duplicated', frameDeleted: 'Frame deleted', frameRestored: 'Frame restored', frameMoved: 'Frame reordered', frameLimit: 'Up to 128 frames are supported', keepOneFrame: 'At least one frame is required', restore: 'Undo', mobilePreviewTab: 'Preview', frameDuration: 'Frame delay', applyDurationAll: 'Apply to all', durationAppliedAll: 'Frame delay applied to all frames', invalidDuration: 'Use a frame delay from 20 to 5000 ms in 10 ms steps', previewTitle: 'Preview', previewCanvasLabel:'Animation preview', previewSeek:'Choose preview frame', playPreview: 'Play', pausePreview: 'Pause', restartPreview: 'Restart', loopPreview: 'Loop', previewStarted: 'Preview started', previewPaused: 'Preview paused', previewRestarted: 'Returned to the first frame', loopOn: 'Loop enabled', loopOff: 'Loop disabled', animationAssistTitle: 'Animation assist', onionSkin: 'Onion Skin', onionOn: 'ON', onionOff: 'OFF', onionEnabled: 'Onion skin shown', onionDisabled: 'Onion skin hidden', autosaveReady: 'Autosave', autosaveSaving: 'Saving…', autosaveSaved: 'Autosaved', autosaveUnavailable: 'Autosave is unavailable. Closing this tab will discard your work.', autosaveUnavailableShort: 'Autosave unavailable', restoreTitle: 'Previous work found', restoreContinue: 'Continue', restoreNew: 'Start new', restoreSummary: '{size} · {frames} frames', restoredProject: 'Previous work restored',
           buildInfo: 'Build information', appVersion: 'App version', builtAt: 'Built at', dependencies: 'Embedded dependencies', footer: 'Processed in your browser',
 
           helpTitle: 'How to use & notes', helpStartTitle: 'Basics', helpStep1: 'Choose 16×16 through 128×128, or enter a Custom canvas size.', helpStep2: 'Choose Pencil, Eraser, Fill, Eyedropper, or Selection.', helpStep3: 'Use Select all to copy, cut, or delete the whole image. Drag a selection to cut it from its original position and move it. Selection clears when you switch tools. Choose a destination before pasting. Undo / Redo, Zoom / Pan, and Grid stay above the canvas.', helpStep4: 'Add or duplicate frames, set their delays, and check the motion in Preview.',
@@ -1450,7 +1465,7 @@
         const current = captureCanvas(); const next = state.redoStack.pop(); state.undoStack.push(current); if (state.undoStack.length > MAX_HISTORY) state.undoStack.shift(); ctx.putImageData(next,0,0); state.dirty = true; updateHistoryButtons(); renderFrames(); updateOnionSkin(); scheduleAutosave(); announce(t('redone'));
       }
 
-      function setMobilePage(page) { cancelSelectionMove(); updateSelectionOverlay(); const next = ['frames','preview','export'].includes(page) ? page : 'edit'; document.body.dataset.mobilePage = next; $$('[data-mobile-page-button]').forEach(button => button.setAttribute('aria-pressed', String(button.dataset.mobilePageButton === next))); }
+      function setMobilePage(page) { cancelSelectionMove(); updateSelectionOverlay(); const next = ['frames','preview','export'].includes(page) ? page : 'edit'; document.body.dataset.mobilePage = next; $$('[data-mobile-page-button]').forEach(button => button.setAttribute('aria-pressed', String(button.dataset.mobilePageButton === next))); if (next === 'preview' && state.frames.length) requestAnimationFrame(() => renderPreviewFrame(state.previewIndex)); }
       function cloneImageData(image) { return image ? new ImageData(new Uint8ClampedArray(image.data), image.width, image.height) : new ImageData(state.width, state.height); }
       function makeFrame(imageData = null, duration = DEFAULT_FRAME_DURATION) { return { imageData: imageData ? cloneImageData(imageData) : new ImageData(state.width, state.height), undoStack: [], redoStack: [], duration: normalizeFrameDuration(duration) || DEFAULT_FRAME_DURATION }; }
       function saveCurrentFrame() {
@@ -1748,19 +1763,38 @@
         const safeIndex = Math.max(0, Math.min(index, state.frames.length - 1));
         const frame = state.frames[safeIndex];
         previewCanvas.width = state.width; previewCanvas.height = state.height; previewCtx.imageSmoothingEnabled = false; previewCtx.clearRect(0,0,state.width,state.height); previewCtx.putImageData(frame.imageData,0,0);
-        const target = window.matchMedia('(max-width: 640px)').matches ? Math.min(280, Math.max(150, window.innerWidth - 72)) : 180;
+        const previewStage = $('#previewStage');
+        const target = previewStage.clientWidth && previewStage.clientHeight
+          ? Math.max(1, Math.min(previewStage.clientWidth - 24, previewStage.clientHeight - 24))
+          : 180;
         const scale = Math.max(1, Math.floor(Math.min(target / state.width, target / state.height)));
         previewCanvas.style.width = `${state.width * scale}px`; previewCanvas.style.height = `${state.height * scale}px`;
         $('#previewStatus').textContent = `${safeIndex + 1} / ${state.frames.length} · ${frame.duration || DEFAULT_FRAME_DURATION} ms`;
+        $('#previewFrameSlider').value = String(safeIndex + 1);
       }
       function updatePreviewControls() {
         const hasFrames = state.frames.length > 0;
-        $('#playPreviewButton').disabled = !hasFrames || state.previewPlaying;
-        $('#pausePreviewButton').disabled = !hasFrames || !state.previewPlaying;
+        const toggle = $('#playPreviewButton');
+        toggle.disabled = !hasFrames;
+        toggle.setAttribute('aria-pressed', String(state.previewPlaying));
+        $('#previewPlayLabel').textContent = t(state.previewPlaying ? 'pausePreview' : 'playPreview');
+        $('#previewPlayIcon').hidden = state.previewPlaying;
+        $('#previewPauseIcon').hidden = !state.previewPlaying;
         $('#restartPreviewButton').disabled = !hasFrames;
         $('#loopPreviewButton').disabled = !hasFrames;
         $('#loopPreviewButton').setAttribute('aria-pressed', String(state.previewLoop));
+        $('#previewScrubber').hidden = state.frames.length <= 1;
+        const slider = $('#previewFrameSlider');
+        slider.disabled = !hasFrames;
+        slider.max = String(Math.max(1, state.frames.length));
         if (hasFrames) renderPreviewFrame(state.previewIndex);
+      }
+      function seekPreviewFrame(value) {
+        if (!state.frames.length) return;
+        if (state.previewPlaying) pausePreview({ announceChange:false });
+        saveCurrentFrame();
+        state.previewIndex = Math.max(0, Math.min(state.frames.length - 1, Math.round(Number(value) || 1) - 1));
+        renderPreviewFrame(state.previewIndex);
       }
       function clearPreviewTimer() { if (state.previewTimer) { clearTimeout(state.previewTimer); state.previewTimer = 0; } }
       function schedulePreviewTick() {
@@ -2020,7 +2054,7 @@
       $('#addFrameButton').addEventListener('click',addFrame); $('#duplicateFrameButton').addEventListener('click',duplicateFrame); $('#deleteFrameButton').addEventListener('click',deleteFrame); $('#moveFrameLeftButton').addEventListener('click',()=>moveFrame(-1)); $('#moveFrameRightButton').addEventListener('click',()=>moveFrame(1));
       $('#frameDurationInput').addEventListener('change', event => setFrameDuration(event.target.value)); $('#frameDurationInput').addEventListener('keydown', event => { if(event.key==='Enter'){event.preventDefault();event.currentTarget.blur();} }); $('#applyDurationAllButton').addEventListener('click', () => setFrameDuration($('#frameDurationInput').value,{applyAll:true}));
       ['onionSkinButton','mobileOnionSkinButton'].forEach(id => $('#'+id).addEventListener('click', toggleOnionSkin));
-      $('#playPreviewButton').addEventListener('click', () => playPreview()); $('#pausePreviewButton').addEventListener('click', () => pausePreview()); $('#restartPreviewButton').addEventListener('click', restartPreview); $('#loopPreviewButton').addEventListener('click', togglePreviewLoop);
+      $('#playPreviewButton').addEventListener('click', () => state.previewPlaying ? pausePreview() : playPreview()); $('#restartPreviewButton').addEventListener('click', restartPreview); $('#loopPreviewButton').addEventListener('click', togglePreviewLoop); $('#previewFrameSlider').addEventListener('input', event => seekPreviewFrame(event.target.value));
       $$('[data-mobile-page-button]').forEach(button => button.addEventListener('click', () => setMobilePage(button.dataset.mobilePageButton)));
       $$('[data-png-scale]').forEach(button => button.addEventListener('click',()=>{state.pngScale=Number(button.dataset.pngScale)||1;updateExportPanel();}));
       $$('[data-sprite-layout]').forEach(button => button.addEventListener('click',()=>{state.spriteLayout=button.dataset.spriteLayout==='grid'?'grid':'horizontal';state.spritePreviewDirty=true;updateExportPanel();}));

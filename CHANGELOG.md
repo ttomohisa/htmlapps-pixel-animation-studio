@@ -5,6 +5,7 @@
 ## [1.0.6] - 2026-11-22
 
 ### Changed
+- Rework Preview as a compact player: one Play/Pause button with a changing icon, secondary Restart and clearly selected Loop controls, and a frame scrubber that appears only for multi-frame animations; simplify the bilingual status layout and remove the redundant explanatory line.
 - Remove the divider above the collapsed Custom canvas-size control.
 - On phones, move canvas dimensions and autosave status from the top of the editor to its compact footer in place of duplicated zoom/tool text, and give the drawing stage the recovered vertical space. Keep desktop placement and live status intact at breakpoint changes.
 - Shorten the 128×128 preset note to “Maximum size”, keep custom dimensions collapsed until requested, and make the live zoom value a clickable Fit control (keyboard-accessible) without the separate Fit button.

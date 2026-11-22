@@ -195,7 +195,7 @@ Current stable desktop and mobile Chromium, Firefox, and Safari. Direct `file://
 - Cancelled Fill / Eyedropper preserves pixels, active color, recent colors, history, and saved data; unrelated pointer IDs, duplicate release, mouse actions, and two-finger interruptions remain correct.
 - Selection clears when leaving the tool; Paste requires an active destination selection.
 - Add / Duplicate / Delete / Reorder works up to 128 frames, including delete Undo.
-- Per-frame timing, Apply to all, Preview, Loop, Restart, and Onion Skin work as specified.
+- Per-frame timing, Apply to all, Preview with one Play/Pause toggle, Loop, Restart, optional frame seeking for two or more frames, and Onion Skin work as specified.
 - Keyboard Space activates focused toolbar, Preview, mobile-page, and export buttons in Japanese and English without starting pan mode. Canvas Space + Drag, key-repeat, key release after focus changes, dialog protection, and blur cleanup remain intact.
 - PNG single/multi import, Drag & Drop, dimension validation, and partial-failure reporting work without silent resize.
 - Current-frame PNG 1×/2×/4×/8×, Animated GIF, Horizontal Sprite Sheet, and Grid Sprite Sheet save valid files with sanitized filenames.

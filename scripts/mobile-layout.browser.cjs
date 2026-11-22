@@ -159,6 +159,46 @@ async function main() {
           await bounds(page.locator('#mobileNewCanvasButton'),width,height,label,false);
           await page.locator('[data-mobile-page-button="edit"]').click();
         }
+        // Real playback, one-button pause, clear loop state, and keyboard scrubbing.
+        if(width<=cfg.bp) await page.locator('[data-mobile-page-button="preview"]').click();
+        const previewStage=page.locator('#previewStage'), toggle=page.locator('#playPreviewButton');
+        assert.equal(await previewStage.isVisible(),true,label+': preview stage available');
+        assert.equal(await page.locator('#pausePreviewButton').count(),0,label+': no redundant Pause button');
+        assert.equal(await toggle.getAttribute('aria-pressed'),'false',label+': initially stopped');
+        assert.equal((await page.locator('#previewPlayLabel').textContent()).trim(),language==='ja'?'再生':'Play',label+': play text');
+        assert.equal(await page.locator('#previewScrubber').isVisible(),false,label+': no scrubber for one frame');
+        const previewBounds=await page.evaluate(()=>{
+          const stage=document.querySelector('#previewStage').getBoundingClientRect(),canvas=document.querySelector('#previewCanvas').getBoundingClientRect();
+          return {stageW:stage.width,stageH:stage.height,canvasW:canvas.width,canvasH:canvas.height};
+        });
+        assert.ok(previewBounds.canvasW<=previewBounds.stageW-8&&previewBounds.canvasH<=previewBounds.stageH-8,label+': artwork fits preview '+JSON.stringify(previewBounds));
+        await page.locator('#loopPreviewButton').click();
+        assert.equal(await page.locator('#loopPreviewButton').getAttribute('aria-pressed'),'false',label+': loop off');
+        await page.locator('#loopPreviewButton').click();
+        assert.equal(await page.locator('#loopPreviewButton').getAttribute('aria-pressed'),'true',label+': loop on');
+        await toggle.click();
+        assert.equal(await toggle.getAttribute('aria-pressed'),'true',label+': playing');
+        assert.equal((await page.locator('#previewPlayLabel').textContent()).trim(),language==='ja'?'一時停止':'Pause',label+': pause text');
+        assert.equal(await page.locator('#previewPauseIcon').isVisible(),true,label+': pause icon');
+        await toggle.focus(); await page.keyboard.press('Space');
+        assert.equal(await toggle.getAttribute('aria-pressed'),'false',label+': Space pauses');
+        assert.equal(await page.locator('#previewPlayIcon').isVisible(),true,label+': play icon');
+        await page.locator('#restartPreviewButton').click();
+        assert.ok((await page.locator('#previewStatus').textContent()).startsWith('1 / 1'),label+': restart');
+        if(width<=cfg.bp) await page.locator('[data-mobile-page-button="frames"]').click();
+        await page.locator('#addFrameButton').click();
+        if(width<=cfg.bp) await page.locator('[data-mobile-page-button="preview"]').click();
+        const slider=page.locator('#previewFrameSlider');
+        assert.equal(await page.locator('#previewScrubber').isVisible(),true,label+': multi-frame scrubber');
+        assert.equal(await slider.getAttribute('max'),'2',label+': scrubber frame count');
+        await slider.focus(); await page.keyboard.press('Home');
+        assert.equal(await slider.inputValue(),'1',label+': scrub to start');
+        await page.keyboard.press('ArrowRight');
+        assert.equal(await slider.inputValue(),'2',label+': arrow steps between frames');
+        assert.ok((await page.locator('#previewStatus').textContent()).startsWith('2 / 2'),label+': scrub updates preview');
+        if(file==='dist/index.html'&&language==='ja'&&[320,1360].includes(width))
+          await page.locator('#previewPanel').screenshot({path:path.join(evidence,'ja-'+width+'-preview.png')});
+        if(width<=cfg.bp) await page.locator('[data-mobile-page-button="edit"]').click();
         await page.evaluate(() => scrollTo({left:0,top:0,behavior:'instant'})); await settle(page);
         assert.ok(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), label + ': page width');
         await page.locator('#helpButton').click();

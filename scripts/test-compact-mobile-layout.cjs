@@ -87,4 +87,22 @@ for(const [label,html] of variants){
   assert.match(html,/parent\.append\(projectInfo\)/);
   assert.match(html,/parent\.prepend\(projectInfo\)/);
  });
+
+ test(label+': preview player hierarchy and frame seeking',()=>{
+  assert.match(html,/<div class="preview-heading">/);
+  assert.match(html,/<button class="preview-main" id="playPreviewButton" type="button" aria-pressed="false">/);
+  assert.match(html,/id="previewPlayIcon"/);
+  assert.match(html,/id="previewPauseIcon"[^>]*hidden/);
+  assert.match(html,/<button class="preview-secondary" id="restartPreviewButton"/);
+  assert.match(html,/<button class="preview-loop" id="loopPreviewButton" type="button" aria-pressed="true">/);
+  assert.match(html,/<div class="preview-scrubber" id="previewScrubber" hidden><input id="previewFrameSlider" type="range"/);
+  assert.doesNotMatch(html,/id="pausePreviewButton"|id="previewNote"|class="preview-note"/);
+  assert.match(html,/\.preview-scrubber\[hidden\] \{ display:none; \}/);
+  assert.match(html,/previewSeek:'Choose preview frame'/);
+  assert.match(html,/previewSeek:'プレビューのフレームを選ぶ'/);
+  assert.match(html,/toggle\.setAttribute\('aria-pressed', String\(state\.previewPlaying\)\)/);
+  assert.match(html,/function seekPreviewFrame\(value\)/);
+  assert.match(html,/slider\.max = String\(Math\.max\(1, state\.frames\.length\)\)/);
+  assert.match(html,/\$\('#previewFrameSlider'\)\.addEventListener\('input', event => seekPreviewFrame\(event\.target\.value\)\)/);
+ });
 }

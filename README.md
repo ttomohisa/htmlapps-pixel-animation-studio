@@ -22,7 +22,7 @@ GitHub Pages delivers the initial HTML. After it loads, drawing, PNG import, fra
 - **Pixel-focused drawing tools** — Pencil, Eraser, Fill, Eyedropper, rectangle Selection, 1 / 2 / 4 px brushes, Grid, Zoom, Pan, and pinch zoom. Tap the displayed zoom value (e.g. 27×) to fit the canvas to the view.
 - **See the exact brush footprint** — Pencil and Eraser preview the actual 1 / 2 / 4 px area that will be affected before drawing.
 - **Build animations frame by frame** — Add, duplicate, delete, reorder, and edit up to 128 frames with independent Undo / Redo history.
-- **Tune timing and preview motion** — Set each frame from 20 to 5000 ms, apply one delay to all frames, and use Play / Pause / Restart / Loop plus previous-frame Onion Skin.
+- **Tune timing and preview motion** — Set each frame from 20 to 5000 ms, apply one delay to all frames, use a single Play/Pause button with Restart and Loop, and scrub between frames when there is more than one; previous-frame Onion Skin is also available.
 - **Move pixel regions with Selection** — Select the entire canvas with Select all, or draw a rectangle, then move, copy, cut, paste, delete, and nudge selected pixels. Paste requires an active destination selection.
 - **Import PNG frames** — Start from one PNG or add multiple matching-size PNG files through file selection or Drag & Drop, with invalid files reported separately.
 - **Export for different uses** — Save the current frame as scaled PNG, the animation as GIF, or every frame as a horizontal/grid sprite sheet.
@@ -64,7 +64,7 @@ Zoom stays within a bounded viewport. Scroll or use Space-drag to pan on desktop
 2. Draw with Pencil / Eraser / Fill / Eyedropper. Use Grid, Zoom, Pan, and Recent Colors as needed; tap the zoom value to fit the canvas. On phones, canvas dimensions and autosave status appear below the drawing area.
 3. Add or duplicate frames, then edit each pose. Onion Skin can show the previous frame while drawing the next one.
 4. Set each frame delay. Use **Apply to all** when the animation should use one common timing value.
-5. Open Preview and check the animation with Play / Pause / Restart / Loop.
+5. Open Preview. Press Play to start and the same button to Pause; use Restart or toggle Loop, and drag the frame slider to inspect individual frames when there are multiple.
 6. Use rectangle Selection to move or reuse a region, or choose **Select all** for the entire canvas. Copy or Cut first, create the destination selection, then Paste.
 7. Open Export, edit the filename, and save a PNG, Animated GIF, or Sprite Sheet PNG.
 8. When autosave is available, reopening the app offers **Continue / Start new** for the previous local project.
