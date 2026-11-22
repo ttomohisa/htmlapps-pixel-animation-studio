@@ -1741,7 +1741,9 @@
           const meta=document.createElement('span'); meta.className='frame-meta'; meta.innerHTML=`<strong>${index+1}</strong><span>${frame.duration || DEFAULT_FRAME_DURATION} ms</span>`; card.append(wrap,meta); card.addEventListener('click',()=>loadFrame(index)); strip.append(card); });
         $('#frameCount').textContent = `${state.frames.length} / ${MAX_FRAMES}`; $('#deleteFrameButton').disabled=state.frames.length<=1; $('#addFrameButton').disabled=state.frames.length>=MAX_FRAMES; $('#duplicateFrameButton').disabled=state.frames.length>=MAX_FRAMES; $('#moveFrameLeftButton').disabled=state.currentFrameIndex<=0; $('#moveFrameRightButton').disabled=state.currentFrameIndex>=state.frames.length-1;
         $('#frameDurationInput').value = String(currentFrameDuration());
-        if (!state.previewPlaying) { state.previewIndex = state.currentFrameIndex; renderPreviewFrame(state.previewIndex); }
+        if (!state.previewPlaying) state.previewIndex = state.currentFrameIndex;
+        else state.previewIndex = Math.max(0, Math.min(state.previewIndex, state.frames.length - 1));
+        updatePreviewControls();
         updateExportPanel();
       }
       function addFrame() { clearSelection(); if(state.frames.length>=MAX_FRAMES){AppToast.show({message:t('frameLimit')});return;} saveCurrentFrame(); const insert=state.currentFrameIndex+1; state.frames.splice(insert,0,makeFrame()); state.currentFrameIndex=insert; ctx.clearRect(0,0,state.width,state.height); state.undoStack=[]; state.redoStack=[]; state.dirty=true; updateHistoryButtons(); renderFrames(); updateOnionSkin(); scheduleAutosave(); AppToast.show({message:t('frameAdded'),tone:'success'}); }

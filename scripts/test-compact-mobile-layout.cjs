@@ -105,6 +105,7 @@ for(const [label,html] of variants){
   assert.match(html,/\$\('#previewPauseIcon'\)\.toggleAttribute\('hidden', !state\.previewPlaying\)/);
   assert.match(html,/function seekPreviewFrame\(value\)/);
   assert.match(html,/slider\.max = String\(Math\.max\(1, state\.frames\.length\)\)/);
+  assert.match(html,/if \(!state\.previewPlaying\) state\.previewIndex = state\.currentFrameIndex;[\s\S]*?updatePreviewControls\(\);/);
   assert.match(html,/\$\('#previewFrameSlider'\)\.addEventListener\('input', event => seekPreviewFrame\(event\.target\.value\)\)/);
  });
 }
