@@ -1778,8 +1778,8 @@
         toggle.disabled = !hasFrames;
         toggle.setAttribute('aria-pressed', String(state.previewPlaying));
         $('#previewPlayLabel').textContent = t(state.previewPlaying ? 'pausePreview' : 'playPreview');
-        $('#previewPlayIcon').hidden = state.previewPlaying;
-        $('#previewPauseIcon').hidden = !state.previewPlaying;
+        $('#previewPlayIcon').toggleAttribute('hidden', state.previewPlaying);
+        $('#previewPauseIcon').toggleAttribute('hidden', !state.previewPlaying);
         $('#restartPreviewButton').disabled = !hasFrames;
         $('#loopPreviewButton').disabled = !hasFrames;
         $('#loopPreviewButton').setAttribute('aria-pressed', String(state.previewLoop));

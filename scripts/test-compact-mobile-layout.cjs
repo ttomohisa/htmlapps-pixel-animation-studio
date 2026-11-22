@@ -101,6 +101,8 @@ for(const [label,html] of variants){
   assert.match(html,/previewSeek:'Choose preview frame'/);
   assert.match(html,/previewSeek:'プレビューのフレームを選ぶ'/);
   assert.match(html,/toggle\.setAttribute\('aria-pressed', String\(state\.previewPlaying\)\)/);
+  assert.match(html,/\$\('#previewPlayIcon'\)\.toggleAttribute\('hidden', state\.previewPlaying\)/);
+  assert.match(html,/\$\('#previewPauseIcon'\)\.toggleAttribute\('hidden', !state\.previewPlaying\)/);
   assert.match(html,/function seekPreviewFrame\(value\)/);
   assert.match(html,/slider\.max = String\(Math\.max\(1, state\.frames\.length\)\)/);
   assert.match(html,/\$\('#previewFrameSlider'\)\.addEventListener\('input', event => seekPreviewFrame\(event\.target\.value\)\)/);
