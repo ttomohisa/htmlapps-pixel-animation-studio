@@ -117,3 +117,22 @@ for (const [label, html] of variants) {
     assert.equal(h.$('#buildVersion').textContent, config.version);
   });
 }
+
+for(const [label,html] of variants){
+  test(label+': language switching preserves the real autosave status',()=>{
+    const h=harness(html,'ja');
+    const modes=[];
+    h.context.state.persistenceReady=true;
+    h.context.state.persistenceAvailable=true;
+    h.context.updateAutosaveStatus=mode=>modes.push(mode);
+    h.$('#projectStatus').dataset.state='saving';
+    h.context.applyLanguage();
+    assert.equal(modes.at(-1),'saving','pending autosave must not be reported as saved');
+    h.$('#projectStatus').dataset.state='saved';
+    h.context.applyLanguage();
+    assert.equal(modes.at(-1),'saved');
+    h.context.state.persistenceAvailable=false;
+    h.context.applyLanguage();
+    assert.equal(modes.at(-1),'error');
+  });
+}

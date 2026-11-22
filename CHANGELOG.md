@@ -2,6 +2,34 @@
 
 ## Unreleased
 
+## [1.0.6]
+
+### Changed
+- Rebuild desktop Preview as a focused player: header and frame timing above a larger, neutral viewing stage; playback and optional frame scrubber below. Keep the canvas transparency checkerboard only under the artwork, without nesting additional cards.
+- Keep mobile Preview's image-first reading order and tap layout, and preserve keyboard playback, Loop, per-frame timing and slider behaviour.
+- Render the raw canonical `assets/favicon.svg` as the header `<img>` without an outer rounded/shadowed box. The favicon and header still embed identical, unchanged SVG bytes in standalone HTML.
+- Rework Preview as a compact player: one Play/Pause button with a changing icon, secondary Restart and clearly selected Loop controls, and a frame scrubber that appears only for multi-frame animations; simplify the bilingual status layout and remove the redundant explanatory line.
+- Remove the divider above the collapsed Custom canvas-size control.
+- On phones, move canvas dimensions and autosave status from the top of the editor to its compact footer in place of duplicated zoom/tool text, and give the drawing stage the recovered vertical space. Keep desktop placement and live status intact at breakpoint changes.
+- Shorten the 128×128 preset note to “Maximum size”, keep custom dimensions collapsed until requested, and make the live zoom value a clickable Fit control (keyboard-accessible) without the separate Fit button.
+- Replace stacked bordered cards on the canvas setup, export and phone editing views with quiet sections and dividers; retain useful input, canvas and selected-frame boundaries.
+- Redesign button hierarchy: softer presets, clean tool selection, underlined segmented choices, lighter secondary actions, and neutral export buttons alongside primary create/save actions.
+- Remove the redundant hero heading, shorten Japanese and English introductions, and hide the introduction after a project opens.
+- Soften cards, reduce emphasis on desktop project actions, and align major layout spacing to an 8 px rhythm.
+- Hide the local-processing badge on phones, move PNG import to Frames and New canvas to the bottom of Export, and remove the extra phone file-picker fallback while preserving regular PNG import.
+
+### Fixed
+- Reconcile the updated favicon crop from PR #14 into the v1.0.6 standalone asset without replacing its foreground artwork, and verify the canonical icon in the release test suite.
+- Preserve the in-progress autosave indicator when switching Japanese/English; a language change must not falsely show that a pending write has completed.
+- Complete the full repository test suite before printing its success banner, and add version, help, offline-checklist, and bilingual-documentation consistency tests.
+- Update the offline release checklist, specification, and third-party notices to match the v1.0.6 branch rather than obsolete Fit-button and v1.0.1 steps.
+- Avoid full sprite-sheet rasterization on routine edits, frame-list updates, and filename changes; render the expanded preview on demand with debounced updates.
+- Reject oversized and invalid PNG dimensions from the IHDR before allocating a decoded image.
+- Preserve drawing and export preferences in IndexedDB autosave while accepting older saved projects without them.
+- Explain Canvas size-related sprite-sheet export errors and how to adjust Grid columns.
+- Correct the direct-open standalone instructions and update the documented stable version.
+
+
 - Hide the informational footer at 640px and below without hiding functional mobile controls; move existing build information to the quiet end of Help and preserve keyboard disclosure activation and existing phone metadata hiding.
 
 ## [1.0.5] - 2026-11-11

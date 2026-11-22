@@ -53,21 +53,187 @@ async function main() {
       try {
         await page.goto(pathToFileURL(path.resolve(file)).href);
         await page.locator('#helpButton').waitFor();
+        const iconDecoration = await page.locator('#appBrandIcon').evaluate(img=>{
+          const css=getComputedStyle(img);
+          return {parent:img.parentElement.className,borderRadius:css.borderRadius,shadow:css.boxShadow,imageSrc:img.currentSrc};
+        });
+        assert.equal(iconDecoration.parent,'brand',label+': canonical SVG is not boxed in an extra wrapper');
+        assert.equal(iconDecoration.borderRadius,'0px',label+': no outer icon radius');
+        assert.equal(iconDecoration.shadow,'none',label+': no extra icon shadow');
+        assert.ok(iconDecoration.imageSrc.startsWith('data:image/svg+xml;base64,'),label+': embedded canonical icon');
         await page.waitForFunction(() => /^\d+\.\d+\.\d+$/.test(document.querySelector('#buildVersion').textContent));
         if (await page.locator('html').getAttribute('lang') !== language) await page.locator('#languageButton').click();
         assert.equal((await page.locator('[data-i18n="localBadge"]').textContent()).trim(), language === 'ja' ? '完全ローカル処理' : 'Fully local processing');
-        await bounds(page.locator('.local-badge'), width, height, label, false);
+        const custom = page.locator('#customCanvasDetails');
+        assert.equal(await custom.evaluate(el=>el.open),false,label+': Custom starts folded');
+        assert.equal(await page.locator('#customWidth').isVisible(),false,label+': Custom inputs are initially hidden');
+        assert.equal((await page.locator('[data-i18n="presetLarge"]').textContent()).trim(),language==='ja'?'最大サイズ':'Maximum size',label+': preset note');
+        await custom.locator('summary').focus(); await page.keyboard.press('Enter');
+        assert.equal(await custom.evaluate(el=>el.open),true,label+': Enter expands Custom');
+        assert.equal(await page.locator('#customWidth').isVisible(),true,label+': custom dimensions become visible');
+        await page.keyboard.press('Space');
+        assert.equal(await custom.evaluate(el=>el.open),false,label+': Space folds Custom');
+        if (file==='dist/index.html' && language==='ja' && [320,1360].includes(width)) {
+          await page.screenshot({path:path.join(evidence,'ja-'+width+'-setup.png')});
+        }
+        const setupStyles=await page.evaluate(() => {
+          const computed = selector=>getComputedStyle(document.querySelector(selector));
+          return {customBorderLeft:computed('.custom-card').borderLeftWidth,
+                  customBorderTop:computed('.custom-card').borderTopWidth,
+                  importBorderLeft:computed('.setup-import-card').borderLeftWidth,
+                  importBorderTop:computed('.setup-import-card').borderTopWidth};
+        });
+        assert.deepEqual(setupStyles,{customBorderLeft:'0px',customBorderTop:'0px',importBorderLeft:'0px',importBorderTop:'1px'},label+': Custom unboxed; import retains divider');
+        assert.equal(await page.locator('.local-badge').isVisible(), width > cfg.bp, label + ': local badge hidden on phones');
+        if (width > cfg.bp) await bounds(page.locator('.local-badge'), width, height, label, false);
         assert.equal(await page.locator('body > footer').isVisible(), width > cfg.bp, label + ': initial footer');
         assert.equal(await page.locator(cfg.nav).isVisible(),false,'no project yet');
         await page.locator('[data-preset="16"]').click();
         await page.waitForFunction(()=>document.body.dataset.projectState==='editing');
         assert.equal(await page.locator('#editorView').isVisible(),true);
+        const mobileLayout=width<=cfg.bp;
+        assert.equal(await page.locator('.editor-topbar').isVisible(),!mobileLayout,label+': project header only on desktop');
+        assert.equal(await page.locator('.canvas-footer .project-info').count(),mobileLayout?1:0,label+': project metadata moved to footer on phones');
+        assert.equal(await page.locator('.editor-topbar .project-info').count(),mobileLayout?0:1,label+': one live project status');
+        assert.equal(await page.locator('#projectSize').isVisible(),true,label+': canvas dimensions remain visible');
+        assert.equal((await page.locator('#projectSize').textContent()).trim(),'16 × 16',label+': same dimensions in moved info');
+        assert.equal(await page.locator('.canvas-footer > span:first-child').isVisible(),!mobileLayout,label+': redundant zoom footer hidden on phones');
+        assert.equal(await page.locator('#projectStatus').isVisible(),true,label+': autosave status remains visible');
+        if (mobileLayout) {
+          const stageHeight=await page.locator('#canvasStage').evaluate(el=>parseFloat(getComputedStyle(el).height));
+          assert.ok(stageHeight>=Math.min(height*.46,400)+40,label+': taller phone canvas '+stageHeight);
+          assert.ok((await page.locator('.canvas-footer').boundingBox()).height<=48,label+': compact phone metadata footer');
+        }
+        assert.equal(await page.locator('#fitButton').count(),0,label+': separate Fit button removed');
+        const liveZoom=page.locator('#toolbarScaleValue');
+        const fittedZoom=(await liveZoom.textContent()).trim();
+        assert.match(fittedZoom,/^\d+×$/,label+': live zoom is a button');
+        assert.match(await liveZoom.getAttribute('aria-label'),language==='ja'?/全体を表示/:/Fit canvas to view/,label+': accessible fit label');
+        await page.locator('#zoomInButton').click();
+        assert.notEqual((await liveZoom.textContent()).trim(),fittedZoom,label+': zoom increment');
+        await liveZoom.click();
+        assert.equal((await liveZoom.textContent()).trim(),fittedZoom,label+': tapping live zoom fits canvas');
+        await page.locator('#zoomInButton').click();
+        await liveZoom.focus(); await page.keyboard.press('Space');
+        assert.equal((await liveZoom.textContent()).trim(),fittedZoom,label+': Space on live zoom fits canvas');
+        assert.ok((await liveZoom.getAttribute('aria-label')).startsWith(fittedZoom+' · '),label+': accessible current zoom');
+        const editorStyles=await page.evaluate(() => {
+          const computed = selector=>getComputedStyle(document.querySelector(selector));
+          return {
+            exportCardBorderLeft:computed('.export-card:nth-child(2)').borderLeftWidth,
+            projectFileBorderLeft:computed('.project-file-card').borderLeftWidth,
+            projectFileBorderBottom:computed('.project-file-card').borderBottomWidth,
+            exportInfoBackground:computed('.export-info').backgroundColor,
+            exportButtonBackground:computed('#savePngButton').backgroundColor
+          };
+        });
+        assert.equal(editorStyles.projectFileBorderLeft,'0px',label+': no project-card box');
+        assert.equal(editorStyles.projectFileBorderBottom,'1px',label+': project separation');
+        assert.equal(editorStyles.exportCardBorderLeft,width<=cfg.bp?'0px':'1px',label+': export rows or columns');
+        assert.equal(editorStyles.exportInfoBackground,'rgba(0, 0, 0, 0)',label+': export metadata unboxed');
+        if(file==='dist/index.html' && language==='ja' && [320,1360].includes(width))
+          await page.screenshot({path:path.join(evidence,'ja-'+width+'-editor.png')});
+        assert.equal(await page.locator('.page-intro').isVisible(),false,label + ': intro hidden in editor');
+        assert.equal(await page.locator('#fileFallbackButton').count(),0,label + ': extra picker removed');
         for (const w of [cfg.bp+1, cfg.bp, width]) {
           await page.setViewportSize({width:w,height}); await settle(page);
           assert.equal(await page.locator('body > footer').isVisible(), w > cfg.bp, label + ': footer resize');
           assert.equal(await page.locator(cfg.nav).isVisible(), w <= cfg.bp, label + ': functional bar');
+          assert.equal(await page.locator('.editor-topbar').isVisible(),w>cfg.bp,label+': topbar breakpoint');
+          assert.equal(await page.locator('.canvas-footer .project-info').count(),w<=cfg.bp?1:0,label+': status follows breakpoint');
+          assert.equal(await page.locator('.editor-topbar .project-info').count(),w>cfg.bp?1:0,label+': desktop status restored');
+          assert.equal(await page.locator('#projectStatus').count(),1,label+': one status element after resize');
+          assert.equal(await page.locator('#projectStatus').isVisible(),true,label+': status visible after resize');
+           assert.equal(await page.locator('.editor-top-actions').isVisible(), w > cfg.bp, label + ': top actions only on desktop');
           if (w <= cfg.bp) await bounds(page.locator(cfg.nav), w, height, label);
         }
+        if (width <= cfg.bp) {
+          await page.locator('[data-mobile-page-button="frames"]').click();
+          assert.equal(await page.locator('#mobileImportButton').isVisible(),true,label + ': PNG import available under Frames');
+          assert.equal(await page.locator('#editorImportButton').isVisible(),false,label + ': top import hidden');
+          await bounds(page.locator('#mobileImportButton'),width,height,label,false);
+          await page.locator('[data-mobile-page-button="export"]').click();
+          assert.equal(await page.locator('#mobileNewCanvasButton').isVisible(),true,label + ': new canvas available under Export');
+          const mobileStyles=await page.evaluate(()=>{
+            const computed=selector=>getComputedStyle(document.querySelector(selector));
+            return {settingsBorder:computed('.mobile-setting-card').borderLeftWidth,
+                    exportBorderLeft:computed('.export-card:nth-child(2)').borderLeftWidth,
+                    exportBorderTop:computed('.export-card:nth-child(2)').borderTopWidth};
+          });
+          assert.deepEqual(mobileStyles,{settingsBorder:'0px',exportBorderLeft:'0px',exportBorderTop:'1px'},label+': phone settings and exports are flat sections');
+          if(file==='dist/index.html' && language==='ja' && width===320)
+            await page.screenshot({path:path.join(evidence,'ja-320-export.png')});
+          assert.equal(await page.locator('#newCanvasButton').isVisible(),false,label + ': top new canvas hidden');
+          await bounds(page.locator('#mobileNewCanvasButton'),width,height,label,false);
+          await page.locator('[data-mobile-page-button="edit"]').click();
+        }
+        // Real playback, one-button pause, clear loop state, and keyboard scrubbing.
+        if(width<=cfg.bp) await page.locator('[data-mobile-page-button="preview"]').click();
+        const previewStage=page.locator('#previewStage'), toggle=page.locator('#playPreviewButton');
+        assert.equal(await previewStage.isVisible(),true,label+': preview stage available');
+        const previewLayoutBounds=await page.locator('.preview-layout').evaluate(el=>{
+          const rect=el.getBoundingClientRect(),parent=el.parentElement.getBoundingClientRect();
+          return {width:rect.width,leftInset:rect.left-parent.left,rightInset:parent.right-rect.right};
+        });
+        if(width>cfg.bp){
+          assert.ok(previewLayoutBounds.width<=705,label+': bounded desktop player '+JSON.stringify(previewLayoutBounds));
+          assert.ok(previewLayoutBounds.width>400,label+': stage occupies useful desktop width '+JSON.stringify(previewLayoutBounds));
+          assert.ok(Math.abs(previewLayoutBounds.leftInset-previewLayoutBounds.rightInset)<2,label+': centered desktop player '+JSON.stringify(previewLayoutBounds));
+        } else assert.ok(previewLayoutBounds.width>0,label+': mobile preview remains full width');
+        const previewComposition=await page.evaluate(()=>{
+          const rect=selector=>document.querySelector(selector).getBoundingClientRect();
+          const header=rect('.preview-heading'),stage=rect('#previewStage'),buttons=rect('.preview-actions'),frame=rect('#previewCanvas');
+          return {headerY:header.top,headerBottom:header.bottom,stageY:stage.top,stageBottom:stage.bottom,buttonsY:buttons.top,
+            stageW:stage.width,stageH:stage.height,frameW:frame.width,frameH:frame.height,
+            stageBackground:getComputedStyle(document.querySelector('#previewStage')).backgroundColor,
+            canvasBackground:getComputedStyle(document.querySelector('#previewCanvas')).backgroundImage};
+        });
+        if(width>cfg.bp){
+          assert.ok(previewComposition.headerBottom<previewComposition.stageY,label+': title above viewport');
+          assert.ok(previewComposition.buttonsY>previewComposition.stageBottom,label+': playback controls below viewport');
+          assert.equal(previewComposition.stageH,288,label+': desktop viewing area is large but bounded');
+          assert.ok(previewComposition.frameW>=224,label+': pixels displayed larger on desktop');
+        } else {
+          assert.ok(previewComposition.headerY>previewComposition.stageBottom,label+': phone keeps viewport above metadata');
+        }
+        assert.ok(previewComposition.canvasBackground.includes('linear-gradient'),label+': checkerboard belongs to pixels');
+        assert.equal(previewComposition.stageBackground,'rgb(240, 240, 237)',label+': neutral viewer surround');
+        assert.equal(await page.locator('#pausePreviewButton').count(),0,label+': no redundant Pause button');
+        assert.equal(await toggle.getAttribute('aria-pressed'),'false',label+': initially stopped');
+        assert.equal((await page.locator('#previewPlayLabel').textContent()).trim(),language==='ja'?'再生':'Play',label+': play text');
+        assert.equal(await page.locator('#previewScrubber').isVisible(),false,label+': no scrubber for one frame');
+        const previewBounds=await page.evaluate(()=>{
+          const stage=document.querySelector('#previewStage').getBoundingClientRect(),canvas=document.querySelector('#previewCanvas').getBoundingClientRect();
+          return {stageW:stage.width,stageH:stage.height,canvasW:canvas.width,canvasH:canvas.height};
+        });
+        assert.ok(previewBounds.canvasW<=previewBounds.stageW-8&&previewBounds.canvasH<=previewBounds.stageH-8,label+': artwork fits preview '+JSON.stringify(previewBounds));
+        await page.locator('#loopPreviewButton').click();
+        assert.equal(await page.locator('#loopPreviewButton').getAttribute('aria-pressed'),'false',label+': loop off');
+        await page.locator('#loopPreviewButton').click();
+        assert.equal(await page.locator('#loopPreviewButton').getAttribute('aria-pressed'),'true',label+': loop on');
+        await toggle.click();
+        assert.equal(await toggle.getAttribute('aria-pressed'),'true',label+': playing');
+        assert.equal((await page.locator('#previewPlayLabel').textContent()).trim(),language==='ja'?'一時停止':'Pause',label+': pause text');
+        assert.equal(await page.locator('#previewPauseIcon').isVisible(),true,label+': pause icon');
+        await toggle.focus(); await page.keyboard.press('Space');
+        assert.equal(await toggle.getAttribute('aria-pressed'),'false',label+': Space pauses');
+        assert.equal(await page.locator('#previewPlayIcon').isVisible(),true,label+': play icon');
+        await page.locator('#restartPreviewButton').click();
+        assert.ok((await page.locator('#previewStatus').textContent()).startsWith('1 / 1'),label+': restart');
+        if(width<=cfg.bp) await page.locator('[data-mobile-page-button="frames"]').click();
+        await page.locator('#addFrameButton').click();
+        if(width<=cfg.bp) await page.locator('[data-mobile-page-button="preview"]').click();
+        const slider=page.locator('#previewFrameSlider');
+        assert.equal(await page.locator('#previewScrubber').isVisible(),true,label+': multi-frame scrubber');
+        assert.equal(await slider.getAttribute('max'),'2',label+': scrubber frame count');
+        await slider.focus(); await page.keyboard.press('Home');
+        assert.equal(await slider.inputValue(),'1',label+': scrub to start');
+        await page.keyboard.press('ArrowRight');
+        assert.equal(await slider.inputValue(),'2',label+': arrow steps between frames');
+        assert.ok((await page.locator('#previewStatus').textContent()).startsWith('2 / 2'),label+': scrub updates preview');
+        if(file==='dist/index.html'&&language==='ja'&&[320,1360].includes(width))
+          await page.locator('#previewPanel').screenshot({path:path.join(evidence,'ja-'+width+'-preview.png')});
+        if(width<=cfg.bp) await page.locator('[data-mobile-page-button="edit"]').click();
         await page.evaluate(() => scrollTo({left:0,top:0,behavior:'instant'})); await settle(page);
         assert.ok(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), label + ': page width');
         await page.locator('#helpButton').click();
@@ -84,7 +250,7 @@ async function main() {
           assert.equal(await page.locator('#helpDialog').isVisible(), true, label + ': keyboard disclosure stays inside Help');
         }
         await body.evaluate(e => { e.scrollTop = e.scrollHeight; }); await settle(page);
-        const end = page.locator(hiddenBuild ? '[data-i18n="helpTouchBody"]' : cfg.end);
+        const end = page.locator(hiddenBuild ? '[data-i18n="helpMobileActions"]' : cfg.end);
         const last = await end.evaluate(el => {
           const walker = document.createTreeWalker(el, NodeFilter.SHOW_TEXT); let node, last;
           while (node = walker.nextNode()) if (node.textContent.trim()) last = node;

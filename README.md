@@ -19,15 +19,15 @@ GitHub Pages delivers the initial HTML. After it loads, drawing, PNG import, fra
 ## Features
 
 - **Start small and draw immediately** — Create 16×16, 32×32, 64×64, 128×128, or custom canvases up to 128×128 pixels.
-- **Pixel-focused drawing tools** — Pencil, Eraser, Fill, Eyedropper, rectangle Selection, 1 / 2 / 4 px brushes, Grid, Zoom, Fit, Pan, and pinch zoom.
+- **Pixel-focused drawing tools** — Pencil, Eraser, Fill, Eyedropper, rectangle Selection, 1 / 2 / 4 px brushes, Grid, Zoom, Pan, and pinch zoom. Tap the displayed zoom value (e.g. 27×) to fit the canvas to the view.
 - **See the exact brush footprint** — Pencil and Eraser preview the actual 1 / 2 / 4 px area that will be affected before drawing.
 - **Build animations frame by frame** — Add, duplicate, delete, reorder, and edit up to 128 frames with independent Undo / Redo history.
-- **Tune timing and preview motion** — Set each frame from 20 to 5000 ms, apply one delay to all frames, and use Play / Pause / Restart / Loop plus previous-frame Onion Skin.
+- **Tune timing and preview motion** — Set each frame from 20 to 5000 ms, apply one delay to all frames, use a single Play/Pause button with Restart and Loop, and scrub between frames when there is more than one; previous-frame Onion Skin is also available.
 - **Move pixel regions with Selection** — Select the entire canvas with Select all, or draw a rectangle, then move, copy, cut, paste, delete, and nudge selected pixels. Paste requires an active destination selection.
 - **Import PNG frames** — Start from one PNG or add multiple matching-size PNG files through file selection or Drag & Drop, with invalid files reported separately.
 - **Export for different uses** — Save the current frame as scaled PNG, the animation as GIF, or every frame as a horizontal/grid sprite sheet.
 - **Resume work locally** — Project state is autosaved to IndexedDB and can be restored after reload when browser storage is available.
-- **Desktop and smartphone UI** — Mobile uses dedicated Edit / Frames / Preview / Export workspaces with a fixed bottom dock.
+- **Desktop and smartphone UI** — Desktop Preview uses a larger central viewing stage with playback controls below the artwork. Mobile uses dedicated Edit / Frames / Preview / Export workspaces with a fixed bottom dock. Add PNG files from Frames, or start a new canvas at the bottom of Export.
 - **Private, single-HTML operation** — Japanese/English UI, no account, no runtime CDN, and no runtime network request from the app.
 
 ## Quick start
@@ -39,7 +39,7 @@ Just [open the demo](https://ttomohisa.github.io/htmlapps-pixel-animation-studio
 ### Use the standalone HTML
 
 1. Download or clone this repository.
-2. Open `dist/index.html` in a current Chromium-based browser, Firefox, or Safari.
+2. Open `pixel-animation-studio.html` from the repository root in a current Chromium-based browser, Firefox, or Safari. (The `dist/index.html` file is created by the build script, not included in a fresh clone.)
 3. The file can be opened directly with `file://`; no local server is required for normal use.
 
 ### Build it locally (advanced)
@@ -49,22 +49,22 @@ Just [open the demo](https://ttomohisa.github.io/htmlapps-pixel-animation-studio
 3. Use the generated `dist/index.html` as the readable standalone build.
 4. `dist/index.self-extract.html` is also generated as the smaller self-extracting single-HTML variant.
 
-The v1.0.5 application has no runtime third-party package dependency, so the build does not need to fetch an editor or GIF library. The repository build scripts still use the standard Browser Kitty template verification flow.
+The v1.0.6 application has no runtime third-party package dependency, so the build does not need to fetch an editor or GIF library. The repository build scripts still use the standard Browser Kitty template verification flow.
 
 
 ### Save an editable project
 
-In Export, edit the filename and choose **Save project** to download `.pixel-project.json`. Use **Open project** on the start screen or in Export to resume on this or another device. This is separate from IndexedDB autosave. All frames, exact RGBA pixels, timing, current/recent colors, and editing/export settings are preserved. Files are limited to 12 MiB. Opening replaces the current document after confirmation; invalid files leave it unchanged. Undo history, selections, and clipboard are not included; the view opens at Fit.
+In Export, edit the filename and choose **Save project** to download `.pixel-project.json`. Use **Open project** on the start screen or in Export to resume on this or another device. This is separate from IndexedDB autosave. All frames, exact RGBA pixels, timing, current/recent colors, and editing/export settings are preserved. Files are limited to 12 MiB. Opening replaces the current document after confirmation; invalid files leave it unchanged. Undo history, selections, and clipboard are not included; the canvas fits the view when opened.
 
 Zoom stays within a bounded viewport. Scroll or use Space-drag to pan on desktop; use two fingers on touch devices. Selection controls appear only on the mobile Edit tab, while selections survive tab changes.
 
 ## Usage
 
-1. Choose 16×16, 32×32, 64×64, 128×128, or Custom, or start from PNG files.
-2. Draw with Pencil / Eraser / Fill / Eyedropper. Use Grid, Zoom, Fit, Pan, and Recent Colors as needed.
+1. Choose 16×16, 32×32, 64×64, or 128×128, expand Custom to enter dimensions, or start from PNG files.
+2. Draw with Pencil / Eraser / Fill / Eyedropper. Use Grid, Zoom, Pan, and Recent Colors as needed; tap the zoom value to fit the canvas. On phones, canvas dimensions and autosave status appear below the drawing area.
 3. Add or duplicate frames, then edit each pose. Onion Skin can show the previous frame while drawing the next one.
 4. Set each frame delay. Use **Apply to all** when the animation should use one common timing value.
-5. Open Preview and check the animation with Play / Pause / Restart / Loop.
+5. Open Preview. Press Play to start and the same button to Pause; use Restart or toggle Loop, and drag the frame slider to inspect individual frames when there are multiple.
 6. Use rectangle Selection to move or reuse a region, or choose **Select all** for the entire canvas. Copy or Cut first, create the destination selection, then Paste.
 7. Open Export, edit the filename, and save a PNG, Animated GIF, or Sprite Sheet PNG.
 8. When autosave is available, reopening the app offers **Continue / Start new** for the previous local project.
@@ -110,7 +110,7 @@ Switching away from Selection clears the visible selection. Clipboard pixel data
 
 ## Import
 
-- PNG only in v1.0.5.
+- PNG only in v1.0.6.
 - A single PNG can start a project at its native dimensions up to 128×128.
 - Multiple PNG files become frames when they share the same dimensions.
 - Existing projects only accept PNGs matching the current canvas size.
@@ -160,7 +160,7 @@ Each deployment rebuilds the standalone HTML and runs the repository verificatio
 ├─ src/index.template.html       # Application source template
 ├─ assets/favicon.svg            # Canonical app / favicon artwork
 ├─ app.config.json               # App identity and build settings
-├─ dependencies.json             # Runtime dependency declaration (empty in v1.0.5)
+├─ dependencies.json             # Runtime dependency declaration (empty in v1.0.6)
 ├─ dependencies.lock.json        # Locked dependency metadata
 ├─ build-standalone.bat          # Windows build entry point
 ├─ build-standalone.ps1          # Readable standalone HTML builder
@@ -187,7 +187,7 @@ The repository check validates the template contract, standalone output, CSP/net
 
 ### Tags and GitHub Releases after merging
 
-When a pull request that updates the version in `app.config.json` is merged into `main`, `.github/workflows/release-on-merge.yml` rebuilds and tests the exact merged commit. Only after successful verification does it create a tag such as `v1.0.5` and a GitHub Release containing both readable and self-extracting standalone HTML files. Existing releases are not duplicated; merges without a version change or with failed checks do not publish a release. The maintainer remains responsible for merging the pull request.
+When a pull request that updates the version in `app.config.json` is merged into `main`, `.github/workflows/release-on-merge.yml` rebuilds and tests the exact merged commit. Only after successful verification does it create a tag such as `v1.0.6` and a GitHub Release containing both readable and self-extracting standalone HTML files. Existing releases are not duplicated; merges without a version change or with failed checks do not publish a release. The maintainer remains responsible for merging the pull request.
 
 ## Privacy and runtime network protection
 
@@ -204,18 +204,18 @@ The GitHub Pages version naturally makes an initial request to download the page
 
 ## Limitations
 
-- Canvas dimensions are limited to 128×128 pixels in v1.0.5.
+- Canvas dimensions are limited to 128×128 pixels in v1.0.6.
 - A project can contain up to 128 frames.
-- Input is PNG only; GIF, WebP, JPEG, Aseprite, and sprite-sheet import are not supported in v1.0.5.
+- Input is PNG only; GIF, WebP, JPEG, Aseprite, and sprite-sheet import are not supported in v1.0.6.
 - GIF output is limited to 256 colors and cannot preserve partial alpha.
-- Layers, lasso selection, palette files, animation tags, Animated WebP, and sprite metadata JSON are not included in v1.0.5.
+- Layers, lasso selection, palette files, animation tags, Animated WebP, and sprite metadata JSON are not included in v1.0.6.
 - Autosave depends on IndexedDB. Clearing browser site data can remove the locally saved project.
 - Undo / Redo history is not restored after a page reload.
 - Large 128×128 projects with many frames can use more memory, especially during GIF encoding.
 
 ## Dependencies
 
-Pixel Animation Studio v1.0.5 has **no runtime third-party dependencies** declared in `dependencies.json`.
+Pixel Animation Studio v1.0.6 has **no runtime third-party dependencies** declared in `dependencies.json`.
 
 Animated GIF encoding is implemented directly in the application. See [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md) for details.
 
