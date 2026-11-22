@@ -75,7 +75,7 @@ async function main() {
                   importBorderLeft:computed('.setup-import-card').borderLeftWidth,
                   importBorderTop:computed('.setup-import-card').borderTopWidth};
         });
-        assert.deepEqual(setupStyles,{customBorderLeft:'0px',customBorderTop:'1px',importBorderLeft:'0px',importBorderTop:'1px'},label+': setup sections use dividers');
+        assert.deepEqual(setupStyles,{customBorderLeft:'0px',customBorderTop:'0px',importBorderLeft:'0px',importBorderTop:'1px'},label+': Custom unboxed; import retains divider');
         assert.equal(await page.locator('.local-badge').isVisible(), width > cfg.bp, label + ': local badge hidden on phones');
         if (width > cfg.bp) await bounds(page.locator('.local-badge'), width, height, label, false);
         assert.equal(await page.locator('body > footer').isVisible(), width > cfg.bp, label + ': initial footer');
@@ -83,6 +83,19 @@ async function main() {
         await page.locator('[data-preset="16"]').click();
         await page.waitForFunction(()=>document.body.dataset.projectState==='editing');
         assert.equal(await page.locator('#editorView').isVisible(),true);
+        const mobileLayout=width<=cfg.bp;
+        assert.equal(await page.locator('.editor-topbar').isVisible(),!mobileLayout,label+': project header only on desktop');
+        assert.equal(await page.locator('.canvas-footer .project-info').count(),mobileLayout?1:0,label+': project metadata moved to footer on phones');
+        assert.equal(await page.locator('.editor-topbar .project-info').count(),mobileLayout?0:1,label+': one live project status');
+        assert.equal(await page.locator('#projectSize').isVisible(),true,label+': canvas dimensions remain visible');
+        assert.equal((await page.locator('#projectSize').textContent()).trim(),'16 × 16',label+': same dimensions in moved info');
+        assert.equal(await page.locator('.canvas-footer > span:first-child').isVisible(),!mobileLayout,label+': redundant zoom footer hidden on phones');
+        assert.equal(await page.locator('#projectStatus').isVisible(),true,label+': autosave status remains visible');
+        if (mobileLayout) {
+          const stageHeight=await page.locator('#canvasStage').evaluate(el=>parseFloat(getComputedStyle(el).height));
+          assert.ok(stageHeight>=Math.min(height*.46,400)+40,label+': taller phone canvas '+stageHeight);
+          assert.ok((await page.locator('.canvas-footer').boundingBox()).height<=48,label+': compact phone metadata footer');
+        }
         assert.equal(await page.locator('#fitButton').count(),0,label+': separate Fit button removed');
         const liveZoom=page.locator('#toolbarScaleValue');
         const fittedZoom=(await liveZoom.textContent()).trim();
@@ -118,6 +131,11 @@ async function main() {
           await page.setViewportSize({width:w,height}); await settle(page);
           assert.equal(await page.locator('body > footer').isVisible(), w > cfg.bp, label + ': footer resize');
           assert.equal(await page.locator(cfg.nav).isVisible(), w <= cfg.bp, label + ': functional bar');
+          assert.equal(await page.locator('.editor-topbar').isVisible(),w>cfg.bp,label+': topbar breakpoint');
+          assert.equal(await page.locator('.canvas-footer .project-info').count(),w<=cfg.bp?1:0,label+': status follows breakpoint');
+          assert.equal(await page.locator('.editor-topbar .project-info').count(),w>cfg.bp?1:0,label+': desktop status restored');
+          assert.equal(await page.locator('#projectStatus').count(),1,label+': one status element after resize');
+          assert.equal(await page.locator('#projectStatus').isVisible(),true,label+': status visible after resize');
            assert.equal(await page.locator('.editor-top-actions').isVisible(), w > cfg.bp, label + ': top actions only on desktop');
           if (w <= cfg.bp) await bounds(page.locator(cfg.nav), w, height, label);
         }

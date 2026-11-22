@@ -187,7 +187,7 @@
     .preset-button:active { transform: translateY(1px); }
     .preset-size { display: block; font-size: 20px; font-weight: 820; letter-spacing: -.02em; }
     .preset-note { display: block; margin-top: 8px; color: var(--muted); font-size: 11px; }
-    .custom-card { margin-top: 24px; padding: 24px 0 0; border: 0; border-top: 1px solid var(--line); border-radius: 0; background: transparent; }
+    .custom-card { margin-top:16px; padding:0; border:0; border-radius:0; background:transparent; }
     .setup-import-card { margin-top: 24px; padding: 24px 0 0; border: 0; border-top: 1px solid var(--line); border-radius: 0; background: transparent; }
     .setup-import-head { display:flex; align-items:center; justify-content:space-between; gap:24px; }
     .setup-import-actions { display:flex; align-items:center; flex:0 0 auto; gap:8px; }
@@ -488,7 +488,7 @@
       .local-badge { display:none; }
       .preset-grid { grid-template-columns: repeat(2, minmax(0,1fr)); }
       .preset-button { min-height: 68px; }
-      .custom-card { padding:24px 0 0; }
+      .custom-card { padding:0; }
       .custom-head { align-items: flex-start; }
       .custom-row { grid-template-columns: minmax(0,1fr) auto minmax(0,1fr); }
       .custom-row .button { grid-column: 1 / -1; width: 100%; }
@@ -532,7 +532,7 @@
       .project-file-card { display:block; }
       .project-file-actions { margin-top:16px; }
       .project-file-actions .button { flex:1 1 0; }
-      .editor-topbar { align-items:flex-start; flex-wrap:wrap; }
+      .editor-topbar { display:none; }
       .editor-top-actions { display:none; }
       .mobile-frame-import { display:flex; justify-content:flex-end; margin-top:16px; }
       .mobile-canvas-actions { display:flex; justify-content:flex-end; margin-top:16px; padding-top:16px; border-top:1px solid var(--line); }
@@ -566,17 +566,19 @@
       }
       body[data-project-state="editing"] footer { display: none; }
       .editor-panel { margin-bottom: 16px; border-radius: 12px; box-shadow:none; }
-      .editor-topbar { padding: 8px 16px; gap: 8px; background: var(--surface); }
-      .project-info { display: flex; align-items: center; flex-wrap: wrap; gap: 8px; width: 100%; }
+      .editor-topbar { display:none; }
+      .canvas-footer { justify-content:flex-start; padding-top:8px; }
+      .canvas-footer > span { display:none; }
+      .canvas-footer > .project-info { display:flex; align-items:center; flex-wrap:wrap; gap:8px; width:100%; min-height:32px; }
       .project-size { font-size: 15px; }
       .project-note { display: none; }
-      .project-status { margin-left:0; padding:8px; border-radius:0; background:transparent; color:var(--muted); }
+      .project-status { margin-left:0; padding:0; border-radius:0; background:transparent; color:var(--muted); }
       .project-status[data-state="saving"] { background: #fff5dc; color: #80570e; }
       .project-status[data-state="error"] { background: #fff0ed; }
       .editor-top-actions { display:none; }
       .import-result { margin: 8px 8px 16px; border-radius: 11px; }
       .canvas-column { padding:8px; background:#f0f0ed; }
-      .canvas-stage { height: min(46dvh, 400px); min-height: 0; border-radius: 16px; }
+      .canvas-stage { height:min(calc(46dvh + 48px), 448px); min-height:0; border-radius:16px; }
       .canvas-toolbar { padding: 0 0px; }
       .mobile-controls { padding:16px; background:var(--surface); }
       .mobile-tool-row { grid-template-columns: repeat(5,minmax(0,1fr)); gap: 8px; }
@@ -2046,10 +2048,18 @@
       $('#languageButton').addEventListener('click', () => { language=language==='ja'?'en':'ja'; writeStorage(storageKeyLanguage,language); applyLanguage(); });
       const helpDialog=$('#helpDialog'); $('#helpButton').addEventListener('click',()=>helpDialog.showModal()); $('#closeHelpButton').addEventListener('click',()=>helpDialog.close());
       helpDialog.addEventListener('click', event => { if (event.target !== helpDialog) return; const rect=helpDialog.getBoundingClientRect(); const outside=event.clientX<rect.left||event.clientX>rect.right||event.clientY<rect.top||event.clientY>rect.bottom; if(outside)helpDialog.close(); });
-      window.addEventListener('resize', () => requestAnimationFrame(() => { if(state.scale===state.fitScale) fitCanvas(); else updateCanvasPresentation(); if(state.frames.length) renderPreviewFrame(state.previewIndex); updateExportPanel(); }));
+      function syncProjectInfoPlacement() {
+        const projectInfo = $('.project-info');
+        const parent = window.matchMedia('(max-width: 640px)').matches ? $('.canvas-footer') : $('.editor-topbar');
+        if (projectInfo.parentElement !== parent) {
+          if (parent.classList.contains('editor-topbar')) parent.prepend(projectInfo);
+          else parent.append(projectInfo);
+        }
+      }
+      window.addEventListener('resize', () => requestAnimationFrame(() => { syncProjectInfoPlacement(); if(state.scale===state.fitScale) fitCanvas(); else updateCanvasPresentation(); if(state.frames.length) renderPreviewFrame(state.previewIndex); updateExportPanel(); }));
 
       $('#versionBadge').textContent = `v${APP_CONFIG.version}`; $('#buildVersion').textContent = APP_CONFIG.version; $('#builtAt').textContent = BUILD_MANIFEST.generatedAtUtc || '—'; $('#dependencyCount').textContent = String(BUILD_MANIFEST.dependencies?.length || 0);
-      document.body.dataset.projectState='setup'; outputFilename.value=state.outputBase; setMobilePage('edit'); setTool('pencil', { announceChange: false }); setBrushSize(1, { announceChange: false }); applyColor('#16624F', { remember: true }); updateHistoryButtons(); applyLanguage(); initializePersistence();
+      document.body.dataset.projectState='setup'; syncProjectInfoPlacement(); outputFilename.value=state.outputBase; setMobilePage('edit'); setTool('pencil', { announceChange: false }); setBrushSize(1, { announceChange: false }); applyColor('#16624F', { remember: true }); updateHistoryButtons(); applyLanguage(); initializePersistence();
     })();
   </script>
 </body>

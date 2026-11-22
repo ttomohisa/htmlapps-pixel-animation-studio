@@ -47,7 +47,7 @@ for(const [label,html] of variants){
       assert.equal(amount%8,0,rule[1]+' uses non-8px spacing: '+rule[2]);
     }
   }
-  assert.match(html,/\.custom-card \{ margin-top: 24px; padding: 24px 0 0; border: 0; border-top: 1px solid var\(--line\);/);
+  assert.match(html,/\.custom-card \{ margin-top:16px; padding:0; border:0; border-radius:0; background:transparent; \}/);
   assert.match(html,/\.setup-import-card \{ margin-top: 24px; padding: 24px 0 0; border: 0; border-top: 1px solid var\(--line\);/);
   assert.match(html,/\.export-card \{ min-width:0; padding:0 0 0 16px; border:0; border-left:1px solid var\(--line\);/);
   assert.match(html,/\.export-card:first-child \{ padding-left:0; border-left:0; \}/);
@@ -78,5 +78,13 @@ for(const [label,html] of variants){
   assert.match(html,/setAttribute\('aria-label',/);
   assert.match(html,/\$\('#customCanvasDetails'\)\.open=false;/);
   assert.match(html,/fitScale: 'Fit canvas to view'/);
+  assert.match(html,/\.editor-topbar \{ display:none; \}/);
+  assert.match(html,/\.canvas-footer > span \{ display:none; \}/);
+  assert.match(html,/\.canvas-footer > \.project-info \{ display:flex;/);
+  assert.match(html,/\.canvas-stage \{ height:min\(calc\(46dvh \+ 48px\), 448px\);/);
+  assert.match(html,/function syncProjectInfoPlacement\(\)/);
+  assert.match(html,/window\.matchMedia\('\(max-width: 640px\)'\)\.matches/);
+  assert.match(html,/parent\.append\(projectInfo\)/);
+  assert.match(html,/parent\.prepend\(projectInfo\)/);
  });
 }

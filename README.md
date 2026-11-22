@@ -61,7 +61,7 @@ Zoom stays within a bounded viewport. Scroll or use Space-drag to pan on desktop
 ## Usage
 
 1. Choose 16×16, 32×32, 64×64, or 128×128, expand Custom to enter dimensions, or start from PNG files.
-2. Draw with Pencil / Eraser / Fill / Eyedropper. Use Grid, Zoom, Pan, and Recent Colors as needed; tap the zoom value to fit the canvas.
+2. Draw with Pencil / Eraser / Fill / Eyedropper. Use Grid, Zoom, Pan, and Recent Colors as needed; tap the zoom value to fit the canvas. On phones, canvas dimensions and autosave status appear below the drawing area.
 3. Add or duplicate frames, then edit each pose. Onion Skin can show the previous frame while drawing the next one.
 4. Set each frame delay. Use **Apply to all** when the animation should use one common timing value.
 5. Open Preview and check the animation with Play / Pause / Restart / Loop.
