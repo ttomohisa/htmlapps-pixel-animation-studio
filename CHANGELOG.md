@@ -2,7 +2,7 @@
 
 ## Unreleased
 
-## [1.0.6] - 2026-11-22
+## [1.0.6]
 
 ### Changed
 - Rebuild desktop Preview as a focused player: header and frame timing above a larger, neutral viewing stage; playback and optional frame scrubber below. Keep the canvas transparency checkerboard only under the artwork, without nesting additional cards.
@@ -19,6 +19,9 @@
 - Hide the local-processing badge on phones, move PNG import to Frames and New canvas to the bottom of Export, and remove the extra phone file-picker fallback while preserving regular PNG import.
 
 ### Fixed
+- Preserve the in-progress autosave indicator when switching Japanese/English; a language change must not falsely show that a pending write has completed.
+- Complete the full repository test suite before printing its success banner, and add version, help, offline-checklist, and bilingual-documentation consistency tests.
+- Update the offline release checklist, specification, and third-party notices to match the v1.0.6 branch rather than obsolete Fit-button and v1.0.1 steps.
 - Avoid full sprite-sheet rasterization on routine edits, frame-list updates, and filename changes; render the expanded preview on demand with debounced updates.
 - Reject oversized and invalid PNG dimensions from the IHDR before allocating a decoded image.
 - Preserve drawing and export preferences in IndexedDB autosave while accepting older saved projects without them.

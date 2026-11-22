@@ -6,12 +6,12 @@
 - **Japanese description:** ドット絵アニメーション
 - **Repository:** `ttomohisa/htmlapps-pixel-animation-studio`
 - **Slug:** `pixel-animation-studio`
-- **Current stable release:** v1.0.6
+- **Application version (this branch):** v1.0.6 (from `app.config.json`; publication requires merging and successful release checks)
 - **Release artifacts:** `dist/index.html` and `dist/index.self-extract.html`
 
 ## 2. One-sentence purpose
 
-Create small pixel-art animations frame by frame in the browser, preview motion, and eventually export PNG, animated GIF, and sprite sheets without uploading user data.
+Create small pixel-art animations frame by frame in the browser, preview motion, and export PNG, animated GIF, and sprite sheets without uploading user data.
 
 ## 3. Product principles
 
@@ -137,7 +137,7 @@ v1.0.0 freezes the first stable feature set and carries forward the v0.9.1 inter
 - Undo / Redo appears once in the canvas toolbar.
 - Frames, timing, Preview, and Export remain directly reachable.
 - Brush-size buttons remain numeric; the canvas itself previews the current brush footprint.
-- Export keeps clear cards for Current Frame PNG, Animated GIF, and Sprite Sheet.
+- Export separates Current Frame PNG, Animated GIF, and Sprite Sheet using spacing and restrained dividers, without nested cards.
 
 ### Smartphone
 
@@ -145,9 +145,9 @@ v1.0.0 freezes the first stable feature set and carries forward the v0.9.1 inter
 - When a project is active, the landing intro is hidden and the workspace receives the vertical space.
 - The main workspace scroll area ends above the fixed bottom dock.
 - The fixed dock is Edit / Frames / Preview / Export with SVG icons and text labels.
-- Edit uses a compact five-tool grid plus separate brush/color/settings cards.
+- Edit uses a compact five-tool grid plus brush, color, and settings sections without nested outlined cards.
 - Copy / Cut / Paste / Delete / Clear selection actions appear only while an active selection exists. Select all appears whenever the Selection tool and an active project are available, including before a rectangle is drawn.
-- Current Frame PNG, Animated GIF, and Sprite Sheet cards stack vertically in Export.
+- Current Frame PNG, Animated GIF, and Sprite Sheet sections stack vertically in Export.
 - Long filenames remain contained within the viewport.
 - One finger draws; two fingers pan / pinch zoom in Edit.
 
@@ -280,7 +280,7 @@ Help must be updated whenever user-facing behavior changes and remain fully scro
 - Zoom changes pixel display size, never the canvas viewport height. Both axes remain scrollable; Space-drag and two-finger pan/pinch continue to work.
 - Selection hover shows grab only inside the rectangle, dragging it shows grabbing; starting a two-finger view gesture restores an uncommitted move and releases selection-drag ownership.
 - Smartphone selection controls appear only on Edit. Switching tabs preserves selection data.
-- PNG scale 1×/2×/4×/8× remains one group. Export actions align in compact desktop cards; sheet preview remains available through a disclosure. Mobile cards stack naturally.
+- PNG scale 1×/2×/4×/8× remains one group. The export actions and optional sheet preview remain available. The later v1.0.6 layout uses quiet desktop columns and stacked mobile sections.
 - Help and metadata use v1.0.4; obsolete language-switch boilerplate is removed in both languages.
 
 Selection moves show a reversible cut preview during dragging. Cancellation, gesture navigation and frame/tool changes discard the preview; committing creates one undo step. Autosave captures only committed pixels. Build information is hidden at smartphone widths (640px and below).
@@ -292,3 +292,13 @@ Selection moves show a reversible cut preview during dragging. Cancellation, ges
 - Keep the existing build disclosure, IDs, values and localization as the quiet final item in Help. Header versions and the already canonical local-processing badge are unchanged.
 - Preserve the existing hidden build-information behavior at 640px and below, including inside Help.
 - Native disclosure keyboard activation must not dismiss Help; close button, Escape, genuine backdrop dismissal and internal scrolling remain available.
+
+## v1.0.6 — Current interaction and verification contract
+
+- The Custom canvas size controls start collapsed. The 128×128 preset is labeled `最大サイズ` / `Maximum size`.
+- The live zoom value (for example, 27×) is the fit-to-view button; there is no separate Fit button.
+- Desktop Preview has a centered, 704px-maximum vertical player with header/status above a neutral viewing area, and Play/Pause, Restart, Loop, and an optional frame slider below. Checkerboard appears under the artwork, not across the viewer.
+- The Play/Pause button changes icon and label in place. The slider appears for at least two frames; manually selecting a frame pauses playback.
+- Phone Preview retains its image-first layout. On phone Edit, the canvas dimensions and autosave status sit below the drawing area; the top project status row is hidden. Cross-breakpoint resizing preserves the same status node.
+- The header icon and favicon use the unchanged bytes of `assets/favicon.svg` without an extra icon frame or shadow.
+- Editing and exports remain local. The readable and self-extracting standalone variants, source version metadata, Japanese/English strings, and required test suites must agree before release.

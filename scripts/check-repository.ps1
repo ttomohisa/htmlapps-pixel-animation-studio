@@ -250,8 +250,6 @@ if ($LASTEXITCODE -ne 0) { throw "Header regression tests failed." }
 & $node.Source --test (Join-Path $Root "scripts\test-modal-scroll.cjs")
 if ($LASTEXITCODE -ne 0) { throw "Modal scroll regression tests failed." }
 
-Write-Host "[OK] Repository check passed." -ForegroundColor Green
-
 # WebRTC readiness DataChannel regression
 $webrtcReadyText = Get-Content -Raw -Encoding UTF8 (Join-Path $Root "components\webrtc-qr-pairing.html")
 if (-not $webrtcReadyText.Contains("readyChannelLabel: null")) {
@@ -282,3 +280,8 @@ if ($LASTEXITCODE -ne 0) { throw "Sprite preview and PNG preflight regression te
 
 & $node.Source --test (Join-Path $Root "scripts\test-compact-mobile-layout.cjs")
 if ($LASTEXITCODE -ne 0) { throw "Compact layout and mobile action regression tests failed." }
+
+& $node.Source --test (Join-Path $Root "scripts\test-documentation.cjs")
+if ($LASTEXITCODE -ne 0) { throw "Documentation and release-version consistency tests failed." }
+
+Write-Host "[OK] Repository check passed." -ForegroundColor Green

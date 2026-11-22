@@ -78,6 +78,7 @@ for(const [label,html] of variants){
   assert.match(html,/setAttribute\('aria-label',/);
   assert.match(html,/\$\('#customCanvasDetails'\)\.open=false;/);
   assert.match(html,/fitScale: 'Fit canvas to view'/);
+  assert.match(html,/if\(state\.persistenceReady\) updateAutosaveStatus\(state\.persistenceAvailable \? \(\$\('#projectStatus'\)\.dataset\.state \|\| 'saved'\) : 'error'\);/);
   assert.match(html,/\.editor-topbar \{ display:none; \}/);
   assert.match(html,/\.canvas-footer > span \{ display:none; \}/);
   assert.match(html,/\.canvas-footer > \.project-info \{ display:flex;/);

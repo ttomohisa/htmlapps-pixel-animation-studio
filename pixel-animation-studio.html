@@ -1380,7 +1380,7 @@
         document.title = APP_CONFIG.name;
         $('#brandName').textContent = APP_CONFIG.name;
         $('#footerName').textContent = APP_CONFIG.name;
-        updateToolSummary(); renderRecentColors(); renderFrames(); updatePreviewControls(); updateOnionSkinControls(); updateExportPanel(); renderImportReport(); if(state.persistenceReady) updateAutosaveStatus(state.persistenceAvailable?'saved':'error');
+        updateToolSummary(); renderRecentColors(); renderFrames(); updatePreviewControls(); updateOnionSkinControls(); updateExportPanel(); renderImportReport(); if(state.persistenceReady) updateAutosaveStatus(state.persistenceAvailable ? ($('#projectStatus').dataset.state || 'saved') : 'error');
       }
 
       function normalizeHex(value) {
