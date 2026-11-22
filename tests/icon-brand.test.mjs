@@ -26,3 +26,11 @@ test('runtime header and favicon embed the exact canonical SVG', () => {
     assert.ok(icons.filter(value => value === uri).length >= 2, `${path}: header and favicon match`);
   }
 });
+
+test('header renders the exact SVG without a framed outer wrapper', () => {
+  const html = readFileSync(new URL('src/index.template.html', root), 'utf8');
+  assert.match(html, /<img class="brand-mark" id="appBrandIcon" src="__APP_ICON_DATA_URI__" alt="" aria-hidden="true">/);
+  assert.doesNotMatch(html, /<div class="brand-mark"/);
+  assert.match(html, /\.brand-mark \{ display:block; width:38px; height:38px; flex:0 0 auto; object-fit:contain; \}/);
+  assert.doesNotMatch(html, /\.brand-mark \{[^}]*?(?:border-radius|box-shadow|overflow):/);
+});

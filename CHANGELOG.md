@@ -5,6 +5,8 @@
 ## [1.0.6] - 2026-11-22
 
 ### Changed
+- Keep the desktop Preview player centered within a compact 624px layout, rather than spreading image, status, and controls across the full editor width; preserve the phone layout.
+- Render the raw canonical `assets/favicon.svg` as the header `<img>` without an outer rounded/shadowed box. The favicon and header still embed identical, unchanged SVG bytes in standalone HTML.
 - Rework Preview as a compact player: one Play/Pause button with a changing icon, secondary Restart and clearly selected Loop controls, and a frame scrubber that appears only for multi-frame animations; simplify the bilingual status layout and remove the redundant explanatory line.
 - Remove the divider above the collapsed Custom canvas-size control.
 - On phones, move canvas dimensions and autosave status from the top of the editor to its compact footer in place of duplicated zoom/tool text, and give the drawing stage the recovered vertical space. Keep desktop placement and live status intact at breakpoint changes.

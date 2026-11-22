@@ -76,16 +76,7 @@
       gap: 16px;
     }
     .brand { display: flex; align-items: center; gap: 8px; min-width: 0; }
-    .brand-mark {
-      display: block;
-      width: 38px;
-      height: 38px;
-      flex: 0 0 auto;
-      border-radius: 11px;
-      overflow: hidden;
-      box-shadow: var(--shadow-sm);
-    }
-    .brand-mark img { width: 100%; height: 100%; display: block; }
+    .brand-mark { display:block; width:38px; height:38px; flex:0 0 auto; object-fit:contain; }
     .brand-copy { min-width: 0; }
     .brand-name {
       margin: 0;
@@ -374,8 +365,8 @@
     .duration-input { width:100%; min-width:0; min-height:38px; padding:8px 8px; border:0; outline:0; background:transparent; color:var(--text); }
     .duration-unit { padding:0 8px; color:var(--muted); font-size:11px; }
     .preview-panel { border-top:1px solid var(--line); padding:24px; background:var(--surface); }
-    .preview-layout { display:grid; grid-template-columns:208px minmax(0,1fr); gap:24px; align-items:center; }
-    .preview-stage { width:208px; height:208px; display:grid; place-items:center; overflow:hidden; padding:8px; border:1px solid var(--line); border-radius:8px; background:linear-gradient(45deg,var(--checker-b) 25%,transparent 25%) 0 0/16px 16px,linear-gradient(-45deg,var(--checker-b) 25%,transparent 25%) 0 8px/16px 16px,linear-gradient(45deg,transparent 75%,var(--checker-b) 75%) 8px -8px/16px 16px,linear-gradient(-45deg,transparent 75%,var(--checker-b) 75%) -8px 0/16px 16px,var(--checker-a); }
+    .preview-layout { display:grid; grid-template-columns:192px minmax(0,1fr); gap:24px; align-items:center; width:min(100%,624px); margin-inline:auto; }
+    .preview-stage { width:192px; height:192px; display:grid; place-items:center; overflow:hidden; padding:8px; border:1px solid var(--line); border-radius:8px; background:linear-gradient(45deg,var(--checker-b) 25%,transparent 25%) 0 0/16px 16px,linear-gradient(-45deg,var(--checker-b) 25%,transparent 25%) 0 8px/16px 16px,linear-gradient(45deg,transparent 75%,var(--checker-b) 75%) 8px -8px/16px 16px,linear-gradient(-45deg,transparent 75%,var(--checker-b) 75%) -8px 0/16px 16px,var(--checker-a); }
     #previewCanvas { display:block; image-rendering:pixelated; image-rendering:crisp-edges; box-shadow:0 0 0 1px rgba(32,33,31,.3); }
     .preview-copy { min-width:0; }
     .preview-heading { display:flex; align-items:baseline; justify-content:space-between; flex-wrap:wrap; gap:8px 16px; margin-bottom:16px; }
@@ -529,7 +520,7 @@
       .frame-thumb-wrap { width:62px; height:62px; }
       .timing-controls { display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr); align-items:end; }
       .duration-field { min-width:0; }
-      .preview-layout { grid-template-columns:1fr; gap:24px; justify-items:center; }
+      .preview-layout { grid-template-columns:1fr; gap:24px; justify-items:center; width:100%; margin:0; }
       .preview-stage { width:min(100%,288px); height:auto; aspect-ratio:1; }
       .preview-copy { width:100%; }
       .preview-actions { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); }
@@ -615,7 +606,7 @@
     @media (max-width: 520px) {
       :root { --header-height: 58px; }
       .header-inner { padding:8px 16px; }
-      .brand-mark { width: 34px; height: 34px; border-radius: 10px; }
+      .brand-mark { width:34px; height:34px; }
       .brand-name { font-size: 15px; }
       .brand-meta { display: none; }
       .header-actions { gap: 8px; }
@@ -641,9 +632,7 @@
   <header class="app-header">
     <div class="header-inner">
       <div class="brand">
-        <div class="brand-mark" aria-hidden="true">
-          <img id="appBrandIcon" src="__APP_ICON_DATA_URI__" alt="">
-        </div>
+        <img class="brand-mark" id="appBrandIcon" src="__APP_ICON_DATA_URI__" alt="" aria-hidden="true">
         <div class="brand-copy">
           <p class="brand-name"><span id="brandName">Pixel Animation Studio</span><span class="version-badge" id="versionBadge">v1.0.6</span></p>
           <p class="brand-meta" data-i18n="brandMeta">ドット絵アニメ・PNG読み込み・GIF書き出し</p>

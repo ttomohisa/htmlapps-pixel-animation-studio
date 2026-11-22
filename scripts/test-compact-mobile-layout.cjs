@@ -90,6 +90,11 @@ for(const [label,html] of variants){
 
  test(label+': preview player hierarchy and frame seeking',()=>{
   assert.match(html,/<div class="preview-heading">/);
+  assert.match(html,/\.preview-layout \{ display:grid; grid-template-columns:192px minmax\(0,1fr\); gap:24px; align-items:center; width:min\(100%,624px\); margin-inline:auto; \}/);
+  assert.match(html,/\.preview-stage \{ width:192px; height:192px;/);
+  assert.match(html,/\.preview-layout \{ grid-template-columns:1fr; gap:24px; justify-items:center; width:100%; margin:0; \}/);
+  assert.match(html,/<img class="brand-mark" id="appBrandIcon" src="[^"]+" alt="" aria-hidden="true">/);
+  assert.doesNotMatch(html,/<div class="brand-mark"/);
   assert.match(html,/<button class="preview-main" id="playPreviewButton" type="button" aria-pressed="false">/);
   assert.match(html,/id="previewPlayIcon"/);
   assert.match(html,/id="previewPauseIcon"[^>]*hidden/);

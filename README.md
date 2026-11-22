@@ -27,7 +27,7 @@ GitHub Pages delivers the initial HTML. After it loads, drawing, PNG import, fra
 - **Import PNG frames** — Start from one PNG or add multiple matching-size PNG files through file selection or Drag & Drop, with invalid files reported separately.
 - **Export for different uses** — Save the current frame as scaled PNG, the animation as GIF, or every frame as a horizontal/grid sprite sheet.
 - **Resume work locally** — Project state is autosaved to IndexedDB and can be restored after reload when browser storage is available.
-- **Desktop and smartphone UI** — Mobile uses dedicated Edit / Frames / Preview / Export workspaces with a fixed bottom dock. Add PNG files from Frames, or start a new canvas at the bottom of Export.
+- **Desktop and smartphone UI** — Desktop Preview keeps the artwork and playback controls in a compact centered layout. Mobile uses dedicated Edit / Frames / Preview / Export workspaces with a fixed bottom dock. Add PNG files from Frames, or start a new canvas at the bottom of Export.
 - **Private, single-HTML operation** — Japanese/English UI, no account, no runtime CDN, and no runtime network request from the app.
 
 ## Quick start

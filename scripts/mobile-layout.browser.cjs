@@ -53,6 +53,14 @@ async function main() {
       try {
         await page.goto(pathToFileURL(path.resolve(file)).href);
         await page.locator('#helpButton').waitFor();
+        const iconDecoration = await page.locator('#appBrandIcon').evaluate(img=>{
+          const css=getComputedStyle(img);
+          return {parent:img.parentElement.className,borderRadius:css.borderRadius,shadow:css.boxShadow,imageSrc:img.currentSrc};
+        });
+        assert.equal(iconDecoration.parent,'brand',label+': canonical SVG is not boxed in an extra wrapper');
+        assert.equal(iconDecoration.borderRadius,'0px',label+': no outer icon radius');
+        assert.equal(iconDecoration.shadow,'none',label+': no extra icon shadow');
+        assert.ok(iconDecoration.imageSrc.startsWith('data:image/svg+xml;base64,'),label+': embedded canonical icon');
         await page.waitForFunction(() => /^\d+\.\d+\.\d+$/.test(document.querySelector('#buildVersion').textContent));
         if (await page.locator('html').getAttribute('lang') !== language) await page.locator('#languageButton').click();
         assert.equal((await page.locator('[data-i18n="localBadge"]').textContent()).trim(), language === 'ja' ? '完全ローカル処理' : 'Fully local processing');
@@ -163,6 +171,14 @@ async function main() {
         if(width<=cfg.bp) await page.locator('[data-mobile-page-button="preview"]').click();
         const previewStage=page.locator('#previewStage'), toggle=page.locator('#playPreviewButton');
         assert.equal(await previewStage.isVisible(),true,label+': preview stage available');
+        const previewLayoutBounds=await page.locator('.preview-layout').evaluate(el=>{
+          const rect=el.getBoundingClientRect(),parent=el.parentElement.getBoundingClientRect();
+          return {width:rect.width,leftInset:rect.left-parent.left,rightInset:parent.right-rect.right};
+        });
+        if(width>cfg.bp){
+          assert.ok(previewLayoutBounds.width<=625,label+': compact desktop preview '+JSON.stringify(previewLayoutBounds));
+          assert.ok(Math.abs(previewLayoutBounds.leftInset-previewLayoutBounds.rightInset)<2,label+': centered desktop player '+JSON.stringify(previewLayoutBounds));
+        } else assert.ok(previewLayoutBounds.width>0,label+': mobile preview remains full width');
         assert.equal(await page.locator('#pausePreviewButton').count(),0,label+': no redundant Pause button');
         assert.equal(await toggle.getAttribute('aria-pressed'),'false',label+': initially stopped');
         assert.equal((await page.locator('#previewPlayLabel').textContent()).trim(),language==='ja'?'再生':'Play',label+': play text');
