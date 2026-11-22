@@ -5,7 +5,8 @@
 ## [1.0.6] - 2026-11-22
 
 ### Changed
-- Keep the desktop Preview player centered within a compact 624px layout, rather than spreading image, status, and controls across the full editor width; preserve the phone layout.
+- Rebuild desktop Preview as a focused player: header and frame timing above a larger, neutral viewing stage; playback and optional frame scrubber below. Keep the canvas transparency checkerboard only under the artwork, without nesting additional cards.
+- Keep mobile Preview's image-first reading order and tap layout, and preserve keyboard playback, Loop, per-frame timing and slider behaviour.
 - Render the raw canonical `assets/favicon.svg` as the header `<img>` without an outer rounded/shadowed box. The favicon and header still embed identical, unchanged SVG bytes in standalone HTML.
 - Rework Preview as a compact player: one Play/Pause button with a changing icon, secondary Restart and clearly selected Loop controls, and a frame scrubber that appears only for multi-frame animations; simplify the bilingual status layout and remove the redundant explanatory line.
 - Remove the divider above the collapsed Custom canvas-size control.

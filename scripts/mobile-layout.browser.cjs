@@ -176,9 +176,28 @@ async function main() {
           return {width:rect.width,leftInset:rect.left-parent.left,rightInset:parent.right-rect.right};
         });
         if(width>cfg.bp){
-          assert.ok(previewLayoutBounds.width<=625,label+': compact desktop preview '+JSON.stringify(previewLayoutBounds));
+          assert.ok(previewLayoutBounds.width<=705,label+': bounded desktop player '+JSON.stringify(previewLayoutBounds));
+          assert.ok(previewLayoutBounds.width>400,label+': stage occupies useful desktop width '+JSON.stringify(previewLayoutBounds));
           assert.ok(Math.abs(previewLayoutBounds.leftInset-previewLayoutBounds.rightInset)<2,label+': centered desktop player '+JSON.stringify(previewLayoutBounds));
         } else assert.ok(previewLayoutBounds.width>0,label+': mobile preview remains full width');
+        const previewComposition=await page.evaluate(()=>{
+          const rect=selector=>document.querySelector(selector).getBoundingClientRect();
+          const header=rect('.preview-heading'),stage=rect('#previewStage'),buttons=rect('.preview-actions'),frame=rect('#previewCanvas');
+          return {headerY:header.top,headerBottom:header.bottom,stageY:stage.top,stageBottom:stage.bottom,buttonsY:buttons.top,
+            stageW:stage.width,stageH:stage.height,frameW:frame.width,frameH:frame.height,
+            stageBackground:getComputedStyle(document.querySelector('#previewStage')).backgroundColor,
+            canvasBackground:getComputedStyle(document.querySelector('#previewCanvas')).backgroundImage};
+        });
+        if(width>cfg.bp){
+          assert.ok(previewComposition.headerBottom<previewComposition.stageY,label+': title above viewport');
+          assert.ok(previewComposition.buttonsY>previewComposition.stageBottom,label+': playback controls below viewport');
+          assert.equal(previewComposition.stageH,288,label+': desktop viewing area is large but bounded');
+          assert.ok(previewComposition.frameW>=224,label+': pixels displayed larger on desktop');
+        } else {
+          assert.ok(previewComposition.headerY>previewComposition.stageBottom,label+': phone keeps viewport above metadata');
+        }
+        assert.ok(previewComposition.canvasBackground.includes('linear-gradient'),label+': checkerboard belongs to pixels');
+        assert.equal(previewComposition.stageBackground,'rgb(240, 240, 237)',label+': neutral viewer surround');
         assert.equal(await page.locator('#pausePreviewButton').count(),0,label+': no redundant Pause button');
         assert.equal(await toggle.getAttribute('aria-pressed'),'false',label+': initially stopped');
         assert.equal((await page.locator('#previewPlayLabel').textContent()).trim(),language==='ja'?'再生':'Play',label+': play text');

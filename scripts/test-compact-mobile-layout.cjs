@@ -90,9 +90,14 @@ for(const [label,html] of variants){
 
  test(label+': preview player hierarchy and frame seeking',()=>{
   assert.match(html,/<div class="preview-heading">/);
-  assert.match(html,/\.preview-layout \{ display:grid; grid-template-columns:192px minmax\(0,1fr\); gap:24px; align-items:center; width:min\(100%,624px\); margin-inline:auto; \}/);
-  assert.match(html,/\.preview-stage \{ width:192px; height:192px;/);
-  assert.match(html,/\.preview-layout \{ grid-template-columns:1fr; gap:24px; justify-items:center; width:100%; margin:0; \}/);
+  assert.match(html,/\.preview-layout \{ display:grid; grid-template-columns:minmax\(0,1fr\); grid-template-areas:"heading" "stage" "actions" "scrubber"; width:min\(100%,704px\); margin-inline:auto; \}/);
+  assert.match(html,/\.preview-copy \{ display:contents; \}/);
+  assert.match(html,/\.preview-stage \{ grid-area:stage; width:100%; height:288px; display:grid; place-items:center;/);
+  assert.match(html,/#previewCanvas \{[^}]*background:linear-gradient\(45deg,var\(--checker-b\)/);
+  assert.match(html,/\.preview-layout \{ grid-template-areas:"stage" "heading" "actions" "scrubber"; width:100%; margin:0; justify-items:stretch; \}/);
+  assert.match(html,/\.preview-heading \{ grid-area:heading;/);
+  assert.match(html,/\.preview-actions \{ grid-area:actions;/);
+  assert.match(html,/\.preview-scrubber \{ grid-area:scrubber;/);
   assert.match(html,/<img class="brand-mark" id="appBrandIcon" src="[^"]+" alt="" aria-hidden="true">/);
   assert.doesNotMatch(html,/<div class="brand-mark"/);
   assert.match(html,/<button class="preview-main" id="playPreviewButton" type="button" aria-pressed="false">/);
