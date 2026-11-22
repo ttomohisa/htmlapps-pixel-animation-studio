@@ -19,6 +19,7 @@
 - Hide the local-processing badge on phones, move PNG import to Frames and New canvas to the bottom of Export, and remove the extra phone file-picker fallback while preserving regular PNG import.
 
 ### Fixed
+- Reconcile the updated favicon crop from PR #14 into the v1.0.6 standalone asset without replacing its foreground artwork, and verify the canonical icon in the release test suite.
 - Preserve the in-progress autosave indicator when switching Japanese/English; a language change must not falsely show that a pending write has completed.
 - Complete the full repository test suite before printing its success banner, and add version, help, offline-checklist, and bilingual-documentation consistency tests.
 - Update the offline release checklist, specification, and third-party notices to match the v1.0.6 branch rather than obsolete Fit-button and v1.0.1 steps.

@@ -281,6 +281,9 @@ if ($LASTEXITCODE -ne 0) { throw "Sprite preview and PNG preflight regression te
 & $node.Source --test (Join-Path $Root "scripts\test-compact-mobile-layout.cjs")
 if ($LASTEXITCODE -ne 0) { throw "Compact layout and mobile action regression tests failed." }
 
+& $node.Source --test (Join-Path $Root "tests\icon-brand.test.mjs")
+if ($LASTEXITCODE -ne 0) { throw "Canonical icon regression tests failed." }
+
 & $node.Source --test (Join-Path $Root "scripts\test-documentation.cjs")
 if ($LASTEXITCODE -ne 0) { throw "Documentation and release-version consistency tests failed." }
 
